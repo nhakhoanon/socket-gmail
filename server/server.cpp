@@ -214,6 +214,98 @@ int main(int argc, char *argv[])
                 anotherMessageFromServer = string(serviceToStop) + " stop unsucessfully";
             send(acceptSocket, anotherMessageFromServer.c_str(), 1024, 0);   
         }
+        else if (string(messageFromClient) == "listApp")
+        {   
+            vector<Application> gotApp = GetOpenApplications();
+            map<DWORD, string> Apps;
+            for (int i = 0; i < gotApp.size(); i++)
+            {
+                Apps.insert({gotApp[i].pid, gotApp[i].title});
+            }
+            byteCount = sendMap(acceptSocket, Apps);
+            // byteCount = send(acceptSocket, messageFromServer, bufferSize, 0);
+            if (byteCount > 0)
+                cout << "Message sent: " << "Sent apps list successfully!" << endl;
+            else
+                WSACleanup();
+        }
+        else if (string(messageFromClient).substr(0, 7) == "openApp")
+        {
+            string nameApp = string(messageFromClient).substr(8);
+            int check = openApplicationByName(nameApp);
+            string announcement = "";
+            if (check == 0)
+                announcement = "Open required app unsuccessfully!";
+            else if (check == 1)
+                announcement = "Open required app successfully!";
+            strcpy(messageFromServer, announcement.c_str());
+            byteCount = send(acceptSocket, messageFromServer, 1024, 0);
+            if (byteCount > 0)
+                cout << "Message sent: " << messageFromServer << endl;
+            else 
+                WSACleanup();
+        }
+        else if (string(messageFromClient).substr(0, 8) == "closeApp")
+        {
+            vector<Application> gotApp = GetOpenApplications();
+            map<DWORD, string> Apps;
+            for (int i = 0; i < gotApp.size(); i++)
+            {
+                Apps.insert({gotApp[i].pid, gotApp[i].title});
+            }
+            vector<pair<DWORD, string>> remove;
+            int cnt = 0;
+            for (auto x : Apps)
+            {
+                remove.push_back({x.first, x.second});
+            }
+            string appName = string(messageFromClient).substr(9);
+            int index = stoi(appName);
+            string announcement = "";
+            if (closeApplication(remove[index - 1].first))
+            {
+                announcement = "Terminate required application successfully!";
+            }
+            else
+                announcement = "Terminate unsuccessfully!";
+            strcpy(messageFromServer, announcement.c_str());
+            byteCount = send(acceptSocket, messageFromServer, 1024, 0);
+            if (byteCount > 0)
+                cout << "Message sent: " << messageFromServer << endl;
+            else 
+                WSACleanup();
+        }
+        else if (string(messageFromClient).substr(0, 10) == "deleteFile")
+        {
+            string announcement = "";
+            if (deleteFileByPath(string(messageFromClient).substr(11)))
+                announcement = "Delete required file successfully!";
+            else 
+                announcement = "Delete required file unsuccessfully!";
+            strcpy(messageFromServer, announcement.c_str());
+            byteCount = send(acceptSocket, messageFromServer, 1024, 0);
+            if (byteCount > 0)
+                cout << "Message sent: " << messageFromServer << endl;
+            else 
+                WSACleanup();
+        }
+        else if (string(messageFromClient).substr(0, 7) == "getFile")
+        {
+            char filePath[BUFFER_SIZE];
+            int bytesRead = recv(acceptSocket, filePath, BUFFER_SIZE, 0);
+            if (bytesRead > 0) {
+                filePath[bytesRead] = '\0';
+                std::cout << "Client requested file: " << filePath << "\n";
+                sendFile(acceptSocket, filePath);
+                // string announcement = "";
+                // if (sendFile(acceptSocket, filePath))
+                //     announcement = "Get required file successfully!";
+                // else 
+                //     announcement = "Get required file unsuccessfully!";
+                // strcpy(messageFromServer, announcement.c_str());
+                // byteCount = send(acceptSocket, messageFromServer, 1024, 0);
+            }
+        } 
         // cout << "Please enter a message to send to the Client: ";
         // cin.getline(messageFromServer, 1024);
         // cout << messageFromServer << endl;

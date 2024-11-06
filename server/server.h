@@ -7,6 +7,11 @@
 #include "listStartStopServices.h"
 #include "keylogger.h"
 #include "captureScreen.h"
+#include "listApp.h"
+#include "closeApp.h"
+#include "closeFile.h"
+#include "getFileServer.h"
+#include "openApp.h"
 
 using namespace std;
 

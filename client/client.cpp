@@ -1,10 +1,4 @@
-#include <iostream>
-#include <winsock2.h>
-#include <ws2tcpip.h>
-#include <fstream>
-
-#define bufferSize 1024
-using namespace std;
+#include "client.h"
 
 int main()
 {
@@ -215,6 +209,60 @@ int main()
             }
             outputFile.close();         
         }
+        else if (string(messageFromClient) == "listApp")
+        {
+            map<DWORD, string> gotApp;
+            byteCount = receiveMap(clientSocket, gotApp);
+            if (byteCount > 0)
+            {
+                cout << "Message received: " << "Got apps list successfully!" << endl;
+            }
+            else 
+                WSACleanup();
+            int cnt = 1;
+            for (auto x : gotApp)
+                cout << "App "  << cnt++ << ": " << getImageNameFromPID(x.first) << endl;
+        }
+        else if (string(messageFromClient).substr(0, 7) == "openApp")
+        {
+            byteCount = recv(clientSocket, messageFromServer, bufferSize, 0);
+            if (byteCount > 0) {
+                cout << "Message received: " << messageFromServer << endl;
+            }
+            else 
+                WSACleanup();
+        }
+        else if (string(messageFromClient).substr(0, 8) == "closeApp")
+        {
+            byteCount = recv(clientSocket, messageFromServer, bufferSize, 0);
+            if (byteCount > 0) {
+                cout << "Message received: " << messageFromServer << endl;
+            }
+            else 
+                WSACleanup();
+        }
+        else if (string(messageFromClient).substr(0, 10) == "deleteFile")
+        {
+            byteCount = recv(clientSocket, messageFromServer, bufferSize, 0);
+            if (byteCount > 0) {
+                cout << "Message received: " << messageFromServer << endl;
+            }
+            else 
+                WSACleanup();
+        }
+        else if (string(messageFromClient).substr(0, 7) == "getFile")
+        {
+            string filePath = string(messageFromClient).substr(8);
+            string _filePath = escapeBackslashes(filePath);
+            send(clientSocket, _filePath.c_str(), _filePath.size(), 0);
+            receiveFile(clientSocket);
+            // byteCount = recv(clientSocket, messageFromServer, bufferSize, 0);
+            // if (byteCount > 0) {
+            //     cout << "Message received: " << messageFromServer << endl;
+            // }
+            // else 
+            //     WSACleanup();
+        }
         // byteCount = recv(clientSocket, messageFromServer, bufferSize, 0);
 
         // if (byteCount > 0) {
@@ -222,6 +270,7 @@ int main()
         // }
         // else WSACleanup();
     }
+    
 
 
     system("pause");
