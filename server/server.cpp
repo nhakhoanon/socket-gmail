@@ -296,7 +296,7 @@ int main(int argc, char *argv[])
             if (bytesRead > 0) {
                 filePath[bytesRead] = '\0';
                 std::cout << "Client requested file: " << filePath << "\n";
-                sendFile(acceptSocket, filePath);
+                sendFile2(acceptSocket, filePath);
                 // string announcement = "";
                 // if (sendFile(acceptSocket, filePath))
                 //     announcement = "Get required file successfully!";
@@ -305,7 +305,18 @@ int main(int argc, char *argv[])
                 // strcpy(messageFromServer, announcement.c_str());
                 // byteCount = send(acceptSocket, messageFromServer, 1024, 0);
             }
-        } 
+        }
+        else if (string(messageFromClient) == "startWebcam")
+        {
+            if (startRecording()) {
+                cout << "Recording....!" << endl;
+            }
+        }
+        else if (string(messageFromClient) == "stopWebcam")
+        {
+            stopRecording();
+            sendVideoFile(videoFileName, acceptSocket);
+        }
         // cout << "Please enter a message to send to the Client: ";
         // cin.getline(messageFromServer, 1024);
         // cout << messageFromServer << endl;

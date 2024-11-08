@@ -91,3 +91,22 @@ bool receiveMap(SOCKET sock, std::map<DWORD, std::string>& data) {
 
     return true; // Nhận thành công
 }
+
+void receiveVideoFile(SOCKET serverSocket, const string& filename) {
+    ofstream file(filename, ios::binary);
+    if (!file) {
+        cout << "Không thể mở file để lưu video." << endl;
+        return;
+    }
+
+    char buffer[1024];
+    int bytesRead;
+    cout << "Đang nhận file từ server..." << endl;
+    
+    while ((bytesRead = recv(serverSocket, buffer, sizeof(buffer), 0)) > 0) {
+        file.write(buffer, bytesRead);
+    }
+
+    file.close();
+    cout << "File đã được lưu vào " << filename << endl;
+}

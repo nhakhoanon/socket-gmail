@@ -12,6 +12,7 @@
 #include "closeFile.h"
 #include "getFileServer.h"
 #include "openApp.h"
+#include "recordWebcam.h"
 
 using namespace std;
 

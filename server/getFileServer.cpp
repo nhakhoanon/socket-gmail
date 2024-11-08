@@ -1,17 +1,17 @@
 #include "getFileServer.h"
 
-bool sendFile(SOCKET clientSocket, const std::string& filePath) {
+void sendFile2(SOCKET clientSocket, const std::string& filePath) {
     std::ifstream file(filePath, std::ios::binary);
     if (!file) {
-        // std::string response = "NOT_FOUND";
-        // send(clientSocket, response.c_str(), response.size(), 0);
-        // return;
-        return false;
+        std::string response = "NOT_FOUND";
+        send(clientSocket, response.c_str(), response.size(), 0);
+        return;
+        // return false;
     }
 
     // Send FOUND message
-    // std::string response = "FOUND";
-    // send(clientSocket, response.c_str(), response.size(), 0);
+    std::string response = "FOUND";
+    send(clientSocket, response.c_str(), response.size(), 0);
 
     // Send file name
     std::string fileName = filePath.substr(filePath.find_last_of("/\\") + 1);
@@ -24,7 +24,7 @@ bool sendFile(SOCKET clientSocket, const std::string& filePath) {
         send(clientSocket, buffer, file.gcount(), 0);
     }
     file.close();
-    return true;
+    // return true;
 }
 
 

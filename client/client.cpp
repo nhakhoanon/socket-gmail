@@ -252,16 +252,33 @@ int main()
         }
         else if (string(messageFromClient).substr(0, 7) == "getFile")
         {
-            string filePath = string(messageFromClient).substr(8);
-            string _filePath = escapeBackslashes(filePath);
+            // string filePath = string(messageFromClient).substr(8);
+            // string _filePath = escapeBackslashes(filePath);
+            // send(clientSocket, _filePath.c_str(), _filePath.size(), 0);
+            // receiveFile(clientSocket);
+
+            std::string filePath;
+            std::cout << "Enter file path to request: ";
+            std::getline(std::cin, filePath);
+            std::string _filePath = escapeBackslashes(filePath);
             send(clientSocket, _filePath.c_str(), _filePath.size(), 0);
             receiveFile(clientSocket);
+
             // byteCount = recv(clientSocket, messageFromServer, bufferSize, 0);
             // if (byteCount > 0) {
             //     cout << "Message received: " << messageFromServer << endl;
             // }
             // else 
             //     WSACleanup();
+        }
+        else if (string(messageFromClient) == "startWebcam")
+        {
+            cout << "Recording...!" << endl;
+        }
+        else if (string(messageFromClient) == "stopWebcam")
+        {
+            cout << "Stop now!" << endl;
+            receiveVideoFile(clientSocket, "result_video.mp4");
         }
         // byteCount = recv(clientSocket, messageFromServer, bufferSize, 0);
 
@@ -270,8 +287,6 @@ int main()
         // }
         // else WSACleanup();
     }
-    
-
 
     system("pause");
     WSACleanup();
