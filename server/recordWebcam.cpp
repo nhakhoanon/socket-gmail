@@ -1,83 +1,114 @@
 #include "recordWebcam.h"
 
-// Khởi tạo Media Foundation và thiết lập ghi hình
-bool startRecording() {
-    HRESULT hr = MFStartup(MF_VERSION);
-    if (FAILED(hr)) {
-        cout << "Khởi tạo Media Foundation thất bại." << endl;
-        return false;
-    }
 
-    // Thiết lập Sink Writer để ghi vào file video
-    hr = MFCreateSinkWriterFromURL(L"recorded_video.mp4", nullptr, nullptr, &pSinkWriter);
-    if (FAILED(hr)) {
-        cout << "Không thể tạo Sink Writer." << endl;
-        MFShutdown();
-        return false;
-    }
+// bool isRecording = false;
+// IMFSinkWriter* pSinkWriter = nullptr;
+// DWORD streamIndex = 0;
+// string videoFileName = "recorded_video.mp4";
+std::atomic<bool> stopFlag(false);
 
-    // Thiết lập video format
-    IMFMediaType* pMediaTypeOut = nullptr;
-    hr = MFCreateMediaType(&pMediaTypeOut);
-    hr = pMediaTypeOut->SetGUID(MF_MT_MAJOR_TYPE, MFMediaType_Video);
-    hr = pMediaTypeOut->SetGUID(MF_MT_SUBTYPE, MFVideoFormat_H264);
-    hr = pMediaTypeOut->SetUINT32(MF_MT_AVG_BITRATE, 800000);
-    hr = MFSetAttributeSize(pMediaTypeOut, MF_MT_FRAME_SIZE, 640, 480);
-    hr = MFSetAttributeRatio(pMediaTypeOut, MF_MT_FRAME_RATE, 30, 1);
-    hr = MFSetAttributeRatio(pMediaTypeOut, MF_MT_PIXEL_ASPECT_RATIO, 1, 1);
-    hr = pSinkWriter->AddStream(pMediaTypeOut, &streamIndex);
-    pMediaTypeOut->Release();
+// void sendVideoFile(const char* filename, int Socket) {
+//     // Mở file video để đọc
+//     std::ifstream file(filename, std::ios::binary);
+//     if (!file) {
+//         std::cerr << "Không thể mở file!" << std::endl;
+//         return;
+//     }
 
-    // Thiết lập định dạng đầu vào từ webcam
-    IMFMediaType* pMediaTypeIn = nullptr;
-    hr = MFCreateMediaType(&pMediaTypeIn);
-    hr = pMediaTypeIn->SetGUID(MF_MT_MAJOR_TYPE, MFMediaType_Video);
-    hr = pMediaTypeIn->SetGUID(MF_MT_SUBTYPE, MFVideoFormat_RGB32);
-    hr = MFSetAttributeSize(pMediaTypeIn, MF_MT_FRAME_SIZE, 640, 480);
-    hr = MFSetAttributeRatio(pMediaTypeIn, MF_MT_FRAME_RATE, 30, 1);
-    hr = pSinkWriter->SetInputMediaType(streamIndex, pMediaTypeIn, nullptr);
-    pMediaTypeIn->Release();
+//     // Đọc nội dung file video và gửi qua socket
+//     char buffer[1024];
+//     while (file.read(buffer, sizeof(buffer))) {
+//         int bytesRead = file.gcount();
+//         if (send(Socket, buffer, bytesRead, 0) == -1) {
+//             std::cerr << "Lỗi khi gửi dữ liệu!" << std::endl;
+//             break;
+//         }
+//     }
 
-    hr = pSinkWriter->BeginWriting();
-    if (FAILED(hr)) {
-        cout << "Không thể bắt đầu ghi video." << endl;
-        pSinkWriter->Release();
-        MFShutdown();
-        return false;
-    }
+//     // Gửi phần dữ liệu còn lại nếu có
+//     if (file.gcount() > 0) {
+//         send(Socket, buffer, file.gcount(), 0);
+//     }
 
-    isRecording = true;
-    cout << "Bắt đầu quay video..." << endl;
-    return true;
-}
+//     std::cout << "File video đã được gửi thành công!" << std::endl;
+//     file.close();
+// }
 
-void stopRecording() {
-    if (isRecording) {
-        pSinkWriter->Finalize();
-        pSinkWriter->Release();
-        MFShutdown();
-        isRecording = false;
-        cout << "Dừng quay video." << endl;
-    }
-}
-
-// Hàm gửi file video qua socket
-void sendVideoFile(const string& filename, SOCKET clientSocket) {
-    ifstream file(filename, ios::binary);
-    if (!file) {
-        cout << "Không thể mở file để gửi." << endl;
+void sendVideoFile(const std::string& videoFilename, SOCKET clientSocket) {
+    std::ifstream inFile(videoFilename, std::ios::binary);
+    if (!inFile.is_open()) {
+        std::cerr << "Không thể mở file video!" << std::endl;
         return;
     }
 
-    char buffer[1024];
-    while (file.read(buffer, sizeof(buffer))) {
-        send(clientSocket, buffer, file.gcount(), 0);
+    char buffer[CHUNK_SIZE];
+    while (inFile.read(buffer, CHUNK_SIZE) || inFile.gcount() > 0) {
+        int bytesSent = send(clientSocket, buffer, inFile.gcount(), 0);
+        if (bytesSent == SOCKET_ERROR) {
+            std::cerr << "Lỗi khi gửi dữ liệu!" << std::endl;
+            break;
+        }
     }
 
-    if (file.gcount() > 0) {
-        send(clientSocket, buffer, file.gcount(), 0);
+    std::cout << "Gửi video xong!" << std::endl;
+    inFile.close();
+}
+
+
+void recordVideo(const std::string& outputFilename, int width = 640, int height = 480) {
+    cv::VideoCapture cap(0);  // Mở camera
+    if (!cap.isOpened()) {
+        std::cerr << "Không thể mở camera" << std::endl;
+        return;
     }
 
-    file.close();
-    cout << "File đã được gửi tới client." << endl;
+    cap.set(cv::CAP_PROP_FRAME_WIDTH, width);  // Thiết lập chiều rộng
+    cap.set(cv::CAP_PROP_FRAME_HEIGHT, height);  // Thiết lập chiều cao
+
+    int codec = cv::VideoWriter::fourcc('M', 'P', '4', 'V');  // Codec cho .mp4
+    cv::VideoWriter out(outputFilename, codec, 15, cv::Size(width, height));  // Mở VideoWriter
+
+    if (!out.isOpened()) {
+        // std::cerr << "Không thể mở file video để ghi." << std::endl;
+        return;
+    }
+
+    cv::Mat frame;
+    while (true) {
+        cap >> frame;  // Lấy khung hình từ camera
+        if (frame.empty()) {
+            // std::cerr << "Không thể lấy khung hình từ camera." << std::endl;
+            break;
+        }
+
+        // Lật khung hình để giống như app camera mặc định
+        cv::flip(frame, frame, 1);
+
+        out.write(frame);  // Ghi khung hình vào file video
+
+        cv::imshow("Recording", frame);  // Hiển thị khung hình trên cửa sổ
+
+        // Kiểm tra điều kiện dừng bằng cờ stopFlag
+        if (stopFlag.load()) {  // Nếu cờ dừng là true, thoát khỏi vòng lặp
+            std::cout << "Dừng quay video!" << std::endl;
+            break;
+        }
+
+        // Tăng thời gian chờ để giảm tốc độ
+        if (cv::waitKey(1) == 'q') {  // Đặt waitKey lớn hơn 1 để giảm tốc độ video
+            break;
+        }
+    }
+
+    cap.release();  // Giải phóng camera
+    out.release();  // Giải phóng file video
+    cv::destroyAllWindows();  // Đóng tất cả cửa sổ OpenCV
+}
+
+void stopRecording() {
+    stopFlag = true;  // Đặt cờ dừng thành true
+}
+
+void resetFlag(){
+    stopFlag = false;
 }

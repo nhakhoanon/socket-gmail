@@ -262,7 +262,7 @@ int main()
             std::getline(std::cin, filePath);
             std::string _filePath = escapeBackslashes(filePath);
             send(clientSocket, _filePath.c_str(), _filePath.size(), 0);
-            receiveFile(clientSocket);
+            receiveVideoFile(clientSocket, getFileName(filePath));
 
             // byteCount = recv(clientSocket, messageFromServer, bufferSize, 0);
             // if (byteCount > 0) {
@@ -274,11 +274,12 @@ int main()
         else if (string(messageFromClient) == "startWebcam")
         {
             cout << "Recording...!" << endl;
+            cout << "Enter 'stopWebcam' to stop!" << endl;
         }
         else if (string(messageFromClient) == "stopWebcam")
         {
             cout << "Stop now!" << endl;
-            receiveVideoFile(clientSocket, "result_video.mp4");
+            receiveVideoFile(clientSocket, "output.mp4");
         }
         // byteCount = recv(clientSocket, messageFromServer, bufferSize, 0);
 

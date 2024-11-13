@@ -7,6 +7,7 @@
 #include <windows.h>
 #include <string>
 #include <iostream>
+#include <cstdint>
 
 using namespace std;
 

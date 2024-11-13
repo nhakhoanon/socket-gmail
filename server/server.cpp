@@ -296,7 +296,7 @@ int main(int argc, char *argv[])
             if (bytesRead > 0) {
                 filePath[bytesRead] = '\0';
                 std::cout << "Client requested file: " << filePath << "\n";
-                sendFile2(acceptSocket, filePath);
+                sendVideoFile(filePath, acceptSocket);
                 // string announcement = "";
                 // if (sendFile(acceptSocket, filePath))
                 //     announcement = "Get required file successfully!";
@@ -304,19 +304,31 @@ int main(int argc, char *argv[])
                 //     announcement = "Get required file unsuccessfully!";
                 // strcpy(messageFromServer, announcement.c_str());
                 // byteCount = send(acceptSocket, messageFromServer, 1024, 0);
+                // strcpy(messageFromServer, "Close!");
+                // byteCount = send(acceptSocket, messageFromServer, 1024, 0);
+                closesocket(acceptSocket);
             }
         }
         else if (string(messageFromClient) == "startWebcam")
         {
-            if (startRecording()) {
-                cout << "Recording....!" << endl;
-            }
+            std::thread videoThread(recordVideo, "output.mp4", 640, 480);
+            videoThread.detach();
+            // videoThread.join();
         }
-        else if (string(messageFromClient) == "stopWebcam")
-        {
+        else if (string(messageFromClient) == "stopWebcam"){
             stopRecording();
-            sendVideoFile(videoFileName, acceptSocket);
+            // resetFlag();
+            cout << "Stop video!" << endl;
+            Sleep(3000);
+            sendVideoFile("output.mp4", acceptSocket);
+            closesocket(acceptSocket);
+            resetFlag();
         }
+        // else if (string(messageFromClient) == "stopWebcam")
+        // {
+        //     stopRecording();
+        //     sendVideoFile(videoFileName, acceptSocket);
+        // }
         // cout << "Please enter a message to send to the Client: ";
         // cin.getline(messageFromServer, 1024);
         // cout << messageFromServer << endl;

@@ -92,21 +92,46 @@ bool receiveMap(SOCKET sock, std::map<DWORD, std::string>& data) {
     return true; // Nhận thành công
 }
 
-void receiveVideoFile(SOCKET serverSocket, const string& filename) {
-    ofstream file(filename, ios::binary);
-    if (!file) {
-        cout << "Không thể mở file để lưu video." << endl;
+// void receiveVideoFile(const char* filename, int clientSocket) {
+//     // Mở file để ghi
+//     std::ofstream file(filename, std::ios::binary);
+//     if (!file) {
+//         std::cerr << "Không thể mở file để ghi!" << std::endl;
+//         return;
+//     }
+
+//     char buffer[1024];
+//     int bytesReceived;
+
+//     // Nhận dữ liệu từ server và ghi vào file
+//     while ((bytesReceived = recv(clientSocket, buffer, sizeof(buffer), 0)) > 0) {
+//         file.write(buffer, bytesReceived);
+//     }
+
+//     std::cout << "Successfully!" << std::endl;
+//     file.close();
+// }
+
+void receiveVideoFile(SOCKET serverSocket, const std::string& outputFilename) {
+    char buffer[CHUNK_SIZE];
+    std::ofstream outFile(outputFilename, std::ios::binary);
+
+    if (!outFile.is_open()) {
+        std::cerr << "Không thể mở file để lưu!" << std::endl;
         return;
     }
 
-    char buffer[1024];
-    int bytesRead;
-    cout << "Đang nhận file từ server..." << endl;
-    
-    while ((bytesRead = recv(serverSocket, buffer, sizeof(buffer), 0)) > 0) {
-        file.write(buffer, bytesRead);
+    int bytesReceived;
+    while ((bytesReceived = recv(serverSocket, buffer, CHUNK_SIZE, 0)) > 0) {
+        outFile.write(buffer, bytesReceived);
+        cout << bytesReceived << endl;
     }
 
-    file.close();
-    cout << "File đã được lưu vào " << filename << endl;
+    if (bytesReceived == 0) {
+        std::cout << "Kết nối đã bị đóng. Nhận dữ liệu xong." << std::endl;
+    } else if (bytesReceived == SOCKET_ERROR) {
+        std::cerr << "Lỗi khi nhận dữ liệu." << std::endl;
+    }
+
+    outFile.close();
 }

@@ -56,7 +56,7 @@ int openApplicationByName(const std::string& fileName) {
     HINSTANCE result = ShellExecute(NULL, "open", fileName.c_str(), NULL, NULL, SW_SHOWNORMAL);
     
     // Kiểm tra kết quả trả về của ShellExecute
-    if ((int)result > 32) {
+    if ((uintptr_t)result > 32) {
         return 1; // Mở thành công
     } else {
         return 0; // Không mở được ứng dụng

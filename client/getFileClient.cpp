@@ -25,7 +25,7 @@ void receiveFile(SOCKET serverSocket) {
         }
 
         // Receive file content
-        while ((bytesRead = recv(serverSocket, buffer, sizeof(buffer), 0)) > 0) {
+        while ((bytesRead = recv(serverSocket, buffer, sizeof(buffer), 0) > 0)) {
             file.write(buffer, bytesRead);
         }
         file.close();
@@ -53,4 +53,11 @@ std::string escapeBackslashes(const std::string& input) {
 // send(clientSocket, _filePath.c_str(), _filePath.size(), 0);
 // receiveFile(clientSocket);
 
+std::string getFileName(const std::string& path) {
+    size_t pos = path.find_last_of("/\\");
+    if (pos == std::string::npos) {
+        return path;  // Nếu không có dấu phân cách, trả về nguyên đường dẫn
+    }
+    return path.substr(pos + 1);  // Trả về phần sau dấu phân cách cuối cùng
+}
     

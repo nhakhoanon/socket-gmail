@@ -10,5 +10,5 @@
 
 void receiveFile(SOCKET serverSocket);
 std::string escapeBackslashes(const std::string& input);
-
+std::string getFileName(const std::string& path);
 
