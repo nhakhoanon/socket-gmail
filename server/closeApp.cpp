@@ -20,3 +20,32 @@ bool closeApplication(DWORD pid) {
         return false; // Thất bại
     }
 }
+
+DWORD FindPIDByImageName(const std::string &imageName) {
+    // Tạo snapshot của tất cả các tiến trình đang chạy trong hệ thống
+    HANDLE hSnapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+    if (hSnapshot == INVALID_HANDLE_VALUE) {
+        std::cerr << "Unable to create process snapshot." << std::endl;
+        return 0;
+    }
+
+    PROCESSENTRY32 pe;
+    pe.dwSize = sizeof(PROCESSENTRY32);
+    DWORD processID = 0;
+
+    // Lặp qua các tiến trình trong snapshot
+    if (Process32First(hSnapshot, &pe)) {
+        do {
+            // So sánh không phân biệt hoa thường
+            if (_stricmp(imageName.c_str(), pe.szExeFile) == 0) {
+                processID = pe.th32ProcessID;
+                break;
+            }
+        } while (Process32Next(hSnapshot, &pe));
+    } else {
+        std::cerr << "Failed to retrieve process information." << std::endl;
+    }
+
+    CloseHandle(hSnapshot);
+    return processID;
+}

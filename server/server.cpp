@@ -247,22 +247,24 @@ int main(int argc, char *argv[])
         }
         else if (string(messageFromClient).substr(0, 8) == "closeApp")
         {
-            vector<Application> gotApp = GetOpenApplications();
-            map<DWORD, string> Apps;
-            for (int i = 0; i < gotApp.size(); i++)
-            {
-                Apps.insert({gotApp[i].pid, gotApp[i].title});
-            }
-            vector<pair<DWORD, string>> remove;
-            int cnt = 0;
-            for (auto x : Apps)
-            {
-                remove.push_back({x.first, x.second});
-            }
-            string appName = string(messageFromClient).substr(9);
-            int index = stoi(appName);
+            // vector<Application> gotApp = GetOpenApplications();
+            // map<DWORD, string> Apps;
+            // for (int i = 0; i < gotApp.size(); i++)
+            // {
+            //     Apps.insert({gotApp[i].pid, gotApp[i].title});
+            // }
+            // vector<pair<DWORD, string>> remove;
+            // // int cnt = 0;
+            // for (auto x : Apps)
+            // {
+            //     remove.push_back({x.first, x.second});
+            // }
+            // string appName = string(messageFromClient).substr(9);
+            // int index = stoi(appName);
+            DWORD pidOfApp = FindPIDByImageName(string(messageFromClient).substr(9));
             string announcement = "";
-            if (closeApplication(remove[index - 1].first))
+            // if (closeApplication(remove[index - 1].first))
+            if (closeApplication(pidOfApp))
             {
                 announcement = "Terminate required application successfully!";
             }
@@ -274,6 +276,7 @@ int main(int argc, char *argv[])
                 cout << "Message sent: " << messageFromServer << endl;
             else 
                 WSACleanup();
+
         }
         else if (string(messageFromClient).substr(0, 10) == "deleteFile")
         {
@@ -296,7 +299,7 @@ int main(int argc, char *argv[])
             if (bytesRead > 0) {
                 filePath[bytesRead] = '\0';
                 std::cout << "Client requested file: " << filePath << "\n";
-                sendVideoFile(filePath, acceptSocket);
+                sendFile(filePath, acceptSocket);
                 // string announcement = "";
                 // if (sendFile(acceptSocket, filePath))
                 //     announcement = "Get required file successfully!";
@@ -306,7 +309,14 @@ int main(int argc, char *argv[])
                 // byteCount = send(acceptSocket, messageFromServer, 1024, 0);
                 // strcpy(messageFromServer, "Close!");
                 // byteCount = send(acceptSocket, messageFromServer, 1024, 0);
-                closesocket(acceptSocket);
+                // closesocket(acceptSocket);
+                strcpy(messageFromServer, "close");
+                byteCount = send(acceptSocket, messageFromServer, 1024, 0);
+                if (byteCount > 0)
+                    cout << "Message sent: " << messageFromServer << endl;
+                else 
+                    WSACleanup();
+
             }
         }
         else if (string(messageFromClient) == "startWebcam")
@@ -320,8 +330,14 @@ int main(int argc, char *argv[])
             // resetFlag();
             cout << "Stop video!" << endl;
             Sleep(3000);
-            sendVideoFile("output.mp4", acceptSocket);
-            closesocket(acceptSocket);
+            sendFile("output.mp4", acceptSocket);
+            // closesocket(acceptSocket);
+            strcpy(messageFromServer, "close");
+            byteCount = send(acceptSocket, messageFromServer, 1024, 0);
+            if (byteCount > 0)
+                cout << "Message sent: " << messageFromServer << endl;
+            else 
+                WSACleanup();
             resetFlag();
         }
         // else if (string(messageFromClient) == "stopWebcam")

@@ -32,7 +32,7 @@ using namespace std;
 
 extern std::atomic<bool> stopFlag;  // Được khai báo ngoài, trong phần khác của chương trình
 
-void sendVideoFile(const std::string& videoFilename, SOCKET clientSocket);
+void sendFile(const std::string& videoFilename, SOCKET clientSocket);
 void recordVideo(const std::string&, int, int);
 void stopRecording();
 void resetFlag();

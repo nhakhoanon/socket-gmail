@@ -34,7 +34,7 @@ std::atomic<bool> stopFlag(false);
 //     file.close();
 // }
 
-void sendVideoFile(const std::string& videoFilename, SOCKET clientSocket) {
+void sendFile(const std::string& videoFilename, SOCKET clientSocket) {
     std::ifstream inFile(videoFilename, std::ios::binary);
     if (!inFile.is_open()) {
         std::cerr << "Không thể mở file video!" << std::endl;
@@ -45,12 +45,12 @@ void sendVideoFile(const std::string& videoFilename, SOCKET clientSocket) {
     while (inFile.read(buffer, CHUNK_SIZE) || inFile.gcount() > 0) {
         int bytesSent = send(clientSocket, buffer, inFile.gcount(), 0);
         if (bytesSent == SOCKET_ERROR) {
-            std::cerr << "Lỗi khi gửi dữ liệu!" << std::endl;
+            std::cerr << "Error!" << std::endl;
             break;
         }
     }
 
-    std::cout << "Gửi video xong!" << std::endl;
+    std::cout << "Send file successfully!" << std::endl;
     inFile.close();
 }
 
@@ -90,7 +90,7 @@ void recordVideo(const std::string& outputFilename, int width = 640, int height 
 
         // Kiểm tra điều kiện dừng bằng cờ stopFlag
         if (stopFlag.load()) {  // Nếu cờ dừng là true, thoát khỏi vòng lặp
-            std::cout << "Dừng quay video!" << std::endl;
+            std::cout << "Stop recoring!" << std::endl;
             break;
         }
 
