@@ -112,26 +112,28 @@ bool receiveMap(SOCKET sock, std::map<DWORD, std::string>& data) {
 //     file.close();
 // }
 
-void receiveVideoFile(SOCKET serverSocket, const std::string& outputFilename) {
+void receiveFile(SOCKET serverSocket, const std::string& outputFilename) {
     char buffer[CHUNK_SIZE];
     std::ofstream outFile(outputFilename, std::ios::binary);
 
     if (!outFile.is_open()) {
-        std::cerr << "Không thể mở file để lưu!" << std::endl;
+        std::cerr << "Cannot open file!" << std::endl;
         return;
     }
 
     int bytesReceived;
-    while ((bytesReceived = recv(serverSocket, buffer, CHUNK_SIZE, 0)) > 0) {
+    char command[CHUNK_SIZE] {'\0'};
+    strcpy(command, "close");
+    while ((bytesReceived = recv(serverSocket, buffer, CHUNK_SIZE, 0)) > 0 && strcmp(buffer, command) != 0) {
         outFile.write(buffer, bytesReceived);
-        cout << bytesReceived << endl;
+        // cout << bytesReceived << endl;
     }
 
-    if (bytesReceived == 0) {
-        std::cout << "Kết nối đã bị đóng. Nhận dữ liệu xong." << std::endl;
-    } else if (bytesReceived == SOCKET_ERROR) {
-        std::cerr << "Lỗi khi nhận dữ liệu." << std::endl;
-    }
-
+    cout << "Get file successfully!" << endl;
+    // if (bytesReceived == 0) {
+    //     std::cout << "Get file successfully" << std::endl;
+    // } else if (bytesReceived == SOCKET_ERROR) {
+    //     std::cerr << "Error!" << std::endl;
+    // }
     outFile.close();
 }

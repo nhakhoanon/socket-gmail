@@ -1,37 +1,37 @@
 #include "getFileClient.h"
 
-void receiveFile(SOCKET serverSocket) {
-    char buffer[BUFFER_SIZE];
-    int bytesRead = recv(serverSocket, buffer, sizeof(buffer), 0);
+// void receiveFile(SOCKET serverSocket) {
+//     char buffer[BUFFER_SIZE];
+//     int bytesRead = recv(serverSocket, buffer, sizeof(buffer), 0);
 
-    if (bytesRead > 0) {
-        buffer[bytesRead] = '\0';
-        std::string response(buffer);
+//     if (bytesRead > 0) {
+//         buffer[bytesRead] = '\0';
+//         std::string response(buffer);
 
-        if (response == "NOT_FOUND") {
-            std::cout << "File not found on server.\n";
-            return;
-        }
+//         if (response == "NOT_FOUND") {
+//             std::cout << "File not found on server.\n";
+//             return;
+//         }
 
-        // Receive file name
-        bytesRead = recv(serverSocket, buffer, sizeof(buffer), 0);
-        buffer[bytesRead] = '\0';
-        std::string fileName(buffer);
+//         // Receive file name
+//         bytesRead = recv(serverSocket, buffer, sizeof(buffer), 0);
+//         buffer[bytesRead] = '\0';
+//         std::string fileName(buffer);
 
-        std::ofstream file(fileName, std::ios::binary);
-        if (!file) {
-            std::cerr << "Failed to create file : " << fileName << "\n";
-            return;
-        }
+//         std::ofstream file(fileName, std::ios::binary);
+//         if (!file) {
+//             std::cerr << "Failed to create file : " << fileName << "\n";
+//             return;
+//         }
 
-        // Receive file content
-        while ((bytesRead = recv(serverSocket, buffer, sizeof(buffer), 0) > 0)) {
-            file.write(buffer, bytesRead);
-        }
-        file.close();
-        std::cout << "File received and saved as " << fileName << "\n";
-    }
-}
+//         // Receive file content
+//         while ((bytesRead = recv(serverSocket, buffer, sizeof(buffer), 0) > 0)) {
+//             file.write(buffer, bytesRead);
+//         }
+//         file.close();
+//         std::cout << "File received and saved as " << fileName << "\n";
+//     }
+// }
 
 std::string escapeBackslashes(const std::string& input) {
     std::string result;

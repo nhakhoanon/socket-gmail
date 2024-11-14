@@ -22,4 +22,4 @@ bool receiveStringVector(SOCKET socket, vector<string>& vec);
 vector<Application> DeserializeApplications(const char* data);
 bool receiveApplications(SOCKET socket, std::vector<Application>& apps);
 bool receiveMap(SOCKET sock, std::map<DWORD, std::string>& data);
-void receiveVideoFile(SOCKET serverSocket, const std::string& outputFilename);
+void receiveFile(SOCKET serverSocket, const std::string& outputFilename);
