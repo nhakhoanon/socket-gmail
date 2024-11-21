@@ -219,9 +219,14 @@ int main()
             }
             else 
                 WSACleanup();
+            vector<string> imageName;
+            receiveStringVector(clientSocket, imageName);
             int cnt = 1;
-            for (auto x : gotApp)
-                cout << "App "  << cnt++ << ": " << getImageNameFromPID(x.first) << endl;
+            auto iter = gotApp.begin();
+            for (auto x : imageName){
+                cout << "App "  << cnt++ << ": " << x << ", PID: " << iter->first << endl;
+                iter++;
+            }
         }
         else if (string(messageFromClient).substr(0, 7) == "openApp")
         {
@@ -252,24 +257,12 @@ int main()
         }
         else if (string(messageFromClient).substr(0, 7) == "getFile")
         {
-            // string filePath = string(messageFromClient).substr(8);
-            // string _filePath = escapeBackslashes(filePath);
-            // send(clientSocket, _filePath.c_str(), _filePath.size(), 0);
-            // receiveFile(clientSocket);
-
             std::string filePath;
             std::cout << "Enter file path to request: ";
             std::getline(std::cin, filePath);
             std::string _filePath = escapeBackslashes(filePath);
             send(clientSocket, _filePath.c_str(), _filePath.size(), 0);
             receiveFile(clientSocket, getFileName(filePath));
-
-            // byteCount = recv(clientSocket, messageFromServer, bufferSize, 0);
-            // if (byteCount > 0) {
-            //     cout << "Message received: " << messageFromServer << endl;
-            // }
-            // else 
-            //     WSACleanup();
         }
         else if (string(messageFromClient) == "startWebcam")
         {

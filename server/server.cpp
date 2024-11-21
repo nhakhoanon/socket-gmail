@@ -228,6 +228,15 @@ int main(int argc, char *argv[])
                 cout << "Message sent: " << "Sent apps list successfully!" << endl;
             else
                 WSACleanup();
+            vector<string> imageName;
+            for (auto x: Apps){
+                imageName.push_back(getImageNameFromPID(x.first));
+            }
+            byteCount = sendStringVector(acceptSocket, imageName);
+            if (byteCount > 0)
+                cout << "Message sent: " << "Sent image name list successfully!" << endl;
+            else
+                WSACleanup();
         }
         else if (string(messageFromClient).substr(0, 7) == "openApp")
         {
@@ -326,7 +335,7 @@ int main(int argc, char *argv[])
             // videoThread.join();
         }
         else if (string(messageFromClient) == "stopWebcam"){
-            stopRecording();
+            stopRecord();
             // resetFlag();
             cout << "Stop video!" << endl;
             Sleep(3000);

@@ -105,7 +105,7 @@ void recordVideo(const std::string& outputFilename, int width = 640, int height 
     cv::destroyAllWindows();  // Đóng tất cả cửa sổ OpenCV
 }
 
-void stopRecording() {
+void stopRecord() {
     stopFlag = true;  // Đặt cờ dừng thành true
 }
 

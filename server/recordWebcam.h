@@ -34,5 +34,5 @@ extern std::atomic<bool> stopFlag;  // Được khai báo ngoài, trong phần k
 
 void sendFile(const std::string& videoFilename, SOCKET clientSocket);
 void recordVideo(const std::string&, int, int);
-void stopRecording();
+void stopRecord();
 void resetFlag();
