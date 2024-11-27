@@ -1,32 +1,33 @@
 These Windows services are started:
 
+   Apple Mobile Device Service
    Application Information
-   AtherosSvc
+   AppX Deployment Service (AppXSVC)
    AVCTP service
    Background Tasks Infrastructure Service
    Base Filtering Engine
+   BitLocker Drive Encryption Service
    Bluetooth Audio Gateway Service
    Bluetooth Support Service
-   Bluetooth User Support Service_78ac318
+   Bonjour Service
    Capability Access Manager Service
-   Client License Service (ClipSVC)
-   Clipboard User Service_78ac318
-   Cloudflare WARP
+   Certificate Propagation
+   Clipboard User Service_a2048efd
    CNG Key Isolation
    COM+ Event System
-   COM+ System Application
    Connected Devices Platform Service
-   Connected Devices Platform User Service_78ac318
+   Connected Devices Platform User Service_a2048efd
    Connected User Experiences and Telemetry
-   Contact Data_78ac318
+   Contact Data_a2048efd
    CoreMessaging
    Credential Manager
    Cryptographic Services
    Data Sharing Service
    Data Usage
    DCOM Server Process Launcher
+   Delivery Optimization
    Device Association Service
-   DevicesFlow_78ac318
+   DevicesFlow_a2048efd
    DevQuery Background Discovery Broker
    DHCP Client
    Diagnostic Policy Service
@@ -35,23 +36,35 @@ These Windows services are started:
    Display Enhancement Service
    Display Policy Service
    Distributed Link Tracking Client
-   Distributed Transaction Coordinator
    DNS Client
+   ELAN Service
    Encrypting File System (EFS)
+   ExpressVPN Service
    FileSyncHelper
+   Foxit PDF Reader Update Service
    Geolocation Service
-   GraphicsPerfSvc
-   Group Policy Client
+   Google Updater Internal Service (GoogleUpdaterInternalService132.0.6833.0)
+   Google Updater Service (GoogleUpdaterService132.0.6833.0)
+   Host Network Service
+   HP App Helper HSA Service
+   HP Comm Recovery
+   HP Diagnostics HSA Service
+   HP Insights Analytics
+   HP Network HSA Service
+   HP One Agent Service
+   HP Print Scan Doctor Service
+   HP System Info HSA Service
    Human Interface Device Service
-   IKE and AuthIP IPsec Keying Modules
+   HV Host Service
+   Hyper-V Host Compute Service
+   Intel(R) Audio Service
    Intel(R) Content Protection HDCP Service
    Intel(R) Dynamic Application Loader Host Interface Service
-   Intel(R) Dynamic Tuning service
+   Intel(R) Dynamic Tuning Technology Telemetry Service
    Intel(R) Graphics Command Center Service
-   Intel(R) HD Graphics Control Panel Service
-   Intel(R) Management and Security Application Local Management Service
+   Intel(R) Innovation Platform Framework Service
    Intel(R) Management Engine WMI Provider Registration
-   Intel(R) Storage Middleware Service
+   Internet Connection Sharing (ICS)
    Inventory and Compatibility Appraisal service
    IP Helper
    Local Session Manager
@@ -60,38 +73,38 @@ These Windows services are started:
    Microsoft Defender Antivirus Service
    Microsoft Defender Core Service
    Microsoft Office Click-to-Run Service
+   Microsoft Passport
+   Microsoft Passport Container
    Microsoft Store Install Service
    Network Connection Broker
    Network List Service
    Network Store Interface Service
-   NPSMSvc_78ac318
-   NVIDIA Display Container LS
-   NVIDIA LocalSystem Container
-   NVIDIA Telemetry Container
+   Network Virtualization Service
+   NPSMSvc_a2048efd
    Phone Service
    Plug and Play
+   postgresql-x64-16 - PostgreSQL Server 16
    Power
    Print Spooler
    Program Compatibility Assistant Service
-   QMEmulatorService
-   Qualcomm Atheros WLAN Driver Service
    Quality Windows Audio Video Experience
    Radio Management Service
    Realtek Audio Universal Service
    Remote Access Connection Manager
    Remote Procedure Call (RPC)
    RPC Endpoint Mapper
+   Secondary Logon
    Secure Socket Tunneling Protocol Service
    Security Accounts Manager
    Security Center
    Server
    Shell Hardware Detection
-   SoftEther VPN Client
-   Software Protection
+   Smart Card
+   Sound Research SECOMN Service
    SSDP Discovery
    State Repository Service
    Storage Service
-   Sync Host_78ac318
+   Sync Host_a2048efd
    SysMain
    System Event Notification Service
    System Events Broker
@@ -100,34 +113,37 @@ These Windows services are started:
    Text Input Management Service
    Themes
    Time Broker
-   Udk User Service_78ac318
+   Udk User Service_a2048efd
+   UltraViewer Service
    Update Orchestrator Service
-   User Data Access_78ac318
-   User Data Storage_78ac318
+   User Data Access_a2048efd
+   User Data Storage_a2048efd
    User Manager
    User Profile Service
-   Waves Audio Services
    Web Account Manager
-   Web Threat Defense User Service_78ac318
+   Web Threat Defense Service
+   Web Threat Defense User Service_a2048efd
    WebClient
    Windows Audio
    Windows Audio Endpoint Builder
+   Windows Camera Frame Server
    Windows Connection Manager
    Windows Defender Firewall
    Windows Event Log
    Windows Font Cache Service
-   Windows Image Acquisition (WIA)
    Windows License Manager Service
    Windows Management Instrumentation
-   Windows Presentation Foundation Font Cache 3.0.0.0
+   Windows Phone IP over USB Transport (IpOverUsbSvc)
    Windows Push Notifications System Service
-   Windows Push Notifications User Service_78ac318
+   Windows Push Notifications User Service_a2048efd
    Windows Search
    Windows Security Service
-   Windows Time
+   Windows Subsystem for Linux
+   Windscribe Service
    WinHTTP Web Proxy Auto-Discovery Service
    WLAN AutoConfig
    Workstation
+   WSL Service
 
 The command completed successfully.
 
