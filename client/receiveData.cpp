@@ -52,7 +52,7 @@ bool receiveApplications(SOCKET socket, std::vector<Application>& apps) {
     char buffer[4096]; // Kích thước buffer để nhận dữ liệu
     int bytesReceived = recv(socket, buffer, sizeof(buffer), 0);
     
-    if (bytesReceived > 0) {
+    if (bytesReceived > 0) {                                                               
         apps = DeserializeApplications(buffer); // Gán giá trị cho vector apps
         return true; // Trả về true nếu nhận thành công
     }
