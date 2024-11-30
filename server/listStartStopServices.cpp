@@ -1,9 +1,57 @@
 #include "listStartStopServices.h"
 
 
+// void listServices() {
+//     system("net start > services.txt");  // Redirect output to a file instead of the console
+// }
+
 void listServices() {
-    system("net start > services.txt");  // Redirect output to a file instead of the console
+    // Chạy lệnh sc query để lấy danh sách các dịch vụ đang chạy và lưu vào file services.txt
+    system("sc query type= service > services.txt");
+    // Chạy lệnh sc query để lấy ra danh sách tất cả các dịch vụ và lưu vào file services.txt
+    // system("sc query type= service state= all> services.txt");
+    // Mở file để ghi kết quả
+    ofstream outFile("services2.txt");
+    if (!outFile) {
+        cerr << "Không thể mở file services2.txt để ghi.\n";
+        return;
+    }
+
+    ifstream inputFile("services.txt");
+    if (!inputFile) {
+        cerr << "Không thể mở file services.txt.\n";
+        return;
+    }
+
+    string line;
+    string serviceName, displayName;
+
+    while (getline(inputFile, line)) {
+        // Kiểm tra và lấy SERVICE_NAME
+        if (line.find("SERVICE_NAME:") != string::npos) {
+            serviceName = line.substr(line.find(":") + 1); // Lấy phần sau dấu :
+            serviceName.erase(0, serviceName.find_first_not_of(" \t")); // Xóa khoảng trắng thừa
+        }
+
+        // Kiểm tra và lấy DISPLAY_NAME
+        if (line.find("DISPLAY_NAME:") != string::npos) {
+            displayName = line.substr(line.find(":") + 1); // Lấy phần sau dấu :
+            displayName.erase(0, displayName.find_first_not_of(" \t")); // Xóa khoảng trắng thừa
+
+            // Ghi vào file SERVICE_NAME và DISPLAY_NAME
+            outFile << "SERVICE_NAME: " << serviceName << "\n";
+            outFile << "DISPLAY_NAME: " << displayName << "\n\n";
+
+            // Reset giá trị để chuẩn bị cho dịch vụ tiếp theo
+            serviceName.clear();
+            displayName.clear();
+        }
+    }
+
+    inputFile.close();
+    outFile.close();
 }
+
 // void listServices() {
     
 //     // Open the file for writing
