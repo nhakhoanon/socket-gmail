@@ -240,7 +240,9 @@ int main(int argc, char *argv[])
         }
         else if (string(messageFromClient).substr(0, 7) == "openApp")
         {
-            string nameApp = string(messageFromClient).substr(8);
+            // string nameApp = string(messageFromClient).substr(8);
+            char nameApp[bufferSize] = {};
+            recv(acceptSocket, nameApp, bufferSize, 0);
             int check = openApplicationByName(nameApp);
             string announcement = "";
             if (check == 0)
@@ -289,17 +291,24 @@ int main(int argc, char *argv[])
         }
         else if (string(messageFromClient).substr(0, 10) == "deleteFile")
         {
-            string announcement = "";
-            if (deleteFileByPath(string(messageFromClient).substr(11)))
-                announcement = "Delete required file successfully!";
-            else 
-                announcement = "Delete required file unsuccessfully!";
-            strcpy(messageFromServer, announcement.c_str());
-            byteCount = send(acceptSocket, messageFromServer, 1024, 0);
-            if (byteCount > 0)
-                cout << "Message sent: " << messageFromServer << endl;
-            else 
-                WSACleanup();
+            char filePath[bufferSize];
+            int bytesRead = recv(acceptSocket, filePath, bufferSize, 0);
+            if (bytesRead > 0) {
+                filePath[bytesRead] = '\0';
+                std::cout << "Client requested file: " << filePath << "\n";
+
+                string announcement = "";
+                if (deleteFileByPath(string(messageFromClient).substr(11)))
+                    announcement = "Delete required file successfully!";
+                else 
+                    announcement = "Delete required file unsuccessfully!";
+                strcpy(messageFromServer, announcement.c_str());
+                byteCount = send(acceptSocket, messageFromServer, 1024, 0);
+                if (byteCount > 0)
+                    cout << "Message sent: " << messageFromServer << endl;
+                else 
+                    WSACleanup();
+            }
         }
         else if (string(messageFromClient).substr(0, 7) == "getFile")
         {

@@ -114,7 +114,7 @@ bool receiveMap(SOCKET sock, std::map<DWORD, std::string>& data) {
 
 void receiveFile(SOCKET serverSocket, const std::string& outputFilename) {
     char buffer[CHUNK_SIZE];
-    std::ofstream outFile(outputFilename, std::ios::binary);
+    std::ofstream outFile("./output/" + outputFilename, std::ios::binary);
 
     if (!outFile.is_open()) {
         std::cerr << "Cannot open file!" << std::endl;

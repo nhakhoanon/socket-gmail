@@ -132,7 +132,7 @@ int main()
         char messageFromServer[bufferSize] = {};
         char messageFromClient[bufferSize] = {};
 
-        IMAPClient.InitSession("imap.gmail.com:993", "khoanguyen.2005ct@gmail.com", "pdla nygb assw qxnr",
+        IMAPClient.InitSession("imap.gmail.com:993", EMAIL_ACCOUNT, EMAIL_PASSWORD,
             CMailClient::SettingsFlag::ALL_FLAGS, CMailClient::SslTlsFlag::ENABLE_SSL);
 
         std::string strSearch;
@@ -375,6 +375,8 @@ int main()
         }
         else if (string(messageFromClient).substr(0, 7) == "openApp")
         {
+            string nameApp = getContent(strBody, "App name:");
+            send(clientSocket, nameApp.c_str(), bufferSize, 0);
             byteCount = recv(clientSocket, messageFromServer, bufferSize, 0);
             if (byteCount > 0) {
                 cout << "Message received: " << messageFromServer << endl;
@@ -401,6 +403,8 @@ int main()
         }
         else if (string(messageFromClient).substr(0, 10) == "deleteFile")
         {
+            string filePath = getContent(strBody, "File path:");
+            send(clientSocket, filePath.c_str(), bufferSize, 0);
             byteCount = recv(clientSocket, messageFromServer, bufferSize, 0);
             if (byteCount > 0) {
                 cout << "Message received: " << messageFromServer << endl;
@@ -414,12 +418,17 @@ int main()
         }
         else if (string(messageFromClient).substr(0, 7) == "getFile")
         {
-            std::string filePath;
-            std::cout << "Enter file path to request: ";
-            std::getline(std::cin, filePath);
+            std::string filePath, fileName;
+            // std::cout << "Enter file path to request: ";
+            // std::getline(std::cin, filePath);
+            filePath = getContent(strBody, "File path:");
+            fileName = getFileName(filePath);
             std::string _filePath = escapeBackslashes(filePath);
             send(clientSocket, _filePath.c_str(), _filePath.size(), 0);
-            receiveFile(clientSocket, getFileName(filePath));
+            receiveFile(clientSocket, fileName);
+            bool bResSendMail = SMTPClient.SendMail(EMAIL_ACCOUNT, strSender, "", "PROJECT_MMT Get File", "Day la file da duoc gui!", "./output/" + fileName);
+            if (bResSendMail) cout << "Send mail successfully\n";
+            else cout << "Send mail failed\n";
         }
         else if (string(messageFromClient) == "startWebcam")
         {
