@@ -1,38 +1,6 @@
 #include "recordWebcam.h"
 
-
-// bool isRecording = false;
-// IMFSinkWriter* pSinkWriter = nullptr;
-// DWORD streamIndex = 0;
-// string videoFileName = "recorded_video.mp4";
 std::atomic<bool> stopFlag(false);
-
-// void sendVideoFile(const char* filename, int Socket) {
-//     // Mở file video để đọc
-//     std::ifstream file(filename, std::ios::binary);
-//     if (!file) {
-//         std::cerr << "Không thể mở file!" << std::endl;
-//         return;
-//     }
-
-//     // Đọc nội dung file video và gửi qua socket
-//     char buffer[1024];
-//     while (file.read(buffer, sizeof(buffer))) {
-//         int bytesRead = file.gcount();
-//         if (send(Socket, buffer, bytesRead, 0) == -1) {
-//             std::cerr << "Lỗi khi gửi dữ liệu!" << std::endl;
-//             break;
-//         }
-//     }
-
-//     // Gửi phần dữ liệu còn lại nếu có
-//     if (file.gcount() > 0) {
-//         send(Socket, buffer, file.gcount(), 0);
-//     }
-
-//     std::cout << "File video đã được gửi thành công!" << std::endl;
-//     file.close();
-// }
 
 void sendFile(const std::string& videoFilename, SOCKET clientSocket) {
     std::ifstream inFile(videoFilename, std::ios::binary);
@@ -55,7 +23,7 @@ void sendFile(const std::string& videoFilename, SOCKET clientSocket) {
 }
 
 
-void recordVideo(const std::string& outputFilename, int width = 640, int height = 480) {
+void recordVideo(const std::string& outputFilename, int width, int height, int fps) {
     cv::VideoCapture cap(0);  // Mở camera
     if (!cap.isOpened()) {
         std::cerr << "Không thể mở camera" << std::endl;
@@ -64,9 +32,10 @@ void recordVideo(const std::string& outputFilename, int width = 640, int height 
 
     cap.set(cv::CAP_PROP_FRAME_WIDTH, width);  // Thiết lập chiều rộng
     cap.set(cv::CAP_PROP_FRAME_HEIGHT, height);  // Thiết lập chiều cao
+    cap.set(cv::CAP_PROP_FPS, fps);  // Thiết lập tốc độ khung hình của camera (nếu hỗ trợ)
 
     int codec = cv::VideoWriter::fourcc('M', 'P', '4', 'V');  // Codec cho .mp4
-    cv::VideoWriter out(outputFilename, codec, 15, cv::Size(width, height));  // Mở VideoWriter
+    cv::VideoWriter out(outputFilename, codec, fps, cv::Size(width, height));  // Mở VideoWriter
 
     if (!out.isOpened()) {
         // std::cerr << "Không thể mở file video để ghi." << std::endl;
@@ -74,17 +43,18 @@ void recordVideo(const std::string& outputFilename, int width = 640, int height 
     }
 
     cv::Mat frame;
+    int delay = 1000 / fps;  // Độ trễ giữa các khung hình tính bằng mili giây
+    cout << "Delay: " << delay << endl;
     while (true) {
+        auto startTime = std::chrono::steady_clock::now();
         cap >> frame;  // Lấy khung hình từ camera
         if (frame.empty()) {
-            // std::cerr << "Không thể lấy khung hình từ camera." << std::endl;
             break;
         }
-
-        // Lật khung hình để giống như app camera mặc định
+        
         cv::flip(frame, frame, 1);
 
-        out.write(frame);  // Ghi khung hình vào file video
+        out.write(frame); 
 
         cv::imshow("Recording", frame);  // Hiển thị khung hình trên cửa sổ
 
@@ -97,6 +67,13 @@ void recordVideo(const std::string& outputFilename, int width = 640, int height 
         // Tăng thời gian chờ để giảm tốc độ
         if (cv::waitKey(1) == 'q') {  // Đặt waitKey lớn hơn 1 để giảm tốc độ video
             break;
+        }
+
+        // Đồng bộ hóa khung hình
+        auto frameEndTime = std::chrono::steady_clock::now();
+        auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(frameEndTime - startTime).count();
+        if (elapsed < delay) {
+            std::this_thread::sleep_for(std::chrono::milliseconds(delay - elapsed));
         }
     }
 

@@ -339,7 +339,7 @@ int main(int argc, char *argv[])
         }
         else if (string(messageFromClient) == "startWebcam")
         {
-            std::thread videoThread(recordVideo, "output.mp4", 640, 480);
+            std::thread videoThread(recordVideo, "output.mp4", 640, 480, 10);
             videoThread.detach();
             // videoThread.join();
         }
