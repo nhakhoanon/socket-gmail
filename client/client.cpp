@@ -61,13 +61,13 @@ string getBody(string strEmailBody) {
 string getContent(string strBody,string subject) {
     if (strBody.find(subject) == string::npos) return "";
 
-    int i = strBody.find(subject) + subject.length() + 2;
-    string sender = "";
+    int i = strBody.find(subject) + subject.length();
+    string content = "";
     while (i < strBody.length() && strBody[i] != '\n') {
-        sender += strBody[i];
+        if (strBody[i] != ' ') content += strBody[i];
         i++;
     }
-    return sender;
+    return content;
 }
 
 int main()
@@ -390,6 +390,8 @@ int main()
         }
         else if (string(messageFromClient).substr(0, 8) == "closeApp")
         {
+            string appName = getContent(strBody, "App name:");
+            send(clientSocket, appName.c_str(), bufferSize, 0);
             byteCount = recv(clientSocket, messageFromServer, bufferSize, 0);
             if (byteCount > 0) {
                 cout << "Message received: " << messageFromServer << endl;

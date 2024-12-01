@@ -243,6 +243,7 @@ int main(int argc, char *argv[])
             // string nameApp = string(messageFromClient).substr(8);
             char nameApp[bufferSize] = {};
             recv(acceptSocket, nameApp, bufferSize, 0);
+            cout << "Name of app to open: " << nameApp << endl;
             int check = openApplicationByName(nameApp);
             string announcement = "";
             if (check == 0)
@@ -272,7 +273,9 @@ int main(int argc, char *argv[])
             // }
             // string appName = string(messageFromClient).substr(9);
             // int index = stoi(appName);
-            DWORD pidOfApp = FindPIDByImageName(string(messageFromClient).substr(9));
+            char appName[bufferSize] = {};
+            recv(acceptSocket, appName, bufferSize, 0);
+            DWORD pidOfApp = FindPIDByImageName(string(appName));
             string announcement = "";
             // if (closeApplication(remove[index - 1].first))
             if (closeApplication(pidOfApp))
