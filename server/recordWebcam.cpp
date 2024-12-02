@@ -5,7 +5,7 @@ std::atomic<bool> stopFlag(false);
 void sendFile(const std::string& videoFilename, SOCKET clientSocket) {
     std::ifstream inFile(videoFilename, std::ios::binary);
     if (!inFile.is_open()) {
-        std::cerr << "Không thể mở file video!" << std::endl;
+        std::cerr << "Cannot open file!" << std::endl;
         return;
     }
 
@@ -26,7 +26,7 @@ void sendFile(const std::string& videoFilename, SOCKET clientSocket) {
 void recordVideo(const std::string& outputFilename, int width, int height, int fps) {
     cv::VideoCapture cap(0);  // Mở camera
     if (!cap.isOpened()) {
-        std::cerr << "Không thể mở camera" << std::endl;
+        std::cerr << "Cannot open camera!" << std::endl;
         return;
     }
 

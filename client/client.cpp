@@ -61,9 +61,9 @@ string getBody(string strEmailBody) {
 string getContent(string strBody,string subject) {
     if (strBody.find(subject) == string::npos) return "";
 
-    int i = strBody.find(subject) + subject.length();
+    int i = strBody.find(subject) + subject.length() + 1;
     string content = "";
-    while (i < strBody.length() && strBody[i] != '\n') {
+    while (i < strBody.length() && strBody[i] != '\n' && isprint(strBody[i])) {
         if (strBody[i] != ' ') content += strBody[i];
         i++;
     }
