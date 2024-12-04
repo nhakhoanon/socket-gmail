@@ -1,2 +1,3 @@
 *.exe
-client/output
+server/output/*
+client/output/*
