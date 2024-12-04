@@ -72,6 +72,7 @@ int main(int argc, char *argv[])
         int byteCount = recv(acceptSocket, messageFromClient, bufferSize, 0);
         if (byteCount > 0) {
             cout << "Message received: " << messageFromClient << endl;
+            cout << "Message length: " << strlen(messageFromClient) << endl;
         }
         else WSACleanup();
         if (string(messageFromClient) == "shutdown") 
@@ -82,8 +83,9 @@ int main(int argc, char *argv[])
                 system("shutdown /r /t 0");  // Lệnh restart cho Windows
             #endif
         }
-        else if (string(messageFromClient) == "captureScreen") // Send the bitmap file
+        else if (string(messageFromClient) == "capturescreen") // Send the bitmap file
         {
+            cout << "Capturing screen..." << endl;
             captureScreen("screenshot.bmp");
             // Open the bitmap file
             ifstream file("screenshot.bmp", ios::binary | ios::ate);
@@ -113,7 +115,7 @@ int main(int argc, char *argv[])
                 cout << "Error sending file data: " << WSAGetLastError() << endl;
             delete[] fileBuffer;
         }
-        else if (string(messageFromClient) == "listService")
+        else if (string(messageFromClient) == "listservice")
         {
             listServices();
             ifstream file("services.txt", ios::binary | ios::ate);
@@ -190,7 +192,7 @@ int main(int argc, char *argv[])
             }
             delete[] fileBuffer;         
         }
-        else if (string(messageFromClient) == "startService")
+        else if (string(messageFromClient) == "startservice")
         {
             char serviceToStart[bufferSize] = {};
             recv(acceptSocket, serviceToStart, bufferSize, 0);
@@ -202,7 +204,7 @@ int main(int argc, char *argv[])
                 anotherMessageFromServer = string(serviceToStart) + " start unsucessfully";
             send(acceptSocket, anotherMessageFromServer.c_str(), 1024, 0);   
         }
-        else if (string(messageFromClient) == "stopService")
+        else if (string(messageFromClient) == "stopservice")
         {
             char serviceToStop[bufferSize] = {};
             recv(acceptSocket, serviceToStop, bufferSize, 0);
@@ -214,7 +216,7 @@ int main(int argc, char *argv[])
                 anotherMessageFromServer = string(serviceToStop) + " stop unsucessfully";
             send(acceptSocket, anotherMessageFromServer.c_str(), 1024, 0);   
         }
-        else if (string(messageFromClient) == "listApp")
+        else if (string(messageFromClient) == "listapp")
         {   
             vector<Application> gotApp = GetOpenApplications();
             map<DWORD, string> Apps;
@@ -238,7 +240,7 @@ int main(int argc, char *argv[])
             else
                 WSACleanup();
         }
-        else if (string(messageFromClient).substr(0, 7) == "openApp")
+        else if (string(messageFromClient).substr(0, 7) == "openapp")
         {
             // string nameApp = string(messageFromClient).substr(8);
             char nameApp[bufferSize] = {};
@@ -257,7 +259,7 @@ int main(int argc, char *argv[])
             else 
                 WSACleanup();
         }
-        else if (string(messageFromClient).substr(0, 8) == "closeApp")
+        else if (string(messageFromClient).substr(0, 8) == "closeapp")
         {
             // vector<Application> gotApp = GetOpenApplications();
             // map<DWORD, string> Apps;
@@ -275,6 +277,7 @@ int main(int argc, char *argv[])
             // int index = stoi(appName);
             char appName[bufferSize] = {};
             recv(acceptSocket, appName, bufferSize, 0);
+            cout << "Name of app to close: " << appName << endl;
             DWORD pidOfApp = FindPIDByImageName(string(appName));
             string announcement = "";
             // if (closeApplication(remove[index - 1].first))
@@ -292,7 +295,7 @@ int main(int argc, char *argv[])
                 WSACleanup();
 
         }
-        else if (string(messageFromClient).substr(0, 10) == "deleteFile")
+        else if (string(messageFromClient).substr(0, 10) == "deletefile")
         {
             char filePath[bufferSize];
             int bytesRead = recv(acceptSocket, filePath, bufferSize, 0);
@@ -313,7 +316,7 @@ int main(int argc, char *argv[])
                     WSACleanup();
             }
         }
-        else if (string(messageFromClient).substr(0, 7) == "getFile")
+        else if (string(messageFromClient).substr(0, 7) == "getfile")
         {
             char filePath[BUFFER_SIZE];
             int bytesRead = recv(acceptSocket, filePath, BUFFER_SIZE, 0);
@@ -340,13 +343,13 @@ int main(int argc, char *argv[])
 
             }
         }
-        else if (string(messageFromClient) == "startWebcam")
+        else if (string(messageFromClient) == "startwebcam")
         {
             std::thread videoThread(recordVideo, "output.mp4", 640, 480, 15);
             videoThread.detach();
             // videoThread.join();
         }
-        else if (string(messageFromClient) == "stopWebcam"){
+        else if (string(messageFromClient) == "stopwebcam"){
             stopRecord();
             // resetFlag();
             cout << "Stop video!" << endl;

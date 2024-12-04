@@ -342,24 +342,27 @@ public:
  
    /* search for e-mails according to SearchOption */
    const bool Search(std::string& strRes, SearchOption eSearchOption = SearchOption::NEW);
+
+   /* get mail index after search */
+   std::string GetMailIndex(const std::string& strSearch);
+
+   /* get the subject of an e-mail */
+   std::string GetSubject(const std::string& strEmailHeader);
+
+   /* get the sender of an e-mail */
+   std::string GetSender(const std::string& strEmailHeader);
+
+   /* get the specific content of an e-mail */
+   std::string GetContent(const std::string& strBody, const std::string& strSubject);
+
       
 protected:
    enum MailOperation
    {
       IMAP_NOOP,
-      IMAP_LIST,
-      IMAP_SEND_STRING,
-      IMAP_SEND_FILE,
-      IMAP_RETR_FILE,
       IMAP_RETR_HEADER_STRING,
       IMAP_RETR_BODY_STRING,
-      IMAP_DELETE_FOLDER,
-      IMAP_INFO_FOLDER,
-      IMAP_LSUB,
-      IMAP_COPY,
-      IMAP_CREATE,
-      IMAP_SEARCH,
-      IMAP_STORE
+      IMAP_SEARCH
    };
 
    const bool PrePerform() override;

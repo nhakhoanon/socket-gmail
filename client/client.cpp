@@ -1,74 +1,4 @@
 #include "client.h"
-// #include "IMAPClient.h"
-// #include "SMTPClient.h"
-
-string cleanString(string str) {
-    string res = "";
-    for (int i = 0; i < str.length(); i++) {
-        if (str[i] != ' ' && str[i] != '\n' && (str[i] >= 'a' && str[i] <= 'z') || (str[i] >= 'A' && str[i] <= 'Z')) {
-            res += str[i];
-        }
-    }
-    return res;
-}
-
-string getMailIndex(string strSearch) {
-    string mailIndex = "";
-    int j = 9;
-    while (j < strSearch.length()-1 && strSearch[j] >= '0' && strSearch[j] <= '9') {
-        mailIndex += strSearch[j];
-        j++;
-    }
-    return mailIndex;
-}
-
-string getSubject(string strEmailHeader) {
-    if (strEmailHeader.find("Subject: ") == string::npos) return "";
-
-    int i = strEmailHeader.find("Subject: PROJECT_MMT ") + 20;
-    string subject = "";
-    while (i < strEmailHeader.length() && strEmailHeader[i] != '\n') {
-        subject += strEmailHeader[i];
-        i++;
-    }
-    return subject;
-}
-
-string getSender(string strEmailHeader) {
-    if (strEmailHeader.find("From: ") == string::npos) return "";
-
-    int i = strEmailHeader.find("<") + 1;
-    string sender = "";
-    while (i < strEmailHeader.length() && strEmailHeader[i] != '\n' && strEmailHeader[i] != '>') {
-        sender += strEmailHeader[i];
-        i++;
-    }
-    return sender;
-}
-
-string getBody(string strEmailBody) {
-    if (strEmailBody.find("Content-Type: text/plain") == string::npos) return "";
-
-    int i = strEmailBody.find("Content-Type: text/plain; charset=\"UTF-8\"") + 45;
-    string body = "";
-    while (i < strEmailBody.length() && strEmailBody[i] != '\n') {
-        body += strEmailBody[i];
-        i++;
-    }
-    return body;
-}
-
-string getContent(string strBody,string subject) {
-    if (strBody.find(subject) == string::npos) return "";
-
-    int i = strBody.find(subject) + subject.length() + 1;
-    string content = "";
-    while (i < strBody.length() && strBody[i] != '\n' && isprint(strBody[i])) {
-        if (strBody[i] != ' ') content += strBody[i];
-        i++;
-    }
-    return content;
-}
 
 int main()
 {
@@ -142,7 +72,7 @@ int main()
             break;
         }
         // std::cout << strSearch << " " << strSearch.length() << "\n";
-        string mailIndex = getMailIndex(strSearch);
+        string mailIndex = IMAPClient.GetMailIndex(strSearch);
         // cout << mailIndex  << " " << mailIndex.length() << " mailindex\n";
 
         if (mailIndex == "") {
@@ -152,30 +82,30 @@ int main()
             continue;
         }
 
-        string strEmailHeader, strEmailBody;
-        bResRcvStr = IMAPClient.GetHeaderString(mailIndex, strEmailHeader);
-        bResRcvStr = IMAPClient.GetBodyString(mailIndex, strEmailBody);
+        string strHeader, strBody;
+        bResRcvStr = IMAPClient.GetHeaderString(mailIndex, strHeader);
+        bResRcvStr = IMAPClient.GetBodyString(mailIndex, strBody);
 
-        cout << bResRcvStr << "\n" << strEmailHeader << "\n";
-        string strSubject = getSubject(strEmailHeader);
+        cout << bResRcvStr << "\n" << strHeader << "\n";
+        string strSubject = stripAndLowerString(IMAPClient.GetSubject(strHeader));
         cout << "Subject get: " << strSubject << "\n";
-        string strSender = getSender(strEmailHeader);
+        string strSender = stripString(IMAPClient.GetSender(strHeader));
         cout << "Sender get: " << strSender << "\n";
-        string strBody = getBody(strEmailBody);
-        cout << "Body get: " << strBody << "\n";
         
-        string tmp = cleanString(strSubject);
+        // string tmp = cleanString(strSubject);
         //cout << "Please enter a message to send to the Server: ";
         //cin.getline(messageFromClient, 1024);
 
-        strcpy(messageFromClient, tmp.c_str());
-        messageFromClient[tmp.length()] = '\0';
+        strcpy(messageFromClient, strSubject.c_str());
+        messageFromClient[strSubject.length()] = '\0';
         int byteCount = send(clientSocket, messageFromClient, bufferSize, 0);
         if (byteCount > 0) {
             cout << "Message sent: " << messageFromClient << endl;
+            cout << "Message length: " << strlen(messageFromClient) << endl;
+            cout << "Subject length: " << strSubject.length() << endl;
         }
         else WSACleanup();
-        if (string(messageFromClient) == "captureScreen")
+        if (string(messageFromClient) == "capturescreen")
         {
             // Step 1: Receive the file size
             streamsize fileSize;
@@ -216,7 +146,7 @@ int main()
             if (bResSendMail) cout << "Send mail successfully\n";
             else cout << "Send mail failed\n";
         }
-        else if (string(messageFromClient) == "listService")
+        else if (string(messageFromClient) == "listservice")
         {
             // Step 1: Receive the file size from the server
             streamsize fileSize;
@@ -261,9 +191,9 @@ int main()
             if (bResSendMail) cout << "Send mail successfully\n";
             else cout << "Send mail failed\n";
         }
-        else if (string(messageFromClient) == "startService")
+        else if (string(messageFromClient) == "startservice")
         {
-            string serviceToStart = getContent(strBody, "Service name:");
+            string serviceToStart = stripString(IMAPClient.GetContent(strBody, "Service name:"));
             // cout << "Name of service to start: ";
             // getline(cin, serviceToStart);
             send(clientSocket, serviceToStart.c_str(), bufferSize, 0);
@@ -278,11 +208,9 @@ int main()
             if (bResSendMail) cout << "Send mail successfully\n";
             else cout << "Send mail failed\n";
         }
-        else if (string(messageFromClient) == "stopService")
+        else if (string(messageFromClient) == "stopservice")
         {
-            string serviceToStop;
-            cout << "Name of service to stop: ";
-            getline(cin, serviceToStop);
+            string serviceToStop = stripString(IMAPClient.GetContent(strBody, "Service name:"));;
             send(clientSocket, serviceToStop.c_str(), bufferSize, 0);
             byteCount = recv(clientSocket, messageFromServer, bufferSize, 0);
 
@@ -297,10 +225,7 @@ int main()
         }
         else if (string(messageFromClient) == "keylogger")
         {
-            // string time;
-            // cout << "Input time(second): ";
-            // getline(cin, time);
-            string time = getContent(strBody, "Time:");
+            string time = stripString(IMAPClient.GetContent(strBody, "Time:"));
             send(clientSocket, time.c_str(), bufferSize, 0);
             streamsize fileSize;
             int result = recv(clientSocket, reinterpret_cast<char*>(&fileSize), sizeof(fileSize), 0);
@@ -348,7 +273,7 @@ int main()
             if (bResSendMail) cout << "Send mail successfully\n";
             else cout << "Send mail failed\n";
         }
-        else if (string(messageFromClient) == "listApp")
+        else if (string(messageFromClient) == "listapp")
         {
             map<DWORD, string> gotApp;
             byteCount = receiveMap(clientSocket, gotApp);
@@ -364,18 +289,18 @@ int main()
             auto iter = gotApp.begin();
             string body = "";
             for (auto x : imageName){
-                cout << "App "  << cnt++ << ": " << x << ", PID: " << iter->first << endl;
+                cout << "App "  << cnt << ": " << x << ", PID: " << iter->first << endl;
                 body += "App " + to_string(cnt) + ": " + x + ", PID: " + to_string(iter->first) + "\n";
-                iter++;
+                iter++; cnt++;
             }
             // sendMail(strSender, "PROJECT_MMT List App", body, "");
             bool bResSendMail = SMTPClient.SendMail(EMAIL_ACCOUNT, strSender, "", "PROJECT_MMT List App", body, "");
             if (bResSendMail) cout << "Send mail successfully\n";
             else cout << "Send mail failed\n";
         }
-        else if (string(messageFromClient).substr(0, 7) == "openApp")
+        else if (string(messageFromClient).substr(0, 7) == "openapp")
         {
-            string nameApp = getContent(strBody, "App name:");
+            string nameApp = stripString(IMAPClient.GetContent(strBody, "App name:"));
             send(clientSocket, nameApp.c_str(), bufferSize, 0);
             byteCount = recv(clientSocket, messageFromServer, bufferSize, 0);
             if (byteCount > 0) {
@@ -388,9 +313,9 @@ int main()
             else 
                 WSACleanup();
         }
-        else if (string(messageFromClient).substr(0, 8) == "closeApp")
+        else if (string(messageFromClient).substr(0, 8) == "closeapp")
         {
-            string appName = getContent(strBody, "App name:");
+            string appName = stripString(IMAPClient.GetContent(strBody, "App name:"));
             send(clientSocket, appName.c_str(), bufferSize, 0);
             byteCount = recv(clientSocket, messageFromServer, bufferSize, 0);
             if (byteCount > 0) {
@@ -403,9 +328,9 @@ int main()
             else 
                 WSACleanup();
         }
-        else if (string(messageFromClient).substr(0, 10) == "deleteFile")
+        else if (string(messageFromClient).substr(0, 10) == "deletefile")
         {
-            string filePath = getContent(strBody, "File path:");
+            string filePath = stripString(IMAPClient.GetContent(strBody, "File path:"));
             send(clientSocket, filePath.c_str(), bufferSize, 0);
             byteCount = recv(clientSocket, messageFromServer, bufferSize, 0);
             if (byteCount > 0) {
@@ -418,12 +343,12 @@ int main()
             else 
                 WSACleanup();
         }
-        else if (string(messageFromClient).substr(0, 7) == "getFile")
+        else if (string(messageFromClient).substr(0, 7) == "getfile")
         {
             std::string filePath, fileName;
             // std::cout << "Enter file path to request: ";
             // std::getline(std::cin, filePath);
-            filePath = getContent(strBody, "File path:");
+            filePath = stripString(IMAPClient.GetContent(strBody, "File path:"));
             fileName = getFileName(filePath);
             std::string _filePath = escapeBackslashes(filePath);
             send(clientSocket, _filePath.c_str(), _filePath.size(), 0);
@@ -432,14 +357,14 @@ int main()
             if (bResSendMail) cout << "Send mail successfully\n";
             else cout << "Send mail failed\n";
         }
-        else if (string(messageFromClient) == "startWebcam")
+        else if (string(messageFromClient) == "startwebcam")
         {
             cout << "Recording...!" << endl;
             cout << "Enter 'stopWebcam' to stop!" << endl;
             // sendMail(strSender, "PROJECT_MMT Webcam", "Mo webcam thanh cong!", "");
             bool bResSendMail = SMTPClient.SendMail(EMAIL_ACCOUNT, strSender, "", "PROJECT_MMT Webcam", "Mo webcam thanh cong!", "");
         }
-        else if (string(messageFromClient) == "stopWebcam")
+        else if (string(messageFromClient) == "stopwebcam")
         {
             cout << "Stop now!" << endl;
             receiveFile(clientSocket, "output.mp4");

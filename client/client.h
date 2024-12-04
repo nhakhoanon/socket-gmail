@@ -7,6 +7,7 @@
 #include "getFileClient.h"
 #include "mail.h"
 #include <cctype>
+#include "utils.h"
 
 #define bufferSize 1024
 using namespace std;

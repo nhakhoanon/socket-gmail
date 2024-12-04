@@ -953,6 +953,53 @@ const bool CIMAPClient::Search(std::string& strRes, SearchOption eSearchOption)
    return Perform();
 }
 
+std::string CIMAPClient::GetMailIndex(const std::string& strSearch) {
+   std::string mailIndex = "";
+   int j = 9;
+   while (j < strSearch.length()-1 && strSearch[j] >= '0' && strSearch[j] <= '9') {
+      mailIndex += strSearch[j];
+      j++;
+   }
+   return mailIndex;
+}
+
+std::string CIMAPClient::GetSubject(const std::string& strEmailHeader) {
+   if (strEmailHeader.find("Subject: ") == std::string::npos) return "";
+
+   int i = strEmailHeader.find("Subject: PROJECT_MMT ") + 20;
+   std::string subject = "";
+   while (i < strEmailHeader.length() && strEmailHeader[i] != '\n') {
+      subject += strEmailHeader[i];
+      i++;
+   }
+   return subject;
+}
+
+std::string CIMAPClient::GetSender(const std::string& strEmailHeader) {
+   if (strEmailHeader.find("From: ") == std::string::npos) return "";
+
+   int i = strEmailHeader.find("<") + 1;
+   std::string sender = "";
+   while (i < strEmailHeader.length() && strEmailHeader[i] != '\n' && strEmailHeader[i] != '>') {
+      sender += strEmailHeader[i];
+      i++;
+   }
+   return sender;
+}
+
+std::string CIMAPClient::GetContent(const std::string& strBody, const std::string& strSubject) {
+   if (strBody.find(strSubject) == std::string::npos) return "";
+
+   int i = strBody.find(strSubject) + strSubject.length();
+   std::string content = "";
+   while (i < strBody.length() && strBody[i] != '\n') {
+      content += strBody[i];
+      i++;
+   }
+
+   return content;
+}
+
 void CIMAPClient::ParseURL(std::string& strURL)
 {
    std::string strTmp = strURL;
@@ -997,103 +1044,12 @@ const bool CIMAPClient::PrePerform()
 
    switch (m_eOperationType)
    {
-      case IMAP_SEND_STRING:
-         /* This will create a new message 100. Note that you should perform an
-         * EXAMINE command to obtain the UID of the next message to create and a
-         * SELECT to ensure you are creating the message in the OUTBOX. */
-         strRequestURL += m_strMsgNumber;
-         m_ssString.str(m_strMail);
-         
-         /* LF will be replaced by CRLF when sending the mail.
-         * This must be taken in consideration in the total size of the payload */
-         /*uCountLF = std::count_if(m_strMail.cbegin(), m_strMail.cend(),
-                                       [](const char c) { return c == '\n'; });*/
-
-         //curl_easy_setopt(m_pCurlSession, CURLOPT_INFILESIZE, uCountLF + m_strMail.length());
-         curl_easy_setopt(m_pCurlSession, CURLOPT_READFUNCTION, ReadLineFromStringStreamCallback);
-         curl_easy_setopt(m_pCurlSession, CURLOPT_READDATA, &m_ssString);
-         curl_easy_setopt(m_pCurlSession, CURLOPT_UPLOAD, 1L);
-         break;
-
-      case IMAP_SEND_FILE:
-         if (!m_strLocalFile.empty())
-         {
-            // Request file size
-            /*struct stat file_info;
-            if (stat(m_strLocalFile.c_str(), &file_info))
-            {
-               if (m_eSettingsFlags & ENABLE_LOG)
-                  m_oLog(StringFormat("[IMAPClient][Error] Unable to request local file size "
-                  "%s : %s - in CIMAPClient::PrePerform() in case IMAP_SEND_FILE.", m_strLocalFile.c_str(),
-                     strerror(errno)));
-
-               return false;
-            }
-            fsize = (curl_off_t)file_info.st_size;*/
-
-            m_fLocalFile.open(m_strLocalFile, std::fstream::in);
-            
-            // LF will be replaced by CRLF when sending the mail
-            /*uCountLF = std::count_if((std::istreambuf_iterator<char>(m_fLocalFile)),
-                                      std::istreambuf_iterator<char>(),
-                                      [&uFileSize](const char c) -> bool
-                                      { ++uFileSize; return c == '\n'; });*/
-
-            if (m_fLocalFile)
-            {
-               m_fLocalFile.seekg(0);
-
-               curl_easy_setopt(m_pCurlSession, CURLOPT_READFUNCTION, CMailClient::ReadLineFromFileStreamCallback);
-               curl_easy_setopt(m_pCurlSession, CURLOPT_READDATA, &m_fLocalFile);
-               curl_easy_setopt(m_pCurlSession, CURLOPT_UPLOAD, 1L);
-               //curl_easy_setopt(m_pCurlSession, CURLOPT_INFILESIZE_LARGE, uFileSize + uCountLF);
-            }
-            else
-            {
-               if (m_eSettingsFlags & ENABLE_LOG)
-                  m_oLog(StringFormat("[IMAPClient][Error] Unable to open local file %s in CIMAPClient::PrePerform()"
-                                      "in case IMAP_SEND_FILE.", m_strLocalFile.c_str()));
-
-               return false;
-            }
-         }
-         else
-            return false;
-
-         break;
-
       case IMAP_NOOP:
          /* Set the NOOP command */
          curl_easy_setopt(m_pCurlSession, CURLOPT_CUSTOMREQUEST, "NOOP");
 
          /* Do not perform a transfer as NOOP returns no data */
          curl_easy_setopt(m_pCurlSession, CURLOPT_NOBODY, 1L);
-         break;
-
-      case IMAP_LIST:
-         if (m_pstrText != nullptr)
-         {
-            if (!m_strFolderName.empty())
-               strRequestURL += m_strFolderName;
-
-            curl_easy_setopt(m_pCurlSession, CURLOPT_WRITEFUNCTION, &CMailClient::WriteInStringCallback);
-            curl_easy_setopt(m_pCurlSession, CURLOPT_WRITEDATA, m_pstrText);
-         }
-         else
-            return false;
-
-         break;
-
-      case IMAP_DELETE_FOLDER:
-         /* You can specify the message either in the URL or DELE command */
-         if (!m_strFolderName.empty())
-         {
-            /* Set the DELE command */
-            curl_easy_setopt(m_pCurlSession, CURLOPT_CUSTOMREQUEST, ("DELETE " + m_strFolderName).c_str());
-         }
-         else
-            return false;
-
          break;
 
       case IMAP_RETR_HEADER_STRING:
@@ -1126,85 +1082,6 @@ const bool CIMAPClient::PrePerform()
          }
          else
             return false;
-         break;
-
-      case IMAP_RETR_FILE:
-         if (!m_strMsgNumber.empty())
-            strRequestURL += "INBOX/;MAILINDEX=" + m_strMsgNumber;
-         else
-            return false;
-
-         m_fLocalFile.open(m_strLocalFile, std::fstream::out | std::fstream::binary | std::fstream::trunc);
-         if (m_fLocalFile)
-         {
-            curl_easy_setopt(m_pCurlSession, CURLOPT_WRITEFUNCTION, &CMailClient::WriteToFileCallback);
-            curl_easy_setopt(m_pCurlSession, CURLOPT_WRITEDATA, &m_fLocalFile);
-         }
-         else
-         {
-            if (m_eSettingsFlags & ENABLE_LOG)
-               m_oLog(StringFormat("[IMAPClient][Error] Unable to open local file %s in CIMAPClient::PrePerform()"
-                  " in case IMAP_RETR_FILE.", m_strLocalFile.c_str()));
-
-            return false;
-         }
-         break;
-
-      case IMAP_INFO_FOLDER:
-         if (m_pstrText != nullptr)
-         {
-            curl_easy_setopt(m_pCurlSession, CURLOPT_WRITEFUNCTION, &CMailClient::WriteInStringCallback);
-            curl_easy_setopt(m_pCurlSession, CURLOPT_WRITEDATA, m_pstrText);
-         }
-         else
-            return false;
-
-         /* Set the EXAMINE command specifing the mailbox folder */
-         curl_easy_setopt(m_pCurlSession, CURLOPT_CUSTOMREQUEST, ("EXAMINE " + m_strFolderName).c_str());
-
-         break;
-
-      case IMAP_LSUB:
-         if (m_pstrText != nullptr)
-         {
-            curl_easy_setopt(m_pCurlSession, CURLOPT_WRITEFUNCTION, &CMailClient::WriteInStringCallback);
-            curl_easy_setopt(m_pCurlSession, CURLOPT_WRITEDATA, m_pstrText);
-         }
-         else
-            return false;
-
-         /* Set the LSUB command. Note the syntax is very similar to that of a LIST
-         command. */
-         curl_easy_setopt(m_pCurlSession, CURLOPT_CUSTOMREQUEST, "LSUB \"\" *");
-
-         break;
-
-      case IMAP_COPY:
-         if (!m_strMsgNumber.empty() && !m_strFolderName.empty())
-         {
-            strRequestURL += "INBOX";
-            /* Set the COPY command specifing the message ID and destination folder */
-            curl_easy_setopt(m_pCurlSession, CURLOPT_CUSTOMREQUEST,
-               ("COPY "+ m_strMsgNumber + " " + m_strFolderName).c_str());
-
-            /* Note that to perform a move operation you will need to perform the copy,
-            * then mark the original mail as Deleted and EXPUNGE or CLOSE. Please see
-            * imap-store.c for more information on deleting messages. */
-         }
-         else
-            return false;
-
-         break;
-
-      case IMAP_CREATE:
-         if (!m_strFolderName.empty())
-         {
-            /* Set the CREATE command specifing the new folder name */
-            curl_easy_setopt(m_pCurlSession, CURLOPT_CUSTOMREQUEST, ("CREATE " + m_strFolderName).c_str());
-         }
-         else
-            return false;
-
          break;
 
       case IMAP_SEARCH:
@@ -1248,37 +1125,6 @@ const bool CIMAPClient::PrePerform()
 
          break;
 
-      case IMAP_STORE:
-         if (!m_strMsgNumber.empty())
-         {
-            if (m_eMailProperty == MailProperty::Deleted)
-               strCmd = "Deleted";
-            else if (m_eMailProperty == MailProperty::Seen)
-               strCmd = "Seen";
-            else if (m_eMailProperty == MailProperty::Answered)
-               strCmd = "Answered";
-            else if (m_eMailProperty == MailProperty::Flagged)
-               strCmd = "Flagged";
-            else if (m_eMailProperty == MailProperty::Draft)
-               strCmd = "Draft";
-            else if (m_eMailProperty == MailProperty::Recent)
-               strCmd = "Recent";
-            else
-            {
-               return false;
-            }
-
-            strRequestURL += "INBOX";
-
-            /* Set the STORE command with the Deleted flag for message m_strMsgNumber */
-            curl_easy_setopt(m_pCurlSession, CURLOPT_CUSTOMREQUEST,
-               ("STORE " + m_strMsgNumber + " +Flags \\" + strCmd).c_str());
-         }
-         else
-            return false;
-
-         break;
-
       default:
          if (m_eSettingsFlags & ENABLE_LOG)
             m_oLog("[IMAPClient][Error] Unknown operation.");
@@ -1302,27 +1148,6 @@ const bool CIMAPClient::PrePerform()
 */
 const bool CIMAPClient::PostPerform(CURLcode ePerformCode)
 {
-   if (m_eOperationType == IMAP_SEND_FILE || m_eOperationType == IMAP_RETR_FILE)
-      if (m_fLocalFile.is_open())
-         m_fLocalFile.close();
-
-   if (m_eOperationType == IMAP_STORE)
-   {
-      if (ePerformCode != CURLE_OK)
-      {
-         /* Set the EXPUNGE command, although you can use the CLOSE command if you
-         * don't want to know the result of the STORE */
-         curl_easy_setopt(m_pCurlSession, CURLOPT_CUSTOMREQUEST, "EXPUNGE");
-
-         /* Perform the second custom request */
-         ePerformCode = curl_easy_perform(m_pCurlSession);
-
-         /* Check for errors */
-         if (ePerformCode != CURLE_OK)
-            if (m_eSettingsFlags & ENABLE_LOG)
-               m_oLog(StringFormat(LOG_ERROR_CURL_PEFORM_FAILURE_FORMAT, ePerformCode, curl_easy_strerror(ePerformCode)));
-      }
-   }
 
    return true;
 }
