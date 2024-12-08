@@ -3,8 +3,7 @@
 int main()
 {
     cout << "========== CLIENT ==========" << endl;
-    cout << "=== Step 1 - Set up DLL" << endl;
-    SOCKET clientSocket;
+    cout << "=== Set up DLL ===" << endl;
     int port = 55555;
     WSADATA wsaData;
     int wsaerr;
@@ -20,38 +19,39 @@ int main()
         cout << "The Winsock dll found!" << endl;
         cout << "The status: " << wsaData.szSystemStatus << endl;
     }
-    cout << "\n=== Step 2 - Set up Client Socket===" << endl;
-    clientSocket = INVALID_SOCKET;
-    clientSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-    if (clientSocket == INVALID_SOCKET)
-    {
-        cout << "Error at socket(): " << WSAGetLastError() << endl;
-        WSACleanup();
-        // return 0;
-    }
-    else
-        cout << "socket() is OK!" << endl;
-    cout << "\n===Step 3 - Connect with Server" << endl;
-    sockaddr_in clientService;
-    clientService.sin_family = AF_INET;
-    string IPOfServer ;
-    cout << "Input IPOfServer: ";
-    cin >> IPOfServer;
-    cin.ignore();
-    InetPton(AF_INET, "127.0.0.1", &clientService.sin_addr.s_addr);
-    clientService.sin_port = htons(port);
-    if (connect(clientSocket, (SOCKADDR*)&clientService, sizeof(clientService)) == SOCKET_ERROR)
-    {
-        cout << "Client: connect() - Failed to connect." << endl;
-        WSACleanup();
-        // return 0;
-    }
-    else
-    {
-        cout << "Client: connect() is OK" << endl;
-        cout << "Client: Can start sending and receiving data..." << endl;
-    }
-	cout << "\n=== Step 4 - Chat to the Server ===\n\n";
+    // cout << "\n=== Step 2 - Set up Client Socket===" << endl;
+    // SOCKET clientSocket;
+    // clientSocket = INVALID_SOCKET;
+    // clientSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+    // if (clientSocket == INVALID_SOCKET)
+    // {
+    //     cout << "Error at socket(): " << WSAGetLastError() << endl;
+    //     WSACleanup();
+    //     // return 0;
+    // }
+    // else
+    //     cout << "socket() is OK!" << endl;
+    // cout << "\n===Step 3 - Connect with Server" << endl;
+    // sockaddr_in clientService;
+    // clientService.sin_family = AF_INET;
+    // string IPOfServer ;
+    // cout << "Input IPOfServer: ";
+    // cin >> IPOfServer;
+    // cin.ignore();
+    // InetPton(AF_INET, "127.0.0.1", &clientService.sin_addr.s_addr);
+    // clientService.sin_port = htons(port);
+    // if (connect(clientSocket, (SOCKADDR*)&clientService, sizeof(clientService)) == SOCKET_ERROR)
+    // {
+    //     cout << "Client: connect() - Failed to connect." << endl;
+    //     WSACleanup();
+    //     // return 0;
+    // }
+    // else
+    // {
+    //     cout << "Client: connect() is OK" << endl;
+    //     cout << "Client: Can start sending and receiving data..." << endl;
+    // }
+	// cout << "\n=== Step 4 - Chat to the Server ===\n\n";
 
     CSMTPClient SMTPClient([](const std::string&){ return; });
     CIMAPClient IMAPClient([](const std::string& strLogMsg) { std::cout << strLogMsg << std::endl;  });
@@ -59,6 +59,9 @@ int main()
                             CMailClient::SettingsFlag::ALL_FLAGS, CMailClient::SslTlsFlag::ENABLE_SSL);
     while (1)  
     {
+        //Read from mail
+        string IPOfServer = "127.0.0.1";
+
         char messageFromServer[bufferSize] = {};
         char messageFromClient[bufferSize] = {};
 
@@ -68,7 +71,7 @@ int main()
         std::string strSearch;
         bool bResRcvStr = IMAPClient.Search(strSearch, CIMAPClient::SearchOption::CUSTOMIZED);
         if (!bResRcvStr) {
-            std::cout << "Search failed\n";
+            cout << "Search failed\n";
             break;
         }
         // std::cout << strSearch << " " << strSearch.length() << "\n";
@@ -95,6 +98,41 @@ int main()
         // string tmp = cleanString(strSubject);
         //cout << "Please enter a message to send to the Server: ";
         //cin.getline(messageFromClient, 1024);
+
+        //Create socket
+        SOCKET clientSocket;
+        clientSocket = INVALID_SOCKET;
+        clientSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+        if (clientSocket == INVALID_SOCKET)
+        {
+            cout << "Error at socket(): " << WSAGetLastError() << endl;
+            bool bRes = IMAPClient.CleanupSession();
+            continue;
+            // WSACleanup();
+            // return 0;
+        }
+        else
+            cout << "socket() is OK!" << endl;
+        
+        //Connect to server
+        cout << "\n=== Connect with Server IP: " << IPOfServer << endl;
+        sockaddr_in clientService;
+        clientService.sin_family = AF_INET;
+        InetPton(AF_INET, IPOfServer.c_str(), &clientService.sin_addr.s_addr);
+        clientService.sin_port = htons(port);
+        if (connect(clientSocket, (SOCKADDR*)&clientService, sizeof(clientService)) == SOCKET_ERROR)
+        {
+            cout << "Client: connect() - Failed to connect." << endl;
+            bool bRes = IMAPClient.CleanupSession();
+            continue;
+            // WSACleanup();
+            // return 0;
+        }
+        else
+        {
+            cout << "Client: connect() is OK" << endl;
+            cout << "Client: Can start sending and receiving data..." << endl;
+        }
 
         strcpy(messageFromClient, strSubject.c_str());
         messageFromClient[strSubject.length()] = '\0';
@@ -145,6 +183,7 @@ int main()
             bool bResSendMail = SMTPClient.SendMail(EMAIL_ACCOUNT, strSender, "", "PROJECT_MMT Capture Screen", "Day la buc anh da duoc chup!", "./output/received_image.bmp");
             if (bResSendMail) cout << "Send mail successfully\n";
             else cout << "Send mail failed\n";
+            closesocket(clientSocket);
         }
         else if (string(messageFromClient) == "listservice")
         {
@@ -190,6 +229,7 @@ int main()
             bool bResSendMail = SMTPClient.SendMail(EMAIL_ACCOUNT, strSender, "", "PROJECT_MMT List Service", "Day la danh sach cac dich vu!", "./output/received_services.txt");
             if (bResSendMail) cout << "Send mail successfully\n";
             else cout << "Send mail failed\n";
+            closesocket(clientSocket);
         }
         else if (string(messageFromClient) == "startservice")
         {
@@ -207,6 +247,7 @@ int main()
             bool bResSendMail = SMTPClient.SendMail(EMAIL_ACCOUNT, strSender, "", "PROJECT_MMT Start Service", messageFromServer, "");
             if (bResSendMail) cout << "Send mail successfully\n";
             else cout << "Send mail failed\n";
+            closesocket(clientSocket);
         }
         else if (string(messageFromClient) == "stopservice")
         {
@@ -222,6 +263,7 @@ int main()
             bool bResSendMail = SMTPClient.SendMail(EMAIL_ACCOUNT, strSender, "", "PROJECT_MMT Stop Service", messageFromServer, "");
             if (bResSendMail) cout << "Send mail successfully\n";
             else cout << "Send mail failed\n";
+            closesocket(clientSocket);
         }
         else if (string(messageFromClient) == "keylogger")
         {
@@ -272,6 +314,7 @@ int main()
             bool bResSendMail = SMTPClient.SendMail(EMAIL_ACCOUNT, strSender, "", "PROJECT_MMT Keylogger", "Day la file keylogger da duoc ghi!", "./output/keylogger.txt");
             if (bResSendMail) cout << "Send mail successfully\n";
             else cout << "Send mail failed\n";
+            closesocket(clientSocket);
         }
         else if (string(messageFromClient) == "listapp")
         {
@@ -297,6 +340,7 @@ int main()
             bool bResSendMail = SMTPClient.SendMail(EMAIL_ACCOUNT, strSender, "", "PROJECT_MMT List App", body, "");
             if (bResSendMail) cout << "Send mail successfully\n";
             else cout << "Send mail failed\n";
+            closesocket(clientSocket);
         }
         else if (string(messageFromClient).substr(0, 7) == "openapp")
         {
@@ -312,6 +356,7 @@ int main()
             }
             else 
                 WSACleanup();
+            closesocket(clientSocket);
         }
         else if (string(messageFromClient).substr(0, 8) == "closeapp")
         {
@@ -327,6 +372,7 @@ int main()
             }
             else 
                 WSACleanup();
+            closesocket(clientSocket);
         }
         else if (string(messageFromClient).substr(0, 10) == "deletefile")
         {
@@ -342,6 +388,7 @@ int main()
             }
             else 
                 WSACleanup();
+            closesocket(clientSocket);
         }
         else if (string(messageFromClient).substr(0, 7) == "getfile")
         {
@@ -356,13 +403,15 @@ int main()
             bool bResSendMail = SMTPClient.SendMail(EMAIL_ACCOUNT, strSender, "", "PROJECT_MMT Get File", "Day la file da duoc gui!", "./output/" + fileName);
             if (bResSendMail) cout << "Send mail successfully\n";
             else cout << "Send mail failed\n";
+            closesocket(clientSocket);
         }
         else if (string(messageFromClient) == "startwebcam")
         {
             cout << "Recording...!" << endl;
-            cout << "Enter 'stopWebcam' to stop!" << endl;
+            cout << "Sending 'stopWebcam' to this IP again to stop!" << endl;
             // sendMail(strSender, "PROJECT_MMT Webcam", "Mo webcam thanh cong!", "");
             bool bResSendMail = SMTPClient.SendMail(EMAIL_ACCOUNT, strSender, "", "PROJECT_MMT Webcam", "Mo webcam thanh cong!", "");
+            closesocket(clientSocket);
         }
         else if (string(messageFromClient) == "stopwebcam")
         {
@@ -370,14 +419,8 @@ int main()
             receiveFile(clientSocket, "output.mp4");
             // sendMail(strSender, "PROJECT_MMT Webcam", "Day la video da duoc ghi!", "./output/output.mp4");
             bool bResSendMail = SMTPClient.SendMail(EMAIL_ACCOUNT, strSender, "", "PROJECT_MMT Webcam", "Day la video da duoc ghi!", "./output/output.mp4");
+            closesocket(clientSocket);
         }
-        // byteCount = recv(clientSocket, messageFromServer, bufferSize, 0);
-
-        // if (byteCount > 0) {
-        //     cout << "Message received: " << messageFromServer << endl;
-        // }
-        // else WSACleanup();
-
         bool bRes = IMAPClient.CleanupSession();
         Sleep(1000);
     }
