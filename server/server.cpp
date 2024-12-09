@@ -137,10 +137,10 @@ int main(int argc, char *argv[])
             delete[] fileBuffer;
             closesocket(acceptSocket);
         }
-        else if (string(messageFromClient) == "listservice")
+        else if (string(messageFromClient) == "listservices")
         {
             listServices();
-            ifstream file("services.txt", ios::binary | ios::ate);
+            ifstream file("services2.txt", ios::binary | ios::ate);
             if (!file.is_open()) {
                 cout << "Failed to open service.txt" << endl;
                 continue;

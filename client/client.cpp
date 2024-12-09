@@ -185,7 +185,7 @@ int main()
             else cout << "Send mail failed\n";
             closesocket(clientSocket);
         }
-        else if (string(messageFromClient) == "listservice")
+        else if (string(messageFromClient) == "listservices")
         {
             // Step 1: Receive the file size from the server
             streamsize fileSize;
