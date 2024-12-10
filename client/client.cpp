@@ -335,14 +335,30 @@ int main()
                 WSACleanup();
             vector<string> imageName;
             receiveStringVector(clientSocket, imageName);
+            // int cnt = 1;
+            // auto iter = gotApp.begin();
+            // string body = "";
+            // for (auto x : imageName){
+            //     cout << "App "  << cnt << ": " << x << ", PID: " << iter->first << endl;
+            //     body += "App " + to_string(cnt) + ": " + x + ", PID: " + to_string(iter->first) + "\n";
+            //     iter++; cnt++;
+            // }
+            vector<string> headers;
+            headers.push_back("STT"); 
+            headers.push_back("App name");
+            headers.push_back("PID");
+            vector<vector<string>> data;
             int cnt = 1;
             auto iter = gotApp.begin();
-            string body = "";
             for (auto x : imageName){
-                cout << "App "  << cnt << ": " << x << ", PID: " << iter->first << endl;
-                body += "App " + to_string(cnt) + ": " + x + ", PID: " + to_string(iter->first) + "\n";
-                iter++; cnt++;
+                vector<string> row;
+                row.push_back(to_string(cnt));
+                row.push_back(x);
+                row.push_back(to_string(iter->first));
+                data.push_back(row);
+                cnt++; iter++;
             }
+            string body = "<p>Got apps list successfully!</p>" + createHtmlTable(headers, data);
             // sendMail(strSender, "PROJECT_MMT List App", body, "");
             bool bResSendMail = SMTPClient.SendMail(EMAIL_ACCOUNT, strSender, "", "PROJECT_MMT List App", body, "");
             if (bResSendMail) cout << "Send mail successfully\n";

@@ -1,4 +1,5 @@
 #include "mail.h"
+#include "utils.h"
 
 // #include <curl/curl.h>
 // #include <stdexcept>
@@ -788,7 +789,7 @@ const bool CSMTPClient::PrePerform()
 
             part = curl_mime_addpart(m_mime);
             // curl_mime_data(part, "<html><head><title>PROJECT_MMT</title></head><body><h1>PROJECT_MMT</h1><p>Dear User,</p><p>Thank you for using PROJECT_MMT.</p><p>Best regards,</p><p>PROJECT_MMT Team</p></body></html>", CURL_ZERO_TERMINATED);
-            std::string strHTML = strHTML1 + m_strBody + strHTML2; 
+            std::string strHTML = createHTML(m_strBody);
             curl_mime_data(part, strHTML.c_str(), CURL_ZERO_TERMINATED);
             curl_mime_type(part, "text/html");
 
