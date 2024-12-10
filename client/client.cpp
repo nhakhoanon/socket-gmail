@@ -89,6 +89,13 @@ int main()
         bResRcvStr = IMAPClient.GetHeaderString(mailIndex, strHeader);
         bResRcvStr = IMAPClient.GetBodyString(mailIndex, strBody);
 
+        IPOfServer = stripString(IMAPClient.GetContent(strBody, "IP:"));
+        if (IPOfServer == "") {
+            cout << "No IP in mail\n";
+            bool bRes = IMAPClient.CleanupSession();
+            continue;
+        }
+
         cout << bResRcvStr << "\n" << strHeader << "\n";
         string strSubject = stripAndLowerString(IMAPClient.GetSubject(strHeader));
         cout << "Subject get: " << strSubject << "\n";

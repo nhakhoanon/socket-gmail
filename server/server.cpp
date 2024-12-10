@@ -67,7 +67,7 @@ int main(int argc, char *argv[])
 	// cout << "\n=== Step 6 - Chat to the Client ===\n\n";
     while (true) // server.cpp
     {
-        // cout << "\n=== Step 4===" << endl;
+        cout << "\nlisten..." << endl;
         if (listen(serverSocket, 1) == SOCKET_ERROR)
             cout << "listen(): Error listening on socket" << WSAGetLastError() << endl;
         else
