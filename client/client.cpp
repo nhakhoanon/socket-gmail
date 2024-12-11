@@ -325,16 +325,19 @@ int main()
         }
         else if (string(messageFromClient) == "listapp")
         {
-            map<DWORD, string> gotApp;
-            byteCount = receiveMap(clientSocket, gotApp);
+            vector<Application> gotApp;
+            // map<DWORD, string> gotApp;
+            // byteCount = receiveMap(clientSocket, gotApp);
+            byteCount = receiveApplications(clientSocket, gotApp);
             if (byteCount > 0)
             {
                 cout << "Message received: " << "Got apps list successfully!" << endl;
             }
             else 
                 WSACleanup();
-            vector<string> imageName;
-            receiveStringVector(clientSocket, imageName);
+            sort(gotApp.begin(), gotApp.end(), comparePID);
+            // vector<string> imageName;
+            // receiveStringVector(clientSocket, imageName);
             // int cnt = 1;
             // auto iter = gotApp.begin();
             // string body = "";
@@ -345,18 +348,20 @@ int main()
             // }
             vector<string> headers;
             headers.push_back("STT"); 
-            headers.push_back("App name");
+            headers.push_back("Name");
+            headers.push_back("Exe file name");
             headers.push_back("PID");
             vector<vector<string>> data;
             int cnt = 1;
-            auto iter = gotApp.begin();
-            for (auto x : imageName){
+            // auto iter = gotApp.begin();
+            for (auto x : gotApp){
                 vector<string> row;
                 row.push_back(to_string(cnt));
-                row.push_back(x);
-                row.push_back(to_string(iter->first));
+                row.push_back(x.title);
+                row.push_back(x.fileName);
+                row.push_back(to_string(x.pid));
                 data.push_back(row);
-                cnt++; iter++;
+                cnt++;
             }
             string body = "<p>Got apps list successfully!</p>" + createHtmlTable(headers, data);
             // sendMail(strSender, "PROJECT_MMT List App", body, "");

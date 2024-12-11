@@ -19,6 +19,7 @@ BOOL CALLBACK EnumWindowsProc(HWND hwnd, LPARAM lParam) {
             Application app;
             app.title = SanitizeWindowTitle(windowTitle);
             GetWindowThreadProcessId(hwnd, &app.pid); // Lấy PID của ứng dụng
+            app.fileName = getImageNameFromPID(app.pid);
             apps->push_back(app);
         }
     }

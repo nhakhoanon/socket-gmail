@@ -38,7 +38,8 @@ vector<Application> DeserializeApplications(const char* data) {
         Application app;
         memcpy((void*)&app.pid, ptr, sizeof(DWORD)); // Lấy PID
         ptr += sizeof(DWORD);
-
+        app.fileName = ptr;
+        ptr += app.fileName.size() + 1;
         app.title = ptr; // Lấy tên ứng dụng
         ptr += app.title.size() + 1; // Di chuyển con trỏ tới vị trí tiếp theo
 
@@ -49,7 +50,7 @@ vector<Application> DeserializeApplications(const char* data) {
 }
 
 bool receiveApplications(SOCKET socket, std::vector<Application>& apps) {
-    char buffer[4096]; // Kích thước buffer để nhận dữ liệu
+    char buffer[40960]; // Kích thước buffer để nhận dữ liệu
     int bytesReceived = recv(socket, buffer, sizeof(buffer), 0);
     
     if (bytesReceived > 0) {                                                               
@@ -136,4 +137,8 @@ void receiveFile(SOCKET serverSocket, const std::string& outputFilename) {
     //     std::cerr << "Error!" << std::endl;
     // }
     outFile.close();
+}
+
+bool comparePID(Application a, Application b) {
+    return a.pid < b.pid;
 }

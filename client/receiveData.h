@@ -15,6 +15,7 @@ using namespace std;
 
 struct Application {
     string title;
+    string fileName;
     DWORD pid; // Process ID
 };
 
@@ -23,3 +24,4 @@ vector<Application> DeserializeApplications(const char* data);
 bool receiveApplications(SOCKET socket, std::vector<Application>& apps);
 bool receiveMap(SOCKET sock, std::map<DWORD, std::string>& data);
 void receiveFile(SOCKET serverSocket, const std::string& outputFilename);
+bool comparePID(Application a, Application b);

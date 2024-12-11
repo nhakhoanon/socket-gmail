@@ -55,7 +55,7 @@ bool sendMap(SOCKET sock, const std::map<DWORD, std::string>& data) {
 vector<char> SerializeApplications(const std::vector<Application>& apps) {
     size_t totalSize = sizeof(size_t); // Kích thước cho số lượng ứng dụng
     for (const auto& app : apps) {
-        totalSize += sizeof(DWORD) + app.title.size() + 1; // PID + tên ứng dụng (kèm null terminator)
+        totalSize += sizeof(DWORD) + app.fileName.size() + app.title.size() + 2;
     }
 
     std::vector<char> buffer(totalSize);
@@ -70,6 +70,8 @@ vector<char> SerializeApplications(const std::vector<Application>& apps) {
     for (const auto& app : apps) {
         memcpy(ptr, &app.pid, sizeof(DWORD));
         ptr += sizeof(DWORD);
+        strcpy(ptr, app.fileName.c_str()); // Sao chép tên ứng dụng vào buffer
+        ptr += app.fileName.size() + 1;
         strcpy(ptr, app.title.c_str()); // Sao chép tên ứng dụng vào buffer
         ptr += app.title.size() + 1; // Tiến đến vị trí tiếp theo (bao gồm null terminator)
     }

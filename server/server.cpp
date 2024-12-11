@@ -245,24 +245,24 @@ int main(int argc, char *argv[])
         else if (string(messageFromClient) == "listapp")
         {   
             vector<Application> gotApp = GetOpenApplications();
-            map<DWORD, string> Apps;
-            for (int i = 0; i < gotApp.size(); i++)
-            {
-                Apps.insert({gotApp[i].pid, gotApp[i].title});
-            }
-            byteCount = sendMap(acceptSocket, Apps);
+            // map<DWORD, string> Apps;
+            // for (int i = 0; i < gotApp.size(); i++)
+            // {
+            //     Apps.insert({gotApp[i].pid, gotApp[i].title});
+            // }
             // byteCount = send(acceptSocket, messageFromServer, bufferSize, 0);
+            // vector<string> imageName;
+            // for (auto x: gotApp){
+            //     imageName.push_back(getImageNameFromPID(x.pid));
+            // }
+            // byteCount = sendStringVector(acceptSocket, imageName);
+            // if (byteCount > 0)
+            //     cout << "Message sent: " << "Sent image name list successfully!" << endl;
+            // else
+            //     WSACleanup();
+            byteCount = sendApplications(acceptSocket, gotApp);
             if (byteCount > 0)
                 cout << "Message sent: " << "Sent apps list successfully!" << endl;
-            else
-                WSACleanup();
-            vector<string> imageName;
-            for (auto x: Apps){
-                imageName.push_back(getImageNameFromPID(x.first));
-            }
-            byteCount = sendStringVector(acceptSocket, imageName);
-            if (byteCount > 0)
-                cout << "Message sent: " << "Sent image name list successfully!" << endl;
             else
                 WSACleanup();
             closesocket(acceptSocket);

@@ -9,7 +9,8 @@
 using namespace std;
 
 struct Application {
-    std::string title;
+    string title;
+    string fileName;
     DWORD pid; // Process ID
 };
 

@@ -1,0 +1,378 @@
+SERVICE_NAME: Appinfo
+DISPLAY_NAME: Application Information
+
+SERVICE_NAME: AppXSvc
+DISPLAY_NAME: AppX Deployment Service (AppXSVC)
+
+SERVICE_NAME: ArmouryCrateControlInterface
+DISPLAY_NAME: Armoury Crate Control Interface
+
+SERVICE_NAME: ArmouryCrateService
+DISPLAY_NAME: ARMOURY CRATE Service
+
+SERVICE_NAME: AsusAppService
+DISPLAY_NAME: ASUS App Service
+
+SERVICE_NAME: AsusCertService
+DISPLAY_NAME: AsusCertService
+
+SERVICE_NAME: ASUSOptimization
+DISPLAY_NAME: ASUS Optimization
+
+SERVICE_NAME: ASUSSoftwareManager
+DISPLAY_NAME: ASUS Software Manager
+
+SERVICE_NAME: ASUSSwitch
+DISPLAY_NAME: ASUS Switch
+
+SERVICE_NAME: ASUSSystemAnalysis
+DISPLAY_NAME: ASUS System Analysis
+
+SERVICE_NAME: ASUSSystemDiagnosis
+DISPLAY_NAME: ASUS System Diagnosis
+
+SERVICE_NAME: AudioEndpointBuilder
+DISPLAY_NAME: Windows Audio Endpoint Builder
+
+SERVICE_NAME: Audiosrv
+DISPLAY_NAME: Windows Audio
+
+SERVICE_NAME: BFE
+DISPLAY_NAME: Base Filtering Engine
+
+SERVICE_NAME: BrokerInfrastructure
+DISPLAY_NAME: Background Tasks Infrastructure Service
+
+SERVICE_NAME: Browser
+DISPLAY_NAME: Computer Browser
+
+SERVICE_NAME: BTAGService
+DISPLAY_NAME: Bluetooth Audio Gateway Service
+
+SERVICE_NAME: BthAvctpSvc
+DISPLAY_NAME: AVCTP service
+
+SERVICE_NAME: bthserv
+DISPLAY_NAME: Bluetooth Support Service
+
+SERVICE_NAME: camsvc
+DISPLAY_NAME: Capability Access Manager Service
+
+SERVICE_NAME: CDPSvc
+DISPLAY_NAME: Connected Devices Platform Service
+
+SERVICE_NAME: ClickToRunSvc
+DISPLAY_NAME: Microsoft Office Click-to-Run Service
+
+SERVICE_NAME: CoreMessagingRegistrar
+DISPLAY_NAME: CoreMessaging
+
+SERVICE_NAME: cphs
+DISPLAY_NAME: Intel(R) Content Protection HECI Service
+
+SERVICE_NAME: cplspcon
+DISPLAY_NAME: Intel(R) Content Protection HDCP Service
+
+SERVICE_NAME: CryptSvc
+DISPLAY_NAME: Cryptographic Services
+
+SERVICE_NAME: DcomLaunch
+DISPLAY_NAME: DCOM Server Process Launcher
+
+SERVICE_NAME: DeviceAssociationService
+DISPLAY_NAME: Device Association Service
+
+SERVICE_NAME: DevQueryBroker
+DISPLAY_NAME: DevQuery Background Discovery Broker
+
+SERVICE_NAME: Dhcp
+DISPLAY_NAME: DHCP Client
+
+SERVICE_NAME: DiagTrack
+DISPLAY_NAME: Connected User Experiences and Telemetry
+
+SERVICE_NAME: DispBrokerDesktopSvc
+DISPLAY_NAME: Display Policy Service
+
+SERVICE_NAME: DisplayEnhancementService
+DISPLAY_NAME: Display Enhancement Service
+
+SERVICE_NAME: Dnscache
+DISPLAY_NAME: DNS Client
+
+SERVICE_NAME: DoSvc
+DISPLAY_NAME: Delivery Optimization
+
+SERVICE_NAME: DPS
+DISPLAY_NAME: Diagnostic Policy Service
+
+SERVICE_NAME: DtsApo4Service
+DISPLAY_NAME: DtsApo4Service
+
+SERVICE_NAME: DusmSvc
+DISPLAY_NAME: Data Usage
+
+SERVICE_NAME: esifsvc
+DISPLAY_NAME: Intel(R) Dynamic Tuning service
+
+SERVICE_NAME: EventLog
+DISPLAY_NAME: Windows Event Log
+
+SERVICE_NAME: EventSystem
+DISPLAY_NAME: COM+ Event System
+
+SERVICE_NAME: FileSyncHelper
+DISPLAY_NAME: FileSyncHelper
+
+SERVICE_NAME: FontCache
+DISPLAY_NAME: Windows Font Cache Service
+
+SERVICE_NAME: FontCache3.0.0.0
+DISPLAY_NAME: Windows Presentation Foundation Font Cache 3.0.0.0
+
+SERVICE_NAME: GameSDK Service
+DISPLAY_NAME: GameSDK Service
+
+SERVICE_NAME: gpsvc
+DISPLAY_NAME: Group Policy Client
+
+SERVICE_NAME: HvHost
+DISPLAY_NAME: HV Host Service
+
+SERVICE_NAME: igccservice
+DISPLAY_NAME: Intel(R) Graphics Command Center Service
+
+SERVICE_NAME: igfxCUIService2.0.0.0
+DISPLAY_NAME: Intel(R) HD Graphics Control Panel Service
+
+SERVICE_NAME: InstallService
+DISPLAY_NAME: Microsoft Store Install Service
+
+SERVICE_NAME: InventorySvc
+DISPLAY_NAME: Inventory and Compatibility Appraisal service
+
+SERVICE_NAME: iphlpsvc
+DISPLAY_NAME: IP Helper
+
+SERVICE_NAME: jhi_service
+DISPLAY_NAME: Intel(R) Dynamic Application Loader Host Interface Service
+
+SERVICE_NAME: KeyIso
+DISPLAY_NAME: CNG Key Isolation
+
+SERVICE_NAME: LanmanServer
+DISPLAY_NAME: Server
+
+SERVICE_NAME: LanmanWorkstation
+DISPLAY_NAME: Workstation
+
+SERVICE_NAME: lfsvc
+DISPLAY_NAME: Geolocation Service
+
+SERVICE_NAME: LGHUBUpdaterService
+DISPLAY_NAME: LGHUB Updater Service
+
+SERVICE_NAME: LicenseManager
+DISPLAY_NAME: Windows License Manager Service
+
+SERVICE_NAME: LightingService
+DISPLAY_NAME: ASUS AURA SYNC lighting service
+
+SERVICE_NAME: lmhosts
+DISPLAY_NAME: TCP/IP NetBIOS Helper
+
+SERVICE_NAME: logi_lamparray_service
+DISPLAY_NAME: Logitech LampArray Service
+
+SERVICE_NAME: LSM
+DISPLAY_NAME: Local Session Manager
+
+SERVICE_NAME: McAfee WebAdvisor
+DISPLAY_NAME: McAfee WebAdvisor
+
+SERVICE_NAME: MDCoreSvc
+DISPLAY_NAME: Microsoft Defender Core Service
+
+SERVICE_NAME: mpssvc
+DISPLAY_NAME: Windows Defender Firewall
+
+SERVICE_NAME: NcbService
+DISPLAY_NAME: Network Connection Broker
+
+SERVICE_NAME: netprofm
+DISPLAY_NAME: Network List Service
+
+SERVICE_NAME: NgcCtnrSvc
+DISPLAY_NAME: Microsoft Passport Container
+
+SERVICE_NAME: NgcSvc
+DISPLAY_NAME: Microsoft Passport
+
+SERVICE_NAME: nsi
+DISPLAY_NAME: Network Store Interface Service
+
+SERVICE_NAME: NVDisplay.ContainerLocalSystem
+DISPLAY_NAME: NVIDIA Display Container LS
+
+SERVICE_NAME: PcaSvc
+DISPLAY_NAME: Program Compatibility Assistant Service
+
+SERVICE_NAME: PhoneSvc
+DISPLAY_NAME: Phone Service
+
+SERVICE_NAME: PlugPlay
+DISPLAY_NAME: Plug and Play
+
+SERVICE_NAME: Power
+DISPLAY_NAME: Power
+
+SERVICE_NAME: ProfSvc
+DISPLAY_NAME: User Profile Service
+
+SERVICE_NAME: RasMan
+DISPLAY_NAME: Remote Access Connection Manager
+
+SERVICE_NAME: RmSvc
+DISPLAY_NAME: Radio Management Service
+
+SERVICE_NAME: ROG Live Service
+DISPLAY_NAME: ROG Live Service
+
+SERVICE_NAME: RpcEptMapper
+DISPLAY_NAME: RPC Endpoint Mapper
+
+SERVICE_NAME: RpcSs
+DISPLAY_NAME: Remote Procedure Call (RPC)
+
+SERVICE_NAME: RstMwService
+DISPLAY_NAME: Intel(R) Storage Middleware Service
+
+SERVICE_NAME: RtkAudioUniversalService
+DISPLAY_NAME: Realtek Audio Universal Service
+
+SERVICE_NAME: SamSs
+DISPLAY_NAME: Security Accounts Manager
+
+SERVICE_NAME: Schedule
+DISPLAY_NAME: Task Scheduler
+
+SERVICE_NAME: SecurityHealthService
+DISPLAY_NAME: Windows Security Service
+
+SERVICE_NAME: SENS
+DISPLAY_NAME: System Event Notification Service
+
+SERVICE_NAME: SensorService
+DISPLAY_NAME: Sensor Service
+
+SERVICE_NAME: ShellHWDetection
+DISPLAY_NAME: Shell Hardware Detection
+
+SERVICE_NAME: Spooler
+DISPLAY_NAME: Print Spooler
+
+SERVICE_NAME: SSDPSRV
+DISPLAY_NAME: SSDP Discovery
+
+SERVICE_NAME: SstpSvc
+DISPLAY_NAME: Secure Socket Tunneling Protocol Service
+
+SERVICE_NAME: StateRepository
+DISPLAY_NAME: State Repository Service
+
+SERVICE_NAME: StorSvc
+DISPLAY_NAME: Storage Service
+
+SERVICE_NAME: SysMain
+DISPLAY_NAME: SysMain
+
+SERVICE_NAME: SystemEventsBroker
+DISPLAY_NAME: System Events Broker
+
+SERVICE_NAME: TextInputManagementService
+DISPLAY_NAME: Text Input Management Service
+
+SERVICE_NAME: Themes
+DISPLAY_NAME: Themes
+
+SERVICE_NAME: TimeBrokerSvc
+DISPLAY_NAME: Time Broker
+
+SERVICE_NAME: TokenBroker
+DISPLAY_NAME: Web Account Manager
+
+SERVICE_NAME: TrkWks
+DISPLAY_NAME: Distributed Link Tracking Client
+
+SERVICE_NAME: UltraViewService
+DISPLAY_NAME: UltraViewer Service
+
+SERVICE_NAME: UserManager
+DISPLAY_NAME: User Manager
+
+SERVICE_NAME: UsoSvc
+DISPLAY_NAME: Update Orchestrator Service
+
+SERVICE_NAME: VaultSvc
+DISPLAY_NAME: Credential Manager
+
+SERVICE_NAME: Wcmsvc
+DISPLAY_NAME: Windows Connection Manager
+
+SERVICE_NAME: WdiSystemHost
+DISPLAY_NAME: Diagnostic System Host
+
+SERVICE_NAME: WdNisSvc
+DISPLAY_NAME: Microsoft Defender Antivirus Network Inspection Service
+
+SERVICE_NAME: webthreatdefsvc
+DISPLAY_NAME: Web Threat Defense Service
+
+SERVICE_NAME: WinDefend
+DISPLAY_NAME: Microsoft Defender Antivirus Service
+
+SERVICE_NAME: WinHttpAutoProxySvc
+DISPLAY_NAME: WinHTTP Web Proxy Auto-Discovery Service
+
+SERVICE_NAME: Winmgmt
+DISPLAY_NAME: Windows Management Instrumentation
+
+SERVICE_NAME: WlanSvc
+DISPLAY_NAME: WLAN AutoConfig
+
+SERVICE_NAME: WMIRegistrationService
+DISPLAY_NAME: Intel(R) Management Engine WMI Provider Registration
+
+SERVICE_NAME: WpnService
+DISPLAY_NAME: Windows Push Notifications System Service
+
+SERVICE_NAME: wscsvc
+DISPLAY_NAME: Security Center
+
+SERVICE_NAME: WSearch
+DISPLAY_NAME: Windows Search
+
+SERVICE_NAME: cbdhsvc_af4da
+DISPLAY_NAME: Clipboard User Service_af4da
+
+SERVICE_NAME: CDPUserSvc_af4da
+DISPLAY_NAME: Connected Devices Platform User Service_af4da
+
+SERVICE_NAME: DevicesFlowUserSvc_af4da
+DISPLAY_NAME: DevicesFlow_af4da
+
+SERVICE_NAME: NPSMSvc_af4da
+DISPLAY_NAME: Now Playing Session Manager Service_af4da
+
+SERVICE_NAME: OneSyncSvc_af4da
+DISPLAY_NAME: Sync Host_af4da
+
+SERVICE_NAME: UdkUserSvc_af4da
+DISPLAY_NAME: Udk User Service_af4da
+
+SERVICE_NAME: webthreatdefusersvc_af4da
+DISPLAY_NAME: Web Threat Defense User Service_af4da
+
+SERVICE_NAME: WpnUserService_af4da
+DISPLAY_NAME: Windows Push Notifications User Service_af4da
+

@@ -9,6 +9,7 @@
 #include "mail.h"
 #include <cctype>
 #include "utils.h"
+#include <algorithm>
 
 #define bufferSize 1024
 using namespace std;
