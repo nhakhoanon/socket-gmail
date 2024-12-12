@@ -14,10 +14,13 @@
 #include <sstream>
 #include <cstdio>
 #include <windows.h>
+#include <cwchar>
+#include <codecvt>
 
 using namespace std;
 
 string SanitizeWindowTitle(const std::string& title);
+string wcharToUtf8(const wchar_t* wstr);
 BOOL CALLBACK EnumWindowsProc(HWND hwnd, LPARAM lParam);
 vector<Application> GetOpenApplications();
 vector<Application> DeserializeApplications(const char* data);

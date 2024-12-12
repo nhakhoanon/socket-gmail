@@ -79,6 +79,7 @@
         "unordered_map": "cpp",
         "unordered_set": "cpp",
         "xhash": "cpp",
-        "xstddef": "cpp"
+        "xstddef": "cpp",
+        "codecvt": "cpp"
     }
 }

@@ -9,15 +9,43 @@ string SanitizeWindowTitle(const std::string& title) {
     return sanitized;
 }
 
+string wcharToUtf8(const wchar_t* wstr) {
+    if (!wstr) {
+        return "";
+    }
+
+    std::string utf8Str;
+    while (*wstr) {
+        wchar_t wc = *wstr++;
+        if (wc < 0x80) {
+            utf8Str.push_back(static_cast<char>(wc));
+        } else if (wc < 0x800) {
+            utf8Str.push_back(static_cast<char>((wc >> 6) | 0xC0));
+            utf8Str.push_back(static_cast<char>((wc & 0x3F) | 0x80));
+        } else if (wc < 0x10000) {
+            utf8Str.push_back(static_cast<char>((wc >> 12) | 0xE0));
+            utf8Str.push_back(static_cast<char>(((wc >> 6) & 0x3F) | 0x80));
+            utf8Str.push_back(static_cast<char>((wc & 0x3F) | 0x80));
+        } else if (wc < 0x110000) {
+            utf8Str.push_back(static_cast<char>((wc >> 18) | 0xF0));
+            utf8Str.push_back(static_cast<char>(((wc >> 12) & 0x3F) | 0x80));
+            utf8Str.push_back(static_cast<char>(((wc >> 6) & 0x3F) | 0x80));
+            utf8Str.push_back(static_cast<char>((wc & 0x3F) | 0x80));
+        }
+    }
+
+    return utf8Str;
+}
+
 // Hàm callback để lấy danh sách các cửa sổ
 BOOL CALLBACK EnumWindowsProc(HWND hwnd, LPARAM lParam) {
     if (IsWindowVisible(hwnd)) {
-        char windowTitle[256];
-        GetWindowText(hwnd, windowTitle, sizeof(windowTitle));
-        if (strlen(windowTitle) > 0) {
+        wchar_t windowTitle[256];
+        GetWindowTextW(hwnd, windowTitle, sizeof(windowTitle));
+        if (wcslen(windowTitle) > 0) {
             std::vector<Application>* apps = reinterpret_cast<std::vector<Application>*>(lParam);
             Application app;
-            app.title = SanitizeWindowTitle(windowTitle);
+            app.title = wcharToUtf8(windowTitle);
             GetWindowThreadProcessId(hwnd, &app.pid); // Lấy PID của ứng dụng
             app.fileName = getImageNameFromPID(app.pid);
             apps->push_back(app);
