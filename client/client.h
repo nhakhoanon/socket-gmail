@@ -10,6 +10,7 @@
 #include <cctype>
 #include "utils.h"
 #include <algorithm>
+#include "ui.h"
 
 #define bufferSize 1024
 using namespace std;

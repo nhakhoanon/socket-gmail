@@ -2,57 +2,38 @@
 
 int main()
 {
-    cout << "========== CLIENT ==========" << endl;
-    cout << "=== Set up DLL ===" << endl;
+    hideCursor();
+    FrameMenu frame;
+    int widthConsole, heightConsole;
     int port = 55555;
     WSADATA wsaData;
     int wsaerr;
+    getConsoleSize(widthConsole, heightConsole);
+    printCentered("Press Enter to begin!", heightConsole / 2);
+    cin.ignore();
+    system("cls");
+    printCentered("========== CLIENT ==========", heightConsole / 2 - 2);
+    printCentered("=== Set up DLL ===", heightConsole / 2 + 2);
     WORD wVersionRequested = MAKEWORD(2, 2);
     wsaerr = WSAStartup(wVersionRequested, &wsaData);
+    Sleep(2000);
+    system("cls");
     if (wsaerr != 0)
     {
         cout << "The Winsock dll not found" << endl;
+        frame.printRectangleInCenter();
+        printCenteredInRectangle(68, 20, "The Winsock dll not found", 0);
         // return 0;
     }
     else
     {
-        cout << "The Winsock dll found!" << endl;
-        cout << "The status: " << wsaData.szSystemStatus << endl;
-    }
-    // cout << "\n=== Step 2 - Set up Client Socket===" << endl;
-    // SOCKET clientSocket;
-    // clientSocket = INVALID_SOCKET;
-    // clientSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-    // if (clientSocket == INVALID_SOCKET)
-    // {
-    //     cout << "Error at socket(): " << WSAGetLastError() << endl;
-    //     WSACleanup();
-    //     // return 0;
-    // }
-    // else
-    //     cout << "socket() is OK!" << endl;
-    // cout << "\n===Step 3 - Connect with Server" << endl;
-    // sockaddr_in clientService;
-    // clientService.sin_family = AF_INET;
-    // string IPOfServer ;
-    // cout << "Input IPOfServer: ";
-    // cin >> IPOfServer;
-    // cin.ignore();
-    // InetPton(AF_INET, "127.0.0.1", &clientService.sin_addr.s_addr);
-    // clientService.sin_port = htons(port);
-    // if (connect(clientSocket, (SOCKADDR*)&clientService, sizeof(clientService)) == SOCKET_ERROR)
-    // {
-    //     cout << "Client: connect() - Failed to connect." << endl;
-    //     WSACleanup();
-    //     // return 0;
-    // }
-    // else
-    // {
-    //     cout << "Client: connect() is OK" << endl;
-    //     cout << "Client: Can start sending and receiving data..." << endl;
-    // }
-	// cout << "\n=== Step 4 - Chat to the Server ===\n\n";
+        string s1 = "The Winsock dll found!";
+        string s2 = "The status: ";
+        frame.printRectangleInCenter();
+        printCenteredInRectangle(68, 20, s1, -1);
+        printCenteredInRectangle(68, 20, s2 + wsaData.szSystemStatus, 0);
 
+    }
     CSMTPClient SMTPClient([](const std::string&){ return; });
     CIMAPClient IMAPClient([](const std::string& strLogMsg) { std::cout << strLogMsg << std::endl;  });
     SMTPClient.InitSession("smtp.gmail.com:465", EMAIL_ACCOUNT, EMAIL_PASSWORD,
@@ -68,7 +49,7 @@ int main()
         IMAPClient.InitSession("imap.gmail.com:993", EMAIL_ACCOUNT, EMAIL_PASSWORD,
             CMailClient::SettingsFlag::ALL_FLAGS, CMailClient::SslTlsFlag::ENABLE_SSL);
 
-        std::string strSearch;
+        string strSearch;
         bool bResRcvStr = IMAPClient.Search(strSearch, CIMAPClient::SearchOption::CUSTOMIZED);
         if (!bResRcvStr) {
             cout << "Search failed\n";
@@ -80,8 +61,11 @@ int main()
 
         if (mailIndex == "") {
             bool bRes = IMAPClient.CleanupSession();
-            cout << "No new mail\n";
-            Sleep(1000);
+            // cout << "No new mail\n";
+            // vector<string> lines;
+            // lines.push_back("WAITING FOR NEW MAILS!");
+            frame.displayAnimation1(200, "WAITING FOR NEW MAILS!");
+            // Sleep(1000);
             continue;
         }
 

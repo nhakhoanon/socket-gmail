@@ -14,6 +14,7 @@
 #include "getFileServer.h"
 #include "openApp.h"
 #include "recordWebcam.h"
+#include "ui.h"
 
 using namespace std;
 
