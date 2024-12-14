@@ -18,9 +18,17 @@
 
 using namespace std;
 
-string SanitizeWindowTitle(const std::string& title);
+struct Application {
+    string title;
+    string fileName;
+    DWORD pid; // Process ID
+};
+
+// string SanitizeWindowTitle(const std::string& title);
 string wcharToUtf8(const wchar_t* wstr);
 BOOL CALLBACK EnumWindowsProc(HWND hwnd, LPARAM lParam);
 vector<Application> GetOpenApplications();
-vector<Application> DeserializeApplications(const char* data);
+// vector<Application> DeserializeApplications(const char* data);
 string getImageNameFromPID(DWORD pid);
+vector<char> SerializeApplications(const std::vector<Application>& apps);
+bool sendApplications(SOCKET socket, const std::vector<Application>& apps);

@@ -1,13 +1,13 @@
 #include "listApp.h"
 
 // Hàm để loại bỏ các ký tự không mong muốn
-string SanitizeWindowTitle(const std::string& title) {
-    string sanitized;
-    copy_if(title.begin(), title.end(), std::back_inserter(sanitized), [](char c) {
-        return c != '?'; // Loại bỏ ký tự ?
-    });
-    return sanitized;
-}
+// string SanitizeWindowTitle(const std::string& title) {
+//     string sanitized;
+//     copy_if(title.begin(), title.end(), std::back_inserter(sanitized), [](char c) {
+//         return c != '?'; // Loại bỏ ký tự ?
+//     });
+//     return sanitized;
+// }
 
 string wcharToUtf8(const wchar_t* wstr) {
     if (!wstr) {
@@ -62,30 +62,28 @@ vector<Application> GetOpenApplications() {
 }
 
 // Hàm phi tuần tự hóa
-vector<Application> DeserializeApplications(const char* data) {
-    const char* ptr = data;
+// vector<Application> DeserializeApplications(const char* data) {
+//     const char* ptr = data;
 
-    size_t count;
-    memcpy((void*)&count, ptr, sizeof(size_t)); // Lấy số lượng ứng dụng
-    ptr += sizeof(size_t);
+//     size_t count;
+//     memcpy((void*)&count, ptr, sizeof(size_t)); // Lấy số lượng ứng dụng
+//     ptr += sizeof(size_t);
 
-    std::vector<Application> apps(count);
+//     std::vector<Application> apps(count);
 
-    for (size_t i = 0; i < count; ++i) {
-        Application app;
-        memcpy((void*)&app.pid, ptr, sizeof(DWORD)); // Lấy PID
-        ptr += sizeof(DWORD);
+//     for (size_t i = 0; i < count; ++i) {
+//         Application app;
+//         memcpy((void*)&app.pid, ptr, sizeof(DWORD)); // Lấy PID
+//         ptr += sizeof(DWORD);
 
-        app.title = ptr; // Lấy tên ứng dụng
-        ptr += app.title.size() + 1; // Di chuyển con trỏ tới vị trí tiếp theo
+//         app.title = ptr; // Lấy tên ứng dụng
+//         ptr += app.title.size() + 1; // Di chuyển con trỏ tới vị trí tiếp theo
 
-        apps[i] = app; // Lưu ứng dụng vào vector
-    }
+//         apps[i] = app; // Lưu ứng dụng vào vector
+//     }
 
-    return apps;
-}
-
-#include "listApp.h"
+//     return apps;
+// }
 
 string getImageNameFromPID(DWORD pid) {
     // Tạo lệnh CMD để lấy thông tin về tiến trình
@@ -166,4 +164,37 @@ string getImageNameFromPID(DWORD pid) {
 
     // Nếu không tìm thấy tiến trình, trả về chuỗi rỗng
     return "";
+}
+
+vector<char> SerializeApplications(const std::vector<Application>& apps) {
+    size_t totalSize = sizeof(size_t); // Kích thước cho số lượng ứng dụng
+    for (const auto& app : apps) {
+        totalSize += sizeof(DWORD) + app.fileName.size() + app.title.size() + 2;
+    }
+
+    std::vector<char> buffer(totalSize);
+    char* ptr = buffer.data();
+
+    // Lưu số lượng ứng dụng
+    size_t count = apps.size();
+    memcpy(ptr, &count, sizeof(size_t));
+    ptr += sizeof(size_t);
+
+    // Lưu từng ứng dụng
+    for (const auto& app : apps) {
+        memcpy(ptr, &app.pid, sizeof(DWORD));
+        ptr += sizeof(DWORD);
+        strcpy(ptr, app.fileName.c_str()); // Sao chép tên ứng dụng vào buffer
+        ptr += app.fileName.size() + 1;
+        strcpy(ptr, app.title.c_str()); // Sao chép tên ứng dụng vào buffer
+        ptr += app.title.size() + 1; // Tiến đến vị trí tiếp theo (bao gồm null terminator)
+    }
+
+    return buffer;
+}
+
+bool sendApplications(SOCKET socket, const std::vector<Application>& apps) {
+    auto buffer = SerializeApplications(apps);
+    int bytesSent = send(socket, buffer.data(), buffer.size(), 0);
+    return bytesSent != SOCKET_ERROR; // Trả về true nếu gửi thành công
 }

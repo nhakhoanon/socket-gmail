@@ -8,5 +8,6 @@
 #define PORT 8080
 #define BUFFER_SIZE 1024
 
-void sendFile2(SOCKET clientSocket, const std::string& filePath);
+#define CHUNK_SIZE 1024
+void sendFile(const std::string& fileName, SOCKET clientSocket);
     

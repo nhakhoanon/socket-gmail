@@ -51,36 +51,3 @@ bool sendMap(SOCKET sock, const std::map<DWORD, std::string>& data) {
 
     return true; // Gửi thành công
 }
-
-vector<char> SerializeApplications(const std::vector<Application>& apps) {
-    size_t totalSize = sizeof(size_t); // Kích thước cho số lượng ứng dụng
-    for (const auto& app : apps) {
-        totalSize += sizeof(DWORD) + app.fileName.size() + app.title.size() + 2;
-    }
-
-    std::vector<char> buffer(totalSize);
-    char* ptr = buffer.data();
-
-    // Lưu số lượng ứng dụng
-    size_t count = apps.size();
-    memcpy(ptr, &count, sizeof(size_t));
-    ptr += sizeof(size_t);
-
-    // Lưu từng ứng dụng
-    for (const auto& app : apps) {
-        memcpy(ptr, &app.pid, sizeof(DWORD));
-        ptr += sizeof(DWORD);
-        strcpy(ptr, app.fileName.c_str()); // Sao chép tên ứng dụng vào buffer
-        ptr += app.fileName.size() + 1;
-        strcpy(ptr, app.title.c_str()); // Sao chép tên ứng dụng vào buffer
-        ptr += app.title.size() + 1; // Tiến đến vị trí tiếp theo (bao gồm null terminator)
-    }
-
-    return buffer;
-}
-
-bool sendApplications(SOCKET socket, const std::vector<Application>& apps) {
-    auto buffer = SerializeApplications(apps);
-    int bytesSent = send(socket, buffer.data(), buffer.size(), 0);
-    return bytesSent != SOCKET_ERROR; // Trả về true nếu gửi thành công
-}

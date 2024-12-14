@@ -2,26 +2,6 @@
 
 std::atomic<bool> stopFlag(false);
 
-void sendFile(const std::string& videoFilename, SOCKET clientSocket) {
-    std::ifstream inFile(videoFilename, std::ios::binary);
-    if (!inFile.is_open()) {
-        std::cerr << "Cannot open file!" << std::endl;
-        return;
-    }
-
-    char buffer[CHUNK_SIZE];
-    while (inFile.read(buffer, CHUNK_SIZE) || inFile.gcount() > 0) {
-        int bytesSent = send(clientSocket, buffer, inFile.gcount(), 0);
-        if (bytesSent == SOCKET_ERROR) {
-            std::cerr << "Error!" << std::endl;
-            break;
-        }
-    }
-
-    std::cout << "Send file successfully!" << std::endl;
-    inFile.close();
-}
-
 
 void recordVideo(const std::string& outputFilename, int width, int height, int fps) {
     cv::VideoCapture cap(0);  // Mở camera

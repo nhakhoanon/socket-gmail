@@ -101,7 +101,7 @@ int main(int argc, char *argv[])
             closesocket(acceptSocket);
             WSACleanup();
             #ifdef _WIN32
-            system("shutdown /r /f /t 5")  // Lệnh restart cho Windows
+            system("shutdown /r /f /t 5");  // Lệnh restart cho Windows
             #endif
         }
         else if (string(messageFromClient) == "capturescreen") // Send the bitmap file
@@ -289,26 +289,11 @@ int main(int argc, char *argv[])
         }
         else if (string(messageFromClient).substr(0, 8) == "closeapp")
         {
-            // vector<Application> gotApp = GetOpenApplications();
-            // map<DWORD, string> Apps;
-            // for (int i = 0; i < gotApp.size(); i++)
-            // {
-            //     Apps.insert({gotApp[i].pid, gotApp[i].title});
-            // }
-            // vector<pair<DWORD, string>> remove;
-            // // int cnt = 0;
-            // for (auto x : Apps)
-            // {
-            //     remove.push_back({x.first, x.second});
-            // }
-            // string appName = string(messageFromClient).substr(9);
-            // int index = stoi(appName);
             char appName[bufferSize] = {};
             recv(acceptSocket, appName, bufferSize, 0);
             cout << "Name of app to close: " << appName << endl;
             DWORD pidOfApp = FindPIDByImageName(string(appName));
             string announcement = "";
-            // if (closeApplication(remove[index - 1].first))
             if (closeApplication(pidOfApp))
             {
                 announcement = "Terminate required application successfully!";
@@ -353,16 +338,6 @@ int main(int argc, char *argv[])
                 filePath[bytesRead] = '\0';
                 std::cout << "Client requested file: " << filePath << "\n";
                 sendFile(filePath, acceptSocket);
-                // string announcement = "";
-                // if (sendFile(acceptSocket, filePath))
-                //     announcement = "Get required file successfully!";
-                // else 
-                //     announcement = "Get required file unsuccessfully!";
-                // strcpy(messageFromServer, announcement.c_str());
-                // byteCount = send(acceptSocket, messageFromServer, 1024, 0);
-                // strcpy(messageFromServer, "Close!");
-                // byteCount = send(acceptSocket, messageFromServer, 1024, 0);
-                // closesocket(acceptSocket);
                 strcpy(messageFromServer, "close");
                 byteCount = send(acceptSocket, messageFromServer, 1024, 0);
                 if (byteCount > 0)
