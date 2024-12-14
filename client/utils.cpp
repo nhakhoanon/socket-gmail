@@ -64,3 +64,118 @@ string createHtmlTable(vector<string> headers, vector<vector<string>> data) {
 
     return strHTML;
 }
+
+// Create HTML table for syntax
+string createSyntaxHtmlTable(SyntaxType type) {
+    vector<string> headers;
+    vector<vector<string>> data;
+    switch (type) {
+    case LISTAPP:
+        headers.push_back("Feature");
+        headers.push_back("Subject");
+        headers.push_back("Body");
+        data.push_back({ "List Applications", "PROJECT_MMT listapp", "IP: {IP}"});
+        break;
+    case OPENAPP:
+        headers.push_back("Feature");
+        headers.push_back("Subject");
+        headers.push_back("Body");
+        data.push_back({ "Open Application", "PROJECT_MMT openapp", "IP: {IP}\nApp name: {App name}"});
+        break;
+    case CLOSEAPP:
+        headers.push_back("Feature");
+        headers.push_back("Subject");
+        headers.push_back("Body");
+        data.push_back({ "Close Application", "PROJECT_MMT closeapp", "IP: {IP}\nApp name: {App name}"});
+        break;
+    case CLOSEFILE:
+        headers.push_back("Feature");
+        headers.push_back("Subject");
+        headers.push_back("Body");
+        data.push_back({ "Close File", "PROJECT_MMT closefile", "IP: {IP}\nFile name: {File name}"});
+        break;
+    case GETFILE:
+        headers.push_back("Feature");
+        headers.push_back("Subject");
+        headers.push_back("Body");
+        data.push_back({ "Get File", "PROJECT_MMT getfile", "IP: {IP}\nFile path: {File path}"});
+        break;
+    case STARTSERVICE:
+        headers.push_back("Feature");
+        headers.push_back("Subject");
+        headers.push_back("Body");
+        data.push_back({ "Start Service", "PROJECT_MMT startservice", "IP: {IP}\nService name: {Service name}"});
+        break;
+    case STOPSERVICE:
+        headers.push_back("Feature");
+        headers.push_back("Subject");
+        headers.push_back("Body");
+        data.push_back({ "Stop Service", "PROJECT_MMT stopservice", "IP: {IP}\nService name: {Service name}"});
+        break;
+    case LISTSERVICES:
+        headers.push_back("Feature");
+        headers.push_back("Subject");
+        headers.push_back("Body");
+        data.push_back({ "List Services", "PROJECT_MMT listservices", "IP: {IP}"});
+        break;
+    case KEYLOGGER:
+        headers.push_back("Feature");
+        headers.push_back("Subject");
+        headers.push_back("Body");
+        data.push_back({ "Key Logger", "PROJECT_MMT keylogger", "IP: {IP}"});
+        break;
+    case CAPTURESCREEN:
+        headers.push_back("Feature");
+        headers.push_back("Subject");
+        headers.push_back("Body");
+        data.push_back({ "Capture Screen", "PROJECT_MMT capturescreen", "IP: {IP}"});
+        break;
+    case STARTWEBCAM:
+        headers.push_back("Feature");
+        headers.push_back("Subject");
+        headers.push_back("Body");
+        data.push_back({ "Start Webcam", "PROJECT_MMT startwebcam", "IP: {IP}"});
+        break;
+    case STOPWEBCAM:
+        headers.push_back("Feature");
+        headers.push_back("Subject");
+        headers.push_back("Body");
+        data.push_back({ "Stop Webcam", "PROJECT_MMT stopwebcam", "IP: {IP}"});
+        break;
+    case SHUTDOWN:
+        headers.push_back("Feature");
+        headers.push_back("Subject");
+        headers.push_back("Body");
+        data.push_back({ "Shut down", "PROJECT_MMT shutdown", "IP: {IP}"});
+        break;
+    case RESTART:
+        headers.push_back("Feature");
+        headers.push_back("Subject");
+        headers.push_back("Body");
+        data.push_back({ "Restart", "PROJECT_MMT restart", "IP: {IP}"});
+        break;
+    case ALL:
+        headers.push_back("Feature");
+        headers.push_back("Subject");
+        headers.push_back("Body");
+        data.push_back({ "Shut down", "PROJECT_MMT shutdown", "IP: {IP}"});
+        data.push_back({ "Restart", "PROJECT_MMT restart", "IP: {IP}"});
+        data.push_back({ "List Applications", "PROJECT_MMT listapp", "IP: {IP}"});
+        data.push_back({ "Open Application", "PROJECT_MMT openapp", "IP: {IP}\nApp name: {App name}"});
+        data.push_back({ "Close Application", "PROJECT_MMT closeapp", "IP: {IP}\nApp name: {App name}"});
+        data.push_back({ "Get File", "PROJECT_MMT getfile", "IP: {IP}\nFile path: {File path}"});
+        data.push_back({ "Close File", "PROJECT_MMT closefile", "IP: {IP}\nFile name: {File name}"});
+        data.push_back({ "List Services", "PROJECT_MMT listservices", "IP: {IP}"});
+        data.push_back({ "Start Service", "PROJECT_MMT startservice", "IP: {IP}\nService name: {Service name}"});
+        data.push_back({ "Stop Service", "PROJECT_MMT stopservice", "IP: {IP}\nService name: {Service name}"});
+        data.push_back({ "Key Logger", "PROJECT_MMT keylogger", "IP: {IP}"});
+        data.push_back({ "Capture Screen", "PROJECT_MMT capturescreen", "IP: {IP}"});
+        data.push_back({ "Start Webcam", "PROJECT_MMT startwebcam", "IP: {IP}"});
+        data.push_back({ "Stop Webcam", "PROJECT_MMT stopwebcam", "IP: {IP}"});
+        break;
+    default:
+        break;
+    }
+
+    return createHtmlTable(headers, data);
+}
