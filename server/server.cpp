@@ -94,14 +94,14 @@ int main(int argc, char *argv[])
         if (string(messageFromClient) == "shutdown") {
             closesocket(acceptSocket);
             WSACleanup();
-            system("shutdown /s /f /t 0");
+            system("shutdown /s /f /t 5");
         } 
         else if (string(messageFromClient) == "restart")
         {
             closesocket(acceptSocket);
             WSACleanup();
             #ifdef _WIN32
-            system("shutdown /r /t 0");  // Lệnh restart cho Windows
+            system("shutdown /r /f /t 5")  // Lệnh restart cho Windows
             #endif
         }
         else if (string(messageFromClient) == "capturescreen") // Send the bitmap file
