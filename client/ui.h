@@ -25,6 +25,8 @@ class FrameMenu {
         void printRectangleInCenter(); //Fixed
         void displayAnimation1(int delay, string s); //Min time: delay * 5
         void printContentInRectangle(vector<string> listOfSentences, int x, int y);
+        void getWidthAndHeight(double& width, double& height);
+        void displayAnimationDefault(vector<string> s);
 };
 
 void printCentered(const std::string& str, int y);
