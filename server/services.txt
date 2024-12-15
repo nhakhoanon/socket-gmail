@@ -1169,16 +1169,6 @@ DISPLAY_NAME: WLAN AutoConfig
         CHECKPOINT         : 0x0
         WAIT_HINT          : 0x0
 
-SERVICE_NAME: wlidsvc
-DISPLAY_NAME: Microsoft Account Sign-in Assistant
-        TYPE               : 30  WIN32  
-        STATE              : 4  RUNNING 
-                                (STOPPABLE, NOT_PAUSABLE, IGNORES_SHUTDOWN)
-        WIN32_EXIT_CODE    : 0  (0x0)
-        SERVICE_EXIT_CODE  : 0  (0x0)
-        CHECKPOINT         : 0x0
-        WAIT_HINT          : 0x0
-
 SERVICE_NAME: wmiApSrv
 DISPLAY_NAME: WMI Performance Adapter
         TYPE               : 10  WIN32_OWN_PROCESS  
@@ -1224,16 +1214,6 @@ DISPLAY_NAME: Windows Search
         TYPE               : 10  WIN32_OWN_PROCESS  
         STATE              : 4  RUNNING 
                                 (STOPPABLE, NOT_PAUSABLE, ACCEPTS_SHUTDOWN)
-        WIN32_EXIT_CODE    : 0  (0x0)
-        SERVICE_EXIT_CODE  : 0  (0x0)
-        CHECKPOINT         : 0x0
-        WAIT_HINT          : 0x0
-
-SERVICE_NAME: XblAuthManager
-DISPLAY_NAME: Xbox Live Auth Manager
-        TYPE               : 30  WIN32  
-        STATE              : 4  RUNNING 
-                                (STOPPABLE, NOT_PAUSABLE, IGNORES_SHUTDOWN)
         WIN32_EXIT_CODE    : 0  (0x0)
         SERVICE_EXIT_CODE  : 0  (0x0)
         CHECKPOINT         : 0x0

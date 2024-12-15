@@ -44,7 +44,7 @@ int main()
     CIMAPClient IMAPClient([](const std::string& strLogMsg) { std::cout << strLogMsg << std::endl;  });
     SMTPClient.InitSession("smtp.gmail.com:465", EMAIL_ACCOUNT, EMAIL_PASSWORD,
                             CMailClient::SettingsFlag::ALL_FLAGS, CMailClient::SslTlsFlag::ENABLE_SSL);
-    //Begin mail
+    //Begin requests
     while (1)  
     {
         //Read from mail
@@ -92,12 +92,18 @@ int main()
             continue;
         }
 
-        cout << bResRcvStr << "\n" << strHeader << "\n";
+        // cout << bResRcvStr << "\n" << strHeader << "\n";
         string strSubject = stripAndLowerString(IMAPClient.GetSubject(strHeader));
-        cout << "Subject get: " << strSubject << "\n";
+        // cout << "Subject get: " << strSubject << "\n";
         string strSender = stripString(IMAPClient.GetSender(strHeader));
-        cout << "Sender get: " << strSender << "\n";
-        
+        // cout << "Sender get: " << strSender << "\n";
+
+        vector<string> content;
+        // content.push_back(strHeader);
+        content.push_back("Subject get: " + strSubject);
+        content.push_back("Sender get: " + strSender);
+        frame.displayAnimationDefault(content);
+
         //Create socket
         SOCKET clientSocket;
         clientSocket = INVALID_SOCKET;
@@ -237,7 +243,7 @@ int main()
                 frame.displayAnimationDefault(content);
                 continue;
             }
-            cout << "Expected file size: " << fileSize << " bytes" << endl;
+            // cout << "Expected file size: " << fileSize << " bytes" << endl;
             vector<string> content;
             content.push_back("Expected file size: " + to_string(fileSize) + " bytes");
             frame.displayAnimationDefault(content);

@@ -173,5 +173,5 @@ void FrameMenu::displayAnimationDefault(vector<string> s) {
     int mid = s.size() / 2;
     for (int i = 0 - mid; i < size - mid; i++)
         printCenteredInRectangle(widthOfFrame, heightOfFrame, s[i + mid], i);
-    Sleep(500);
+    Sleep(1000);
 }

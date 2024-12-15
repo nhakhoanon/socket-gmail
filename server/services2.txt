@@ -349,9 +349,6 @@ DISPLAY_NAME: Windows Management Instrumentation
 SERVICE_NAME: WlanSvc
 DISPLAY_NAME: WLAN AutoConfig
 
-SERVICE_NAME: wlidsvc
-DISPLAY_NAME: Microsoft Account Sign-in Assistant
-
 SERVICE_NAME: wmiApSrv
 DISPLAY_NAME: WMI Performance Adapter
 
@@ -366,9 +363,6 @@ DISPLAY_NAME: Security Center
 
 SERVICE_NAME: WSearch
 DISPLAY_NAME: Windows Search
-
-SERVICE_NAME: XblAuthManager
-DISPLAY_NAME: Xbox Live Auth Manager
 
 SERVICE_NAME: cbdhsvc_9567e
 DISPLAY_NAME: Clipboard User Service_9567e
