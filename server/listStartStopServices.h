@@ -2,7 +2,8 @@
 #include <string>
 #include <cstdlib>
 #include <fstream>
-
+#include <vector>
+#include "ui.h"
 using namespace std;
 
 void listServices();

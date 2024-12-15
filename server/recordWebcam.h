@@ -7,7 +7,7 @@
 #include <opencv2/opencv.hpp>
 #include <atomic>
 #include <thread>
-
+#include "ui.h"
 #define CHUNK_SIZE 1024
 
 using namespace std;

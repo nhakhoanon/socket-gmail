@@ -4,9 +4,13 @@ std::atomic<bool> stopFlag(false);
 
 
 void recordVideo(const std::string& outputFilename, int width, int height, int fps) {
+    FrameMenu fram;
+    double width1, height1;
+    fram.getWidthAndHeight(width1, height1);
     cv::VideoCapture cap(0);  // Mở camera
     if (!cap.isOpened()) {
-        std::cerr << "Cannot open camera!" << std::endl;
+        printCenteredInRectangle(width1, height1, "Cannot open camera!", 4);
+        // std::cerr << "Cannot open camera!" << std::endl;
         return;
     }
 
@@ -24,7 +28,8 @@ void recordVideo(const std::string& outputFilename, int width, int height, int f
 
     cv::Mat frame;
     int delay = 1000 / fps;  // Độ trễ giữa các khung hình tính bằng mili giây
-    cout << "Delay: " << delay << endl;
+    printCenteredInRectangle(width, height, "Delay: " + to_string(delay), 5);
+    // cout << "Delay: " << delay << endl;
     while (true) {
         auto startTime = std::chrono::steady_clock::now();
         cap >> frame;  // Lấy khung hình từ camera
@@ -40,7 +45,8 @@ void recordVideo(const std::string& outputFilename, int width, int height, int f
 
         // Kiểm tra điều kiện dừng bằng cờ stopFlag
         if (stopFlag.load()) {  // Nếu cờ dừng là true, thoát khỏi vòng lặp
-            std::cout << "Stop recoring!" << std::endl;
+            printCenteredInRectangle(width1, height1, "Stop recoring!", 6);
+            // std::cout << "Stop recoring!" << std::endl;
             break;
         }
 

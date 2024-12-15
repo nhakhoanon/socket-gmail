@@ -4,32 +4,8 @@ DISPLAY_NAME: Application Information
 SERVICE_NAME: AppXSvc
 DISPLAY_NAME: AppX Deployment Service (AppXSVC)
 
-SERVICE_NAME: ArmouryCrateControlInterface
-DISPLAY_NAME: Armoury Crate Control Interface
-
-SERVICE_NAME: ArmouryCrateService
-DISPLAY_NAME: ARMOURY CRATE Service
-
-SERVICE_NAME: AsusAppService
-DISPLAY_NAME: ASUS App Service
-
-SERVICE_NAME: AsusCertService
-DISPLAY_NAME: AsusCertService
-
-SERVICE_NAME: ASUSOptimization
-DISPLAY_NAME: ASUS Optimization
-
-SERVICE_NAME: ASUSSoftwareManager
-DISPLAY_NAME: ASUS Software Manager
-
-SERVICE_NAME: ASUSSwitch
-DISPLAY_NAME: ASUS Switch
-
-SERVICE_NAME: ASUSSystemAnalysis
-DISPLAY_NAME: ASUS System Analysis
-
-SERVICE_NAME: ASUSSystemDiagnosis
-DISPLAY_NAME: ASUS System Diagnosis
+SERVICE_NAME: AtherosSvc
+DISPLAY_NAME: AtherosSvc
 
 SERVICE_NAME: AudioEndpointBuilder
 DISPLAY_NAME: Windows Audio Endpoint Builder
@@ -37,17 +13,14 @@ DISPLAY_NAME: Windows Audio Endpoint Builder
 SERVICE_NAME: Audiosrv
 DISPLAY_NAME: Windows Audio
 
+SERVICE_NAME: AzureAttestService
+DISPLAY_NAME: AzureAttestService
+
 SERVICE_NAME: BFE
 DISPLAY_NAME: Base Filtering Engine
 
-SERVICE_NAME: BITS
-DISPLAY_NAME: Background Intelligent Transfer Service
-
 SERVICE_NAME: BrokerInfrastructure
 DISPLAY_NAME: Background Tasks Infrastructure Service
-
-SERVICE_NAME: Browser
-DISPLAY_NAME: Computer Browser
 
 SERVICE_NAME: BTAGService
 DISPLAY_NAME: Bluetooth Audio Gateway Service
@@ -67,11 +40,14 @@ DISPLAY_NAME: Connected Devices Platform Service
 SERVICE_NAME: ClickToRunSvc
 DISPLAY_NAME: Microsoft Office Click-to-Run Service
 
+SERVICE_NAME: CloudflareWARP
+DISPLAY_NAME: Cloudflare WARP
+
+SERVICE_NAME: COMSysApp
+DISPLAY_NAME: COM+ System Application
+
 SERVICE_NAME: CoreMessagingRegistrar
 DISPLAY_NAME: CoreMessaging
-
-SERVICE_NAME: cphs
-DISPLAY_NAME: Intel(R) Content Protection HECI Service
 
 SERVICE_NAME: cplspcon
 DISPLAY_NAME: Intel(R) Content Protection HDCP Service
@@ -103,20 +79,14 @@ DISPLAY_NAME: Display Enhancement Service
 SERVICE_NAME: Dnscache
 DISPLAY_NAME: DNS Client
 
-SERVICE_NAME: DoSvc
-DISPLAY_NAME: Delivery Optimization
-
 SERVICE_NAME: DPS
 DISPLAY_NAME: Diagnostic Policy Service
 
-SERVICE_NAME: DsSvc
-DISPLAY_NAME: Data Sharing Service
-
-SERVICE_NAME: DtsApo4Service
-DISPLAY_NAME: DtsApo4Service
-
 SERVICE_NAME: DusmSvc
 DISPLAY_NAME: Data Usage
+
+SERVICE_NAME: EFS
+DISPLAY_NAME: Encrypting File System (EFS)
 
 SERVICE_NAME: esifsvc
 DISPLAY_NAME: Intel(R) Dynamic Tuning service
@@ -136,14 +106,8 @@ DISPLAY_NAME: Windows Font Cache Service
 SERVICE_NAME: FontCache3.0.0.0
 DISPLAY_NAME: Windows Presentation Foundation Font Cache 3.0.0.0
 
-SERVICE_NAME: GameSDK Service
-DISPLAY_NAME: GameSDK Service
-
 SERVICE_NAME: hidserv
 DISPLAY_NAME: Human Interface Device Service
-
-SERVICE_NAME: HvHost
-DISPLAY_NAME: HV Host Service
 
 SERVICE_NAME: igccservice
 DISPLAY_NAME: Intel(R) Graphics Command Center Service
@@ -151,8 +115,14 @@ DISPLAY_NAME: Intel(R) Graphics Command Center Service
 SERVICE_NAME: igfxCUIService2.0.0.0
 DISPLAY_NAME: Intel(R) HD Graphics Control Panel Service
 
+SERVICE_NAME: IKEEXT
+DISPLAY_NAME: IKE and AuthIP IPsec Keying Modules
+
 SERVICE_NAME: InstallService
 DISPLAY_NAME: Microsoft Store Install Service
+
+SERVICE_NAME: InventorySvc
+DISPLAY_NAME: Inventory and Compatibility Appraisal service
 
 SERVICE_NAME: iphlpsvc
 DISPLAY_NAME: IP Helper
@@ -172,20 +142,14 @@ DISPLAY_NAME: Workstation
 SERVICE_NAME: lfsvc
 DISPLAY_NAME: Geolocation Service
 
-SERVICE_NAME: LGHUBUpdaterService
-DISPLAY_NAME: LGHUB Updater Service
-
 SERVICE_NAME: LicenseManager
 DISPLAY_NAME: Windows License Manager Service
-
-SERVICE_NAME: LightingService
-DISPLAY_NAME: ASUS AURA SYNC lighting service
 
 SERVICE_NAME: lmhosts
 DISPLAY_NAME: TCP/IP NetBIOS Helper
 
-SERVICE_NAME: logi_lamparray_service
-DISPLAY_NAME: Logitech LampArray Service
+SERVICE_NAME: LMS
+DISPLAY_NAME: Intel(R) Management and Security Application Local Management Service
 
 SERVICE_NAME: LSM
 DISPLAY_NAME: Local Session Manager
@@ -199,23 +163,26 @@ DISPLAY_NAME: Microsoft Defender Core Service
 SERVICE_NAME: mpssvc
 DISPLAY_NAME: Windows Defender Firewall
 
+SERVICE_NAME: MSDTC
+DISPLAY_NAME: Distributed Transaction Coordinator
+
 SERVICE_NAME: NcbService
 DISPLAY_NAME: Network Connection Broker
 
 SERVICE_NAME: netprofm
 DISPLAY_NAME: Network List Service
 
-SERVICE_NAME: NgcCtnrSvc
-DISPLAY_NAME: Microsoft Passport Container
-
-SERVICE_NAME: NgcSvc
-DISPLAY_NAME: Microsoft Passport
-
 SERVICE_NAME: nsi
 DISPLAY_NAME: Network Store Interface Service
 
+SERVICE_NAME: NvContainerLocalSystem
+DISPLAY_NAME: NVIDIA LocalSystem Container
+
 SERVICE_NAME: NVDisplay.ContainerLocalSystem
 DISPLAY_NAME: NVIDIA Display Container LS
+
+SERVICE_NAME: NvTelemetryContainer
+DISPLAY_NAME: NVIDIA Telemetry Container
 
 SERVICE_NAME: PcaSvc
 DISPLAY_NAME: Program Compatibility Assistant Service
@@ -226,11 +193,20 @@ DISPLAY_NAME: Phone Service
 SERVICE_NAME: PlugPlay
 DISPLAY_NAME: Plug and Play
 
+SERVICE_NAME: postgresql-x64-17
+DISPLAY_NAME: postgresql-x64-17 - PostgreSQL Server 17
+
 SERVICE_NAME: Power
 DISPLAY_NAME: Power
 
 SERVICE_NAME: ProfSvc
 DISPLAY_NAME: User Profile Service
+
+SERVICE_NAME: QcomWlanSrv
+DISPLAY_NAME: Qualcomm Atheros WLAN Driver Service
+
+SERVICE_NAME: QMEmulatorService
+DISPLAY_NAME: QMEmulatorService
 
 SERVICE_NAME: QWAVE
 DISPLAY_NAME: Quality Windows Audio Video Experience
@@ -240,9 +216,6 @@ DISPLAY_NAME: Remote Access Connection Manager
 
 SERVICE_NAME: RmSvc
 DISPLAY_NAME: Radio Management Service
-
-SERVICE_NAME: ROG Live Service
-DISPLAY_NAME: ROG Live Service
 
 SERVICE_NAME: RpcEptMapper
 DISPLAY_NAME: RPC Endpoint Mapper
@@ -268,11 +241,20 @@ DISPLAY_NAME: Windows Security Service
 SERVICE_NAME: SENS
 DISPLAY_NAME: System Event Notification Service
 
+SERVICE_NAME: SEVPNCLIENT
+DISPLAY_NAME: SoftEther VPN Client
+
 SERVICE_NAME: ShellHWDetection
 DISPLAY_NAME: Shell Hardware Detection
 
 SERVICE_NAME: Spooler
 DISPLAY_NAME: Print Spooler
+
+SERVICE_NAME: sppsvc
+DISPLAY_NAME: Software Protection
+
+SERVICE_NAME: SQLWriter
+DISPLAY_NAME: SQL Server VSS Writer
 
 SERVICE_NAME: SSDPSRV
 DISPLAY_NAME: SSDP Discovery
@@ -307,8 +289,8 @@ DISPLAY_NAME: Web Account Manager
 SERVICE_NAME: TrkWks
 DISPLAY_NAME: Distributed Link Tracking Client
 
-SERVICE_NAME: UltraViewService
-DISPLAY_NAME: UltraViewer Service
+SERVICE_NAME: TrustedInstaller
+DISPLAY_NAME: Windows Modules Installer
 
 SERVICE_NAME: UserManager
 DISPLAY_NAME: User Manager
@@ -322,8 +304,14 @@ DISPLAY_NAME: Credential Manager
 SERVICE_NAME: W32Time
 DISPLAY_NAME: Windows Time
 
+SERVICE_NAME: WavesSysSvc
+DISPLAY_NAME: Waves Audio Services
+
 SERVICE_NAME: Wcmsvc
 DISPLAY_NAME: Windows Connection Manager
+
+SERVICE_NAME: WdiServiceHost
+DISPLAY_NAME: Diagnostic Service Host
 
 SERVICE_NAME: WdiSystemHost
 DISPLAY_NAME: Diagnostic System Host
@@ -333,9 +321,6 @@ DISPLAY_NAME: Microsoft Defender Antivirus Network Inspection Service
 
 SERVICE_NAME: WebClient
 DISPLAY_NAME: WebClient
-
-SERVICE_NAME: webthreatdefsvc
-DISPLAY_NAME: Web Threat Defense Service
 
 SERVICE_NAME: WinDefend
 DISPLAY_NAME: Microsoft Defender Antivirus Service
@@ -349,8 +334,8 @@ DISPLAY_NAME: Windows Management Instrumentation
 SERVICE_NAME: WlanSvc
 DISPLAY_NAME: WLAN AutoConfig
 
-SERVICE_NAME: wmiApSrv
-DISPLAY_NAME: WMI Performance Adapter
+SERVICE_NAME: wlidsvc
+DISPLAY_NAME: Microsoft Account Sign-in Assistant
 
 SERVICE_NAME: WMIRegistrationService
 DISPLAY_NAME: Intel(R) Management Engine WMI Provider Registration
@@ -364,30 +349,39 @@ DISPLAY_NAME: Security Center
 SERVICE_NAME: WSearch
 DISPLAY_NAME: Windows Search
 
-SERVICE_NAME: cbdhsvc_9567e
-DISPLAY_NAME: Clipboard User Service_9567e
+SERVICE_NAME: BluetoothUserService_cf9103b
+DISPLAY_NAME: Bluetooth User Support Service_cf9103b
 
-SERVICE_NAME: CDPUserSvc_9567e
-DISPLAY_NAME: Connected Devices Platform User Service_9567e
+SERVICE_NAME: cbdhsvc_cf9103b
+DISPLAY_NAME: Clipboard User Service_cf9103b
 
-SERVICE_NAME: DevicesFlowUserSvc_9567e
-DISPLAY_NAME: DevicesFlow_9567e
+SERVICE_NAME: CDPUserSvc_cf9103b
+DISPLAY_NAME: Connected Devices Platform User Service_cf9103b
 
-SERVICE_NAME: NPSMSvc_9567e
-DISPLAY_NAME: Now Playing Session Manager Service_9567e
+SERVICE_NAME: DevicesFlowUserSvc_cf9103b
+DISPLAY_NAME: DevicesFlow_cf9103b
 
-SERVICE_NAME: OneSyncSvc_9567e
-DISPLAY_NAME: Sync Host_9567e
+SERVICE_NAME: NPSMSvc_cf9103b
+DISPLAY_NAME: NPSMSvc_cf9103b
 
-SERVICE_NAME: PrintWorkflowUserSvc_9567e
-DISPLAY_NAME: PrintWorkflow_9567e
+SERVICE_NAME: OneSyncSvc_cf9103b
+DISPLAY_NAME: Sync Host_cf9103b
 
-SERVICE_NAME: UdkUserSvc_9567e
-DISPLAY_NAME: Udk User Service_9567e
+SERVICE_NAME: PimIndexMaintenanceSvc_cf9103b
+DISPLAY_NAME: Contact Data_cf9103b
 
-SERVICE_NAME: webthreatdefusersvc_9567e
-DISPLAY_NAME: Web Threat Defense User Service_9567e
+SERVICE_NAME: UdkUserSvc_cf9103b
+DISPLAY_NAME: Udk User Service_cf9103b
 
-SERVICE_NAME: WpnUserService_9567e
-DISPLAY_NAME: Windows Push Notifications User Service_9567e
+SERVICE_NAME: UnistoreSvc_cf9103b
+DISPLAY_NAME: User Data Storage_cf9103b
+
+SERVICE_NAME: UserDataSvc_cf9103b
+DISPLAY_NAME: User Data Access_cf9103b
+
+SERVICE_NAME: webthreatdefusersvc_cf9103b
+DISPLAY_NAME: Web Threat Defense User Service_cf9103b
+
+SERVICE_NAME: WpnUserService_cf9103b
+DISPLAY_NAME: Windows Push Notifications User Service_cf9103b
 

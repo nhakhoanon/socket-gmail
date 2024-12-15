@@ -104,7 +104,7 @@ void FrameMenu::displayAnimation1(int delay, string s) {
     while (cnt < 5) {
         setTextColor(color);
         this->printRectangleInCenter();
-        printCenteredInRectangle(68, 20, s, 0);
+        printCenteredInRectangle(69, 20, s, 0);
         if (rot == 5) {
             decrease = 1;
             rot = 0;
@@ -125,7 +125,7 @@ void FrameMenu::displayAnimation1(int delay, string s) {
     }
     resetTextColor();
     this->printRectangleInCenter();
-    printCenteredInRectangle(68, 20, s, 0);
+    printCenteredInRectangle(69, 20, s, 0);
 }
 
 void FrameMenu::printContentInRectangle(const vector<string> listOfSentences, int x, int y) {
@@ -148,12 +148,30 @@ void printCenteredInRectangle(int width, int height, const std::string& str, int
 
     int widthConsole, heightConsole;
     getConsoleSize(widthConsole, heightConsole);
-    int startX = (widthConsole - width) / 2;
-    int startY = (heightConsole - height) / 2;
-    double centerX = startX + (width - str.length()) / 2.0;
+    double startX = (widthConsole - width) / 2;
+    double startY = (heightConsole - height) / 2;
+    double centerX = startX + 4 + (width - str.length()) / 2.0;
     double centerY = startY + height / 2.0 + delta;
 
     // In chuỗi ở giữa hình chữ nhật
     gotoxy(centerX, centerY);
     std::cout << str;
+}
+
+void FrameMenu::getWidthAndHeight(double& width, double& height) {
+    width = this->width;
+    height = this->height;
+}
+
+void FrameMenu::displayAnimationDefault(vector<string> s) {
+    FrameMenu frame;
+    double widthOfFrame, heightOfFrame;
+    frame.getWidthAndHeight(widthOfFrame, heightOfFrame);
+    system("cls");
+    frame.printRectangleInCenter();
+    int size = s.size();
+    int mid = s.size() / 2;
+    for (int i = 0 - mid; i < size - mid; i++)
+        printCenteredInRectangle(widthOfFrame, heightOfFrame, s[i + mid], i);
+    Sleep(1000);
 }

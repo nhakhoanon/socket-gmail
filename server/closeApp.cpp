@@ -1,10 +1,14 @@
 #include "closeApp.h"
 
 bool closeApplication(DWORD pid) {
+    FrameMenu fram;
+    double width, height;
+    fram.getWidthAndHeight(width, height);
     // Mở tiến trình với quyền terminate
     HANDLE hProcess = OpenProcess(PROCESS_TERMINATE, FALSE, pid);
     if (hProcess == nullptr) {
-        std::cerr << "Could not open process for PID: " << pid << std::endl;
+        printCenteredInRectangle(width, height, "Cannot open process for PID: ", 4);
+        // std::cerr << "Could not open process for PID: " << pid << std::endl;
         return false; // Không thể mở tiến trình
     }
 
@@ -13,10 +17,12 @@ bool closeApplication(DWORD pid) {
     CloseHandle(hProcess); // Đóng handle
 
     if (result) {
-        std::cout << "Process " << pid << " terminated successfully." << std::endl;
+        printCenteredInRectangle(width, height, "Process terminated sucessfully", 5);
+        // std::cout << "Process " << pid << " terminated successfully." << std::endl;
         return true; // Thành công
     } else {
-        std::cerr << "Failed to terminate process " << pid << "." << std::endl;
+        printCenteredInRectangle(width, height, "Failed to terminate process", 6);
+        // std::cerr << "Failed to terminate process " << pid << "." << std::endl;
         return false; // Thất bại
     }
 }

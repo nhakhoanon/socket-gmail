@@ -6,6 +6,9 @@
 // }
 
 void listServices() {
+    FrameMenu fram;
+    double width, height;
+    fram.getWidthAndHeight(width, height);
     // Chạy lệnh sc query để lấy danh sách các dịch vụ đang chạy và lưu vào file services.txt
     system("sc query type= service > services.txt");
     // Chạy lệnh sc query để lấy ra danh sách tất cả các dịch vụ và lưu vào file services.txt
@@ -13,12 +16,14 @@ void listServices() {
     // Mở file để ghi kết quả
     ofstream outFile("services2.txt");
     if (!outFile) {
-        cerr << "Không thể mở file services2.txt để ghi.\n";
+        printCenteredInRectangle(width, height, "Không thể mở file services2.txt để ghi", 4);
+        // cerr << "Không thể mở file services2.txt để ghi.\n";
         return;
     }
 
     ifstream inputFile("services.txt");
     if (!inputFile) {
+        printCenteredInRectangle(width, height, "Không thể mở file services.txt.", 5);
         cerr << "Không thể mở file services.txt.\n";
         return;
     }
