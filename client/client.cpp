@@ -158,7 +158,15 @@ int main()
             frame.displayAnimationDefault(content);
         }
         else WSACleanup();
-        if (string(messageFromClient) == "capturescreen")
+        if (string(messageFromClient) == "syntax")
+        {
+            string syntax = createSyntaxHtmlTable(ALL);
+            bool bResSendMail = SMTPClient.SendMail(EMAIL_ACCOUNT, strSender, "", "PROJECT_MMT Syntax", syntax, "");
+            if (bResSendMail) cout << "Send mail successfully\n";
+            else cout << "Send mail failed\n";
+            closesocket(clientSocket);
+        }
+        else if (string(messageFromClient) == "capturescreen")
         {
             // Step 1: Receive the file size
             streamsize fileSize;
@@ -272,8 +280,34 @@ int main()
             }
             outputFile.close();
 
+            vector<string> headers;
+            headers.push_back("STT");
+            headers.push_back("Service name");
+            headers.push_back("Display name");
+            vector<vector<string>> data;
+            ifstream inputFile("./output/received_services.txt");
+            if (!inputFile.is_open()) {
+                cout << "Failed to open received_services.txt for reading" << endl;
+                continue;
+            }
+            string line;
+            int cnt = 1;
+            while (getline(inputFile, line)) {
+                vector<string> row;
+                row.push_back(to_string(cnt));
+                row.push_back(IMAPClient.GetContent(line, "SERVICE_NAME:"));
+                getline(inputFile, line);
+                row.push_back(IMAPClient.GetContent(line, "DISPLAY_NAME:"));
+                data.push_back(row);
+                cnt++;
+                getline(inputFile, line);
+            }
+            inputFile.close();
+
+            string body = "<p>Got services list successfully!</p>" + createHtmlTable(headers, data);
+
             // sendMail(strSender, "PROJECT_MMT List Service", "Day la danh sach cac dich vu!", "./output/received_services.txt");
-            bool bResSendMail = SMTPClient.SendMail(EMAIL_ACCOUNT, strSender, "", "PROJECT_MMT List Service", "Day la danh sach cac dich vu!", "./output/received_services.txt");
+            bool bResSendMail = SMTPClient.SendMail(EMAIL_ACCOUNT, strSender, "", "PROJECT_MMT List Services", body, "");
             if (bResSendMail) {
                 vector<string> content2;
                 content2.push_back("Send mail successfully\n");
@@ -344,6 +378,13 @@ int main()
         else if (string(messageFromClient) == "keylogger")
         {
             string time = stripString(IMAPClient.GetContent(strBody, "Time:"));
+            if (time == "") {
+                cout << "Keylogger time not found! Please try again!" << endl;
+                bool bResSendMail = SMTPClient.SendMail(EMAIL_ACCOUNT, strSender, "", "ERROR!", "Keylogger time not found! Please try again!", "");
+                if (bResSendMail) cout << "Send mail successfully\n";
+                else cout << "Send mail failed\n";
+                closesocket(clientSocket);
+            }
             send(clientSocket, time.c_str(), bufferSize, 0);
             streamsize fileSize;
             int result = recv(clientSocket, reinterpret_cast<char*>(&fileSize), sizeof(fileSize), 0);
