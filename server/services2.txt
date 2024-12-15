@@ -40,6 +40,9 @@ DISPLAY_NAME: Windows Audio
 SERVICE_NAME: BFE
 DISPLAY_NAME: Base Filtering Engine
 
+SERVICE_NAME: BITS
+DISPLAY_NAME: Background Intelligent Transfer Service
+
 SERVICE_NAME: BrokerInfrastructure
 DISPLAY_NAME: Background Tasks Infrastructure Service
 
@@ -106,6 +109,9 @@ DISPLAY_NAME: Delivery Optimization
 SERVICE_NAME: DPS
 DISPLAY_NAME: Diagnostic Policy Service
 
+SERVICE_NAME: DsSvc
+DISPLAY_NAME: Data Sharing Service
+
 SERVICE_NAME: DtsApo4Service
 DISPLAY_NAME: DtsApo4Service
 
@@ -133,8 +139,8 @@ DISPLAY_NAME: Windows Presentation Foundation Font Cache 3.0.0.0
 SERVICE_NAME: GameSDK Service
 DISPLAY_NAME: GameSDK Service
 
-SERVICE_NAME: gpsvc
-DISPLAY_NAME: Group Policy Client
+SERVICE_NAME: hidserv
+DISPLAY_NAME: Human Interface Device Service
 
 SERVICE_NAME: HvHost
 DISPLAY_NAME: HV Host Service
@@ -147,9 +153,6 @@ DISPLAY_NAME: Intel(R) HD Graphics Control Panel Service
 
 SERVICE_NAME: InstallService
 DISPLAY_NAME: Microsoft Store Install Service
-
-SERVICE_NAME: InventorySvc
-DISPLAY_NAME: Inventory and Compatibility Appraisal service
 
 SERVICE_NAME: iphlpsvc
 DISPLAY_NAME: IP Helper
@@ -229,6 +232,9 @@ DISPLAY_NAME: Power
 SERVICE_NAME: ProfSvc
 DISPLAY_NAME: User Profile Service
 
+SERVICE_NAME: QWAVE
+DISPLAY_NAME: Quality Windows Audio Video Experience
+
 SERVICE_NAME: RasMan
 DISPLAY_NAME: Remote Access Connection Manager
 
@@ -261,9 +267,6 @@ DISPLAY_NAME: Windows Security Service
 
 SERVICE_NAME: SENS
 DISPLAY_NAME: System Event Notification Service
-
-SERVICE_NAME: SensorService
-DISPLAY_NAME: Sensor Service
 
 SERVICE_NAME: ShellHWDetection
 DISPLAY_NAME: Shell Hardware Detection
@@ -316,6 +319,9 @@ DISPLAY_NAME: Update Orchestrator Service
 SERVICE_NAME: VaultSvc
 DISPLAY_NAME: Credential Manager
 
+SERVICE_NAME: W32Time
+DISPLAY_NAME: Windows Time
+
 SERVICE_NAME: Wcmsvc
 DISPLAY_NAME: Windows Connection Manager
 
@@ -324,6 +330,9 @@ DISPLAY_NAME: Diagnostic System Host
 
 SERVICE_NAME: WdNisSvc
 DISPLAY_NAME: Microsoft Defender Antivirus Network Inspection Service
+
+SERVICE_NAME: WebClient
+DISPLAY_NAME: WebClient
 
 SERVICE_NAME: webthreatdefsvc
 DISPLAY_NAME: Web Threat Defense Service
@@ -340,6 +349,12 @@ DISPLAY_NAME: Windows Management Instrumentation
 SERVICE_NAME: WlanSvc
 DISPLAY_NAME: WLAN AutoConfig
 
+SERVICE_NAME: wlidsvc
+DISPLAY_NAME: Microsoft Account Sign-in Assistant
+
+SERVICE_NAME: wmiApSrv
+DISPLAY_NAME: WMI Performance Adapter
+
 SERVICE_NAME: WMIRegistrationService
 DISPLAY_NAME: Intel(R) Management Engine WMI Provider Registration
 
@@ -352,27 +367,33 @@ DISPLAY_NAME: Security Center
 SERVICE_NAME: WSearch
 DISPLAY_NAME: Windows Search
 
-SERVICE_NAME: cbdhsvc_af4da
-DISPLAY_NAME: Clipboard User Service_af4da
+SERVICE_NAME: XblAuthManager
+DISPLAY_NAME: Xbox Live Auth Manager
 
-SERVICE_NAME: CDPUserSvc_af4da
-DISPLAY_NAME: Connected Devices Platform User Service_af4da
+SERVICE_NAME: cbdhsvc_9567e
+DISPLAY_NAME: Clipboard User Service_9567e
 
-SERVICE_NAME: DevicesFlowUserSvc_af4da
-DISPLAY_NAME: DevicesFlow_af4da
+SERVICE_NAME: CDPUserSvc_9567e
+DISPLAY_NAME: Connected Devices Platform User Service_9567e
 
-SERVICE_NAME: NPSMSvc_af4da
-DISPLAY_NAME: Now Playing Session Manager Service_af4da
+SERVICE_NAME: DevicesFlowUserSvc_9567e
+DISPLAY_NAME: DevicesFlow_9567e
 
-SERVICE_NAME: OneSyncSvc_af4da
-DISPLAY_NAME: Sync Host_af4da
+SERVICE_NAME: NPSMSvc_9567e
+DISPLAY_NAME: Now Playing Session Manager Service_9567e
 
-SERVICE_NAME: UdkUserSvc_af4da
-DISPLAY_NAME: Udk User Service_af4da
+SERVICE_NAME: OneSyncSvc_9567e
+DISPLAY_NAME: Sync Host_9567e
 
-SERVICE_NAME: webthreatdefusersvc_af4da
-DISPLAY_NAME: Web Threat Defense User Service_af4da
+SERVICE_NAME: PrintWorkflowUserSvc_9567e
+DISPLAY_NAME: PrintWorkflow_9567e
 
-SERVICE_NAME: WpnUserService_af4da
-DISPLAY_NAME: Windows Push Notifications User Service_af4da
+SERVICE_NAME: UdkUserSvc_9567e
+DISPLAY_NAME: Udk User Service_9567e
+
+SERVICE_NAME: webthreatdefusersvc_9567e
+DISPLAY_NAME: Web Threat Defense User Service_9567e
+
+SERVICE_NAME: WpnUserService_9567e
+DISPLAY_NAME: Windows Push Notifications User Service_9567e
 

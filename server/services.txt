@@ -139,6 +139,16 @@ DISPLAY_NAME: Base Filtering Engine
         CHECKPOINT         : 0x0
         WAIT_HINT          : 0x0
 
+SERVICE_NAME: BITS
+DISPLAY_NAME: Background Intelligent Transfer Service
+        TYPE               : 30  WIN32  
+        STATE              : 4  RUNNING 
+                                (STOPPABLE, NOT_PAUSABLE, ACCEPTS_PRESHUTDOWN)
+        WIN32_EXIT_CODE    : 0  (0x0)
+        SERVICE_EXIT_CODE  : 0  (0x0)
+        CHECKPOINT         : 0x0
+        WAIT_HINT          : 0x0
+
 SERVICE_NAME: BrokerInfrastructure
 DISPLAY_NAME: Background Tasks Infrastructure Service
         TYPE               : 20  WIN32_SHARE_PROCESS  
@@ -359,6 +369,16 @@ DISPLAY_NAME: Diagnostic Policy Service
         CHECKPOINT         : 0x0
         WAIT_HINT          : 0x0
 
+SERVICE_NAME: DsSvc
+DISPLAY_NAME: Data Sharing Service
+        TYPE               : 30  WIN32  
+        STATE              : 4  RUNNING 
+                                (STOPPABLE, NOT_PAUSABLE, ACCEPTS_PRESHUTDOWN)
+        WIN32_EXIT_CODE    : 0  (0x0)
+        SERVICE_EXIT_CODE  : 0  (0x0)
+        CHECKPOINT         : 0x0
+        WAIT_HINT          : 0x0
+
 SERVICE_NAME: DtsApo4Service
 DISPLAY_NAME: DtsApo4Service
         TYPE               : 10  WIN32_OWN_PROCESS  
@@ -449,11 +469,11 @@ DISPLAY_NAME: GameSDK Service
         CHECKPOINT         : 0x0
         WAIT_HINT          : 0x0
 
-SERVICE_NAME: gpsvc
-DISPLAY_NAME: Group Policy Client
-        TYPE               : 10  WIN32_OWN_PROCESS  
+SERVICE_NAME: hidserv
+DISPLAY_NAME: Human Interface Device Service
+        TYPE               : 30  WIN32  
         STATE              : 4  RUNNING 
-                                (STOPPABLE, NOT_PAUSABLE, ACCEPTS_PRESHUTDOWN)
+                                (STOPPABLE, NOT_PAUSABLE, ACCEPTS_SHUTDOWN)
         WIN32_EXIT_CODE    : 0  (0x0)
         SERVICE_EXIT_CODE  : 0  (0x0)
         CHECKPOINT         : 0x0
@@ -494,16 +514,6 @@ DISPLAY_NAME: Microsoft Store Install Service
         TYPE               : 10  WIN32_OWN_PROCESS  
         STATE              : 4  RUNNING 
                                 (STOPPABLE, NOT_PAUSABLE, IGNORES_SHUTDOWN)
-        WIN32_EXIT_CODE    : 0  (0x0)
-        SERVICE_EXIT_CODE  : 0  (0x0)
-        CHECKPOINT         : 0x0
-        WAIT_HINT          : 0x0
-
-SERVICE_NAME: InventorySvc
-DISPLAY_NAME: Inventory and Compatibility Appraisal service
-        TYPE               : 30  WIN32  
-        STATE              : 4  RUNNING 
-                                (STOPPABLE, NOT_PAUSABLE, ACCEPTS_SHUTDOWN)
         WIN32_EXIT_CODE    : 0  (0x0)
         SERVICE_EXIT_CODE  : 0  (0x0)
         CHECKPOINT         : 0x0
@@ -769,6 +779,16 @@ DISPLAY_NAME: User Profile Service
         CHECKPOINT         : 0x0
         WAIT_HINT          : 0x0
 
+SERVICE_NAME: QWAVE
+DISPLAY_NAME: Quality Windows Audio Video Experience
+        TYPE               : 30  WIN32  
+        STATE              : 4  RUNNING 
+                                (STOPPABLE, NOT_PAUSABLE, ACCEPTS_SHUTDOWN)
+        WIN32_EXIT_CODE    : 0  (0x0)
+        SERVICE_EXIT_CODE  : 0  (0x0)
+        CHECKPOINT         : 0x0
+        WAIT_HINT          : 0x0
+
 SERVICE_NAME: RasMan
 DISPLAY_NAME: Remote Access Connection Manager
         TYPE               : 20  WIN32_SHARE_PROCESS  
@@ -874,16 +894,6 @@ DISPLAY_NAME: System Event Notification Service
         TYPE               : 30  WIN32  
         STATE              : 4  RUNNING 
                                 (STOPPABLE, NOT_PAUSABLE, IGNORES_SHUTDOWN)
-        WIN32_EXIT_CODE    : 0  (0x0)
-        SERVICE_EXIT_CODE  : 0  (0x0)
-        CHECKPOINT         : 0x0
-        WAIT_HINT          : 0x0
-
-SERVICE_NAME: SensorService
-DISPLAY_NAME: Sensor Service
-        TYPE               : 30  WIN32  
-        STATE              : 4  RUNNING 
-                                (STOPPABLE, NOT_PAUSABLE, ACCEPTS_PRESHUTDOWN)
         WIN32_EXIT_CODE    : 0  (0x0)
         SERVICE_EXIT_CODE  : 0  (0x0)
         CHECKPOINT         : 0x0
@@ -1059,6 +1069,16 @@ DISPLAY_NAME: Credential Manager
         CHECKPOINT         : 0x0
         WAIT_HINT          : 0x0
 
+SERVICE_NAME: W32Time
+DISPLAY_NAME: Windows Time
+        TYPE               : 30  WIN32  
+        STATE              : 4  RUNNING 
+                                (STOPPABLE, NOT_PAUSABLE, ACCEPTS_SHUTDOWN)
+        WIN32_EXIT_CODE    : 0  (0x0)
+        SERVICE_EXIT_CODE  : 0  (0x0)
+        CHECKPOINT         : 0x0
+        WAIT_HINT          : 0x0
+
 SERVICE_NAME: Wcmsvc
 DISPLAY_NAME: Windows Connection Manager
         TYPE               : 10  WIN32_OWN_PROCESS  
@@ -1082,6 +1102,16 @@ DISPLAY_NAME: Diagnostic System Host
 SERVICE_NAME: WdNisSvc
 DISPLAY_NAME: Microsoft Defender Antivirus Network Inspection Service
         TYPE               : 10  WIN32_OWN_PROCESS  
+        STATE              : 4  RUNNING 
+                                (STOPPABLE, NOT_PAUSABLE, IGNORES_SHUTDOWN)
+        WIN32_EXIT_CODE    : 0  (0x0)
+        SERVICE_EXIT_CODE  : 0  (0x0)
+        CHECKPOINT         : 0x0
+        WAIT_HINT          : 0x0
+
+SERVICE_NAME: WebClient
+DISPLAY_NAME: WebClient
+        TYPE               : 30  WIN32  
         STATE              : 4  RUNNING 
                                 (STOPPABLE, NOT_PAUSABLE, IGNORES_SHUTDOWN)
         WIN32_EXIT_CODE    : 0  (0x0)
@@ -1139,6 +1169,26 @@ DISPLAY_NAME: WLAN AutoConfig
         CHECKPOINT         : 0x0
         WAIT_HINT          : 0x0
 
+SERVICE_NAME: wlidsvc
+DISPLAY_NAME: Microsoft Account Sign-in Assistant
+        TYPE               : 30  WIN32  
+        STATE              : 4  RUNNING 
+                                (STOPPABLE, NOT_PAUSABLE, IGNORES_SHUTDOWN)
+        WIN32_EXIT_CODE    : 0  (0x0)
+        SERVICE_EXIT_CODE  : 0  (0x0)
+        CHECKPOINT         : 0x0
+        WAIT_HINT          : 0x0
+
+SERVICE_NAME: wmiApSrv
+DISPLAY_NAME: WMI Performance Adapter
+        TYPE               : 10  WIN32_OWN_PROCESS  
+        STATE              : 4  RUNNING 
+                                (STOPPABLE, NOT_PAUSABLE, IGNORES_SHUTDOWN)
+        WIN32_EXIT_CODE    : 0  (0x0)
+        SERVICE_EXIT_CODE  : 0  (0x0)
+        CHECKPOINT         : 0x0
+        WAIT_HINT          : 0x0
+
 SERVICE_NAME: WMIRegistrationService
 DISPLAY_NAME: Intel(R) Management Engine WMI Provider Registration
         TYPE               : 10  WIN32_OWN_PROCESS  
@@ -1179,8 +1229,18 @@ DISPLAY_NAME: Windows Search
         CHECKPOINT         : 0x0
         WAIT_HINT          : 0x0
 
-SERVICE_NAME: cbdhsvc_af4da
-DISPLAY_NAME: Clipboard User Service_af4da
+SERVICE_NAME: XblAuthManager
+DISPLAY_NAME: Xbox Live Auth Manager
+        TYPE               : 30  WIN32  
+        STATE              : 4  RUNNING 
+                                (STOPPABLE, NOT_PAUSABLE, IGNORES_SHUTDOWN)
+        WIN32_EXIT_CODE    : 0  (0x0)
+        SERVICE_EXIT_CODE  : 0  (0x0)
+        CHECKPOINT         : 0x0
+        WAIT_HINT          : 0x0
+
+SERVICE_NAME: cbdhsvc_9567e
+DISPLAY_NAME: Clipboard User Service_9567e
         TYPE               : f0   ERROR  
         STATE              : 4  RUNNING 
                                 (STOPPABLE, NOT_PAUSABLE, IGNORES_SHUTDOWN)
@@ -1189,8 +1249,8 @@ DISPLAY_NAME: Clipboard User Service_af4da
         CHECKPOINT         : 0x0
         WAIT_HINT          : 0x0
 
-SERVICE_NAME: CDPUserSvc_af4da
-DISPLAY_NAME: Connected Devices Platform User Service_af4da
+SERVICE_NAME: CDPUserSvc_9567e
+DISPLAY_NAME: Connected Devices Platform User Service_9567e
         TYPE               : f0   ERROR  
         STATE              : 4  RUNNING 
                                 (STOPPABLE, NOT_PAUSABLE, IGNORES_SHUTDOWN)
@@ -1199,8 +1259,8 @@ DISPLAY_NAME: Connected Devices Platform User Service_af4da
         CHECKPOINT         : 0x0
         WAIT_HINT          : 0x0
 
-SERVICE_NAME: DevicesFlowUserSvc_af4da
-DISPLAY_NAME: DevicesFlow_af4da
+SERVICE_NAME: DevicesFlowUserSvc_9567e
+DISPLAY_NAME: DevicesFlow_9567e
         TYPE               : f0   ERROR  
         STATE              : 4  RUNNING 
                                 (STOPPABLE, NOT_PAUSABLE, IGNORES_SHUTDOWN)
@@ -1209,8 +1269,8 @@ DISPLAY_NAME: DevicesFlow_af4da
         CHECKPOINT         : 0x0
         WAIT_HINT          : 0x0
 
-SERVICE_NAME: NPSMSvc_af4da
-DISPLAY_NAME: Now Playing Session Manager Service_af4da
+SERVICE_NAME: NPSMSvc_9567e
+DISPLAY_NAME: Now Playing Session Manager Service_9567e
         TYPE               : f0   ERROR  
         STATE              : 4  RUNNING 
                                 (STOPPABLE, NOT_PAUSABLE, IGNORES_SHUTDOWN)
@@ -1219,8 +1279,8 @@ DISPLAY_NAME: Now Playing Session Manager Service_af4da
         CHECKPOINT         : 0x0
         WAIT_HINT          : 0x0
 
-SERVICE_NAME: OneSyncSvc_af4da
-DISPLAY_NAME: Sync Host_af4da
+SERVICE_NAME: OneSyncSvc_9567e
+DISPLAY_NAME: Sync Host_9567e
         TYPE               : e0  USER_SHARE_PROCESS INSTANCE  
         STATE              : 4  RUNNING 
                                 (STOPPABLE, NOT_PAUSABLE, IGNORES_SHUTDOWN)
@@ -1229,8 +1289,8 @@ DISPLAY_NAME: Sync Host_af4da
         CHECKPOINT         : 0x0
         WAIT_HINT          : 0x0
 
-SERVICE_NAME: UdkUserSvc_af4da
-DISPLAY_NAME: Udk User Service_af4da
+SERVICE_NAME: PrintWorkflowUserSvc_9567e
+DISPLAY_NAME: PrintWorkflow_9567e
         TYPE               : f0   ERROR  
         STATE              : 4  RUNNING 
                                 (STOPPABLE, NOT_PAUSABLE, IGNORES_SHUTDOWN)
@@ -1239,8 +1299,18 @@ DISPLAY_NAME: Udk User Service_af4da
         CHECKPOINT         : 0x0
         WAIT_HINT          : 0x0
 
-SERVICE_NAME: webthreatdefusersvc_af4da
-DISPLAY_NAME: Web Threat Defense User Service_af4da
+SERVICE_NAME: UdkUserSvc_9567e
+DISPLAY_NAME: Udk User Service_9567e
+        TYPE               : f0   ERROR  
+        STATE              : 4  RUNNING 
+                                (STOPPABLE, NOT_PAUSABLE, IGNORES_SHUTDOWN)
+        WIN32_EXIT_CODE    : 0  (0x0)
+        SERVICE_EXIT_CODE  : 0  (0x0)
+        CHECKPOINT         : 0x0
+        WAIT_HINT          : 0x0
+
+SERVICE_NAME: webthreatdefusersvc_9567e
+DISPLAY_NAME: Web Threat Defense User Service_9567e
         TYPE               : f0   ERROR  
         STATE              : 4  RUNNING 
                                 (STOPPABLE, PAUSABLE, ACCEPTS_SHUTDOWN)
@@ -1249,8 +1319,8 @@ DISPLAY_NAME: Web Threat Defense User Service_af4da
         CHECKPOINT         : 0x0
         WAIT_HINT          : 0x0
 
-SERVICE_NAME: WpnUserService_af4da
-DISPLAY_NAME: Windows Push Notifications User Service_af4da
+SERVICE_NAME: WpnUserService_9567e
+DISPLAY_NAME: Windows Push Notifications User Service_9567e
         TYPE               : f0   ERROR  
         STATE              : 4  RUNNING 
                                 (STOPPABLE, NOT_PAUSABLE, ACCEPTS_PRESHUTDOWN)

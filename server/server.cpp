@@ -356,11 +356,9 @@ int main(int argc, char *argv[])
         }
         else if (string(messageFromClient) == "stopwebcam"){
             stopRecord();
-            // resetFlag();
             cout << "Stop video!" << endl;
             Sleep(3000);
             sendFile("output.mp4", acceptSocket);
-            // closesocket(acceptSocket);
             strcpy(messageFromServer, "close");
             byteCount = send(acceptSocket, messageFromServer, 1024, 0);
             if (byteCount > 0)
@@ -369,6 +367,7 @@ int main(int argc, char *argv[])
                 WSACleanup();
             resetFlag();
             closesocket(acceptSocket);
+            deleteFileByPath("output.mp4");
         }
     }
     system("pause");

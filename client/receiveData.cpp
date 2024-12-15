@@ -114,11 +114,14 @@ bool receiveMap(SOCKET sock, std::map<DWORD, std::string>& data) {
 // }
 
 void receiveFile(SOCKET serverSocket, const std::string& outputFilename) {
+    FrameMenu fram;
+    double width, height;
+    fram.getWidthAndHeight(width, height);
     char buffer[CHUNK_SIZE];
     std::ofstream outFile("./output/" + outputFilename, std::ios::binary);
 
     if (!outFile.is_open()) {
-        std::cerr << "Cannot open file!" << std::endl;
+        // std::cerr << "Cannot open file!" << std::endl;
         return;
     }
 
@@ -130,12 +133,13 @@ void receiveFile(SOCKET serverSocket, const std::string& outputFilename) {
         // cout << bytesReceived << endl;
     }
 
-    cout << "Get file successfully!" << endl;
+    // cout << "Get file successfully!" << endl;
     // if (bytesReceived == 0) {
     //     std::cout << "Get file successfully" << std::endl;
     // } else if (bytesReceived == SOCKET_ERROR) {
     //     std::cerr << "Error!" << std::endl;
     // }
+    printCenteredInRectangle(width, height, "Get file successfully!", 4);
     outFile.close();
 }
 
