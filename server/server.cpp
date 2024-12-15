@@ -116,7 +116,7 @@ int main(int argc, char *argv[])
         if (listen(serverSocket, 1) == SOCKET_ERROR)
             content.push_back("listen(): Error listening on socket" + WSAGetLastError());
         else
-            content.push_back("listen() is OK. I waiting for connections...");
+            content.push_back("listen() is OK. Waiting for connections...");
         frame.displayAnimationDefault(content);
         content.clear();
         // cout << "=== Accept connection ===" << endl;

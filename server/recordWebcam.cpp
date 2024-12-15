@@ -18,7 +18,7 @@ void recordVideo(const std::string& outputFilename, int width, int height, int f
     cap.set(cv::CAP_PROP_FRAME_HEIGHT, height);  // Thiết lập chiều cao
     cap.set(cv::CAP_PROP_FPS, fps);  // Thiết lập tốc độ khung hình của camera (nếu hỗ trợ)
 
-    int codec = cv::VideoWriter::fourcc('M', 'P', '4', 'V');  // Codec cho .mp4
+    int codec = cv::VideoWriter::fourcc('m', 'p', '4', 'v');  // Codec cho .mp4
     cv::VideoWriter out(outputFilename, codec, fps, cv::Size(width, height));  // Mở VideoWriter
 
     if (!out.isOpened()) {
