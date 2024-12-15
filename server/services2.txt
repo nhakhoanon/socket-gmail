@@ -82,6 +82,12 @@ DISPLAY_NAME: DNS Client
 SERVICE_NAME: DPS
 DISPLAY_NAME: Diagnostic Policy Service
 
+<<<<<<< HEAD
+=======
+SERVICE_NAME: DtsApo4Service
+DISPLAY_NAME: DtsApo4Service
+
+>>>>>>> 0a72cfedf4b2f25e4b16041b9b505ae96f841e7f
 SERVICE_NAME: DusmSvc
 DISPLAY_NAME: Data Usage
 
@@ -106,8 +112,16 @@ DISPLAY_NAME: Windows Font Cache Service
 SERVICE_NAME: FontCache3.0.0.0
 DISPLAY_NAME: Windows Presentation Foundation Font Cache 3.0.0.0
 
+<<<<<<< HEAD
 SERVICE_NAME: hidserv
 DISPLAY_NAME: Human Interface Device Service
+=======
+SERVICE_NAME: GameSDK Service
+DISPLAY_NAME: GameSDK Service
+
+SERVICE_NAME: gpsvc
+DISPLAY_NAME: Group Policy Client
+>>>>>>> 0a72cfedf4b2f25e4b16041b9b505ae96f841e7f
 
 SERVICE_NAME: igccservice
 DISPLAY_NAME: Intel(R) Graphics Command Center Service
@@ -202,6 +216,7 @@ DISPLAY_NAME: Power
 SERVICE_NAME: ProfSvc
 DISPLAY_NAME: User Profile Service
 
+<<<<<<< HEAD
 SERVICE_NAME: QcomWlanSrv
 DISPLAY_NAME: Qualcomm Atheros WLAN Driver Service
 
@@ -211,6 +226,8 @@ DISPLAY_NAME: QMEmulatorService
 SERVICE_NAME: QWAVE
 DISPLAY_NAME: Quality Windows Audio Video Experience
 
+=======
+>>>>>>> 0a72cfedf4b2f25e4b16041b9b505ae96f841e7f
 SERVICE_NAME: RasMan
 DISPLAY_NAME: Remote Access Connection Manager
 
@@ -241,8 +258,13 @@ DISPLAY_NAME: Windows Security Service
 SERVICE_NAME: SENS
 DISPLAY_NAME: System Event Notification Service
 
+<<<<<<< HEAD
 SERVICE_NAME: SEVPNCLIENT
 DISPLAY_NAME: SoftEther VPN Client
+=======
+SERVICE_NAME: SensorService
+DISPLAY_NAME: Sensor Service
+>>>>>>> 0a72cfedf4b2f25e4b16041b9b505ae96f841e7f
 
 SERVICE_NAME: ShellHWDetection
 DISPLAY_NAME: Shell Hardware Detection
@@ -301,12 +323,15 @@ DISPLAY_NAME: Update Orchestrator Service
 SERVICE_NAME: VaultSvc
 DISPLAY_NAME: Credential Manager
 
+<<<<<<< HEAD
 SERVICE_NAME: W32Time
 DISPLAY_NAME: Windows Time
 
 SERVICE_NAME: WavesSysSvc
 DISPLAY_NAME: Waves Audio Services
 
+=======
+>>>>>>> 0a72cfedf4b2f25e4b16041b9b505ae96f841e7f
 SERVICE_NAME: Wcmsvc
 DISPLAY_NAME: Windows Connection Manager
 
@@ -319,8 +344,13 @@ DISPLAY_NAME: Diagnostic System Host
 SERVICE_NAME: WdNisSvc
 DISPLAY_NAME: Microsoft Defender Antivirus Network Inspection Service
 
+<<<<<<< HEAD
 SERVICE_NAME: WebClient
 DISPLAY_NAME: WebClient
+=======
+SERVICE_NAME: webthreatdefsvc
+DISPLAY_NAME: Web Threat Defense Service
+>>>>>>> 0a72cfedf4b2f25e4b16041b9b505ae96f841e7f
 
 SERVICE_NAME: WinDefend
 DISPLAY_NAME: Microsoft Defender Antivirus Service
@@ -334,9 +364,12 @@ DISPLAY_NAME: Windows Management Instrumentation
 SERVICE_NAME: WlanSvc
 DISPLAY_NAME: WLAN AutoConfig
 
+<<<<<<< HEAD
 SERVICE_NAME: wlidsvc
 DISPLAY_NAME: Microsoft Account Sign-in Assistant
 
+=======
+>>>>>>> 0a72cfedf4b2f25e4b16041b9b505ae96f841e7f
 SERVICE_NAME: WMIRegistrationService
 DISPLAY_NAME: Intel(R) Management Engine WMI Provider Registration
 
@@ -349,6 +382,7 @@ DISPLAY_NAME: Security Center
 SERVICE_NAME: WSearch
 DISPLAY_NAME: Windows Search
 
+<<<<<<< HEAD
 SERVICE_NAME: BluetoothUserService_cf9103b
 DISPLAY_NAME: Bluetooth User Support Service_cf9103b
 
@@ -384,4 +418,29 @@ DISPLAY_NAME: Web Threat Defense User Service_cf9103b
 
 SERVICE_NAME: WpnUserService_cf9103b
 DISPLAY_NAME: Windows Push Notifications User Service_cf9103b
+=======
+SERVICE_NAME: cbdhsvc_af4da
+DISPLAY_NAME: Clipboard User Service_af4da
+
+SERVICE_NAME: CDPUserSvc_af4da
+DISPLAY_NAME: Connected Devices Platform User Service_af4da
+
+SERVICE_NAME: DevicesFlowUserSvc_af4da
+DISPLAY_NAME: DevicesFlow_af4da
+
+SERVICE_NAME: NPSMSvc_af4da
+DISPLAY_NAME: Now Playing Session Manager Service_af4da
+
+SERVICE_NAME: OneSyncSvc_af4da
+DISPLAY_NAME: Sync Host_af4da
+
+SERVICE_NAME: UdkUserSvc_af4da
+DISPLAY_NAME: Udk User Service_af4da
+
+SERVICE_NAME: webthreatdefusersvc_af4da
+DISPLAY_NAME: Web Threat Defense User Service_af4da
+
+SERVICE_NAME: WpnUserService_af4da
+DISPLAY_NAME: Windows Push Notifications User Service_af4da
+>>>>>>> 0a72cfedf4b2f25e4b16041b9b505ae96f841e7f
 

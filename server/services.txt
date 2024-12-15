@@ -279,6 +279,19 @@ DISPLAY_NAME: Diagnostic Policy Service
         CHECKPOINT         : 0x0
         WAIT_HINT          : 0x0
 
+<<<<<<< HEAD
+=======
+SERVICE_NAME: DtsApo4Service
+DISPLAY_NAME: DtsApo4Service
+        TYPE               : 10  WIN32_OWN_PROCESS  
+        STATE              : 4  RUNNING 
+                                (STOPPABLE, NOT_PAUSABLE, ACCEPTS_SHUTDOWN)
+        WIN32_EXIT_CODE    : 0  (0x0)
+        SERVICE_EXIT_CODE  : 0  (0x0)
+        CHECKPOINT         : 0x0
+        WAIT_HINT          : 0x0
+
+>>>>>>> 0a72cfedf4b2f25e4b16041b9b505ae96f841e7f
 SERVICE_NAME: DusmSvc
 DISPLAY_NAME: Data Usage
         TYPE               : 10  WIN32_OWN_PROCESS  
@@ -359,11 +372,27 @@ DISPLAY_NAME: Windows Presentation Foundation Font Cache 3.0.0.0
         CHECKPOINT         : 0x0
         WAIT_HINT          : 0x0
 
+<<<<<<< HEAD
 SERVICE_NAME: hidserv
 DISPLAY_NAME: Human Interface Device Service
         TYPE               : 30  WIN32  
+=======
+SERVICE_NAME: GameSDK Service
+DISPLAY_NAME: GameSDK Service
+        TYPE               : 10  WIN32_OWN_PROCESS  
         STATE              : 4  RUNNING 
                                 (STOPPABLE, NOT_PAUSABLE, ACCEPTS_SHUTDOWN)
+        WIN32_EXIT_CODE    : 0  (0x0)
+        SERVICE_EXIT_CODE  : 0  (0x0)
+        CHECKPOINT         : 0x0
+        WAIT_HINT          : 0x0
+
+SERVICE_NAME: gpsvc
+DISPLAY_NAME: Group Policy Client
+        TYPE               : 10  WIN32_OWN_PROCESS  
+>>>>>>> 0a72cfedf4b2f25e4b16041b9b505ae96f841e7f
+        STATE              : 4  RUNNING 
+                                (STOPPABLE, NOT_PAUSABLE, ACCEPTS_PRESHUTDOWN)
         WIN32_EXIT_CODE    : 0  (0x0)
         SERVICE_EXIT_CODE  : 0  (0x0)
         CHECKPOINT         : 0x0
@@ -679,6 +708,7 @@ DISPLAY_NAME: User Profile Service
         CHECKPOINT         : 0x0
         WAIT_HINT          : 0x0
 
+<<<<<<< HEAD
 SERVICE_NAME: QcomWlanSrv
 DISPLAY_NAME: Qualcomm Atheros WLAN Driver Service
         TYPE               : 10  WIN32_OWN_PROCESS  
@@ -709,6 +739,8 @@ DISPLAY_NAME: Quality Windows Audio Video Experience
         CHECKPOINT         : 0x0
         WAIT_HINT          : 0x0
 
+=======
+>>>>>>> 0a72cfedf4b2f25e4b16041b9b505ae96f841e7f
 SERVICE_NAME: RasMan
 DISPLAY_NAME: Remote Access Connection Manager
         TYPE               : 20  WIN32_SHARE_PROCESS  
@@ -809,11 +841,19 @@ DISPLAY_NAME: System Event Notification Service
         CHECKPOINT         : 0x0
         WAIT_HINT          : 0x0
 
+<<<<<<< HEAD
 SERVICE_NAME: SEVPNCLIENT
 DISPLAY_NAME: SoftEther VPN Client
         TYPE               : 10  WIN32_OWN_PROCESS  
         STATE              : 4  RUNNING 
                                 (STOPPABLE, NOT_PAUSABLE, ACCEPTS_SHUTDOWN)
+=======
+SERVICE_NAME: SensorService
+DISPLAY_NAME: Sensor Service
+        TYPE               : 30  WIN32  
+        STATE              : 4  RUNNING 
+                                (STOPPABLE, NOT_PAUSABLE, ACCEPTS_PRESHUTDOWN)
+>>>>>>> 0a72cfedf4b2f25e4b16041b9b505ae96f841e7f
         WIN32_EXIT_CODE    : 0  (0x0)
         SERVICE_EXIT_CODE  : 0  (0x0)
         CHECKPOINT         : 0x0
@@ -1009,6 +1049,7 @@ DISPLAY_NAME: Credential Manager
         CHECKPOINT         : 0x0
         WAIT_HINT          : 0x0
 
+<<<<<<< HEAD
 SERVICE_NAME: W32Time
 DISPLAY_NAME: Windows Time
         TYPE               : 30  WIN32  
@@ -1029,6 +1070,8 @@ DISPLAY_NAME: Waves Audio Services
         CHECKPOINT         : 0x0
         WAIT_HINT          : 0x0
 
+=======
+>>>>>>> 0a72cfedf4b2f25e4b16041b9b505ae96f841e7f
 SERVICE_NAME: Wcmsvc
 DISPLAY_NAME: Windows Connection Manager
         TYPE               : 10  WIN32_OWN_PROCESS  
@@ -1069,11 +1112,19 @@ DISPLAY_NAME: Microsoft Defender Antivirus Network Inspection Service
         CHECKPOINT         : 0x0
         WAIT_HINT          : 0x0
 
+<<<<<<< HEAD
 SERVICE_NAME: WebClient
 DISPLAY_NAME: WebClient
         TYPE               : 30  WIN32  
         STATE              : 4  RUNNING 
                                 (STOPPABLE, NOT_PAUSABLE, IGNORES_SHUTDOWN)
+=======
+SERVICE_NAME: webthreatdefsvc
+DISPLAY_NAME: Web Threat Defense Service
+        TYPE               : 30  WIN32  
+        STATE              : 4  RUNNING 
+                                (STOPPABLE, PAUSABLE, ACCEPTS_SHUTDOWN)
+>>>>>>> 0a72cfedf4b2f25e4b16041b9b505ae96f841e7f
         WIN32_EXIT_CODE    : 0  (0x0)
         SERVICE_EXIT_CODE  : 0  (0x0)
         CHECKPOINT         : 0x0
@@ -1119,6 +1170,7 @@ DISPLAY_NAME: WLAN AutoConfig
         CHECKPOINT         : 0x0
         WAIT_HINT          : 0x0
 
+<<<<<<< HEAD
 SERVICE_NAME: wlidsvc
 DISPLAY_NAME: Microsoft Account Sign-in Assistant
         TYPE               : 30  WIN32  
@@ -1129,6 +1181,8 @@ DISPLAY_NAME: Microsoft Account Sign-in Assistant
         CHECKPOINT         : 0x0
         WAIT_HINT          : 0x0
 
+=======
+>>>>>>> 0a72cfedf4b2f25e4b16041b9b505ae96f841e7f
 SERVICE_NAME: WMIRegistrationService
 DISPLAY_NAME: Intel(R) Management Engine WMI Provider Registration
         TYPE               : 10  WIN32_OWN_PROCESS  
@@ -1169,8 +1223,13 @@ DISPLAY_NAME: Windows Search
         CHECKPOINT         : 0x0
         WAIT_HINT          : 0x0
 
+<<<<<<< HEAD
 SERVICE_NAME: BluetoothUserService_cf9103b
 DISPLAY_NAME: Bluetooth User Support Service_cf9103b
+=======
+SERVICE_NAME: cbdhsvc_af4da
+DISPLAY_NAME: Clipboard User Service_af4da
+>>>>>>> 0a72cfedf4b2f25e4b16041b9b505ae96f841e7f
         TYPE               : f0   ERROR  
         STATE              : 4  RUNNING 
                                 (STOPPABLE, NOT_PAUSABLE, IGNORES_SHUTDOWN)
@@ -1179,8 +1238,13 @@ DISPLAY_NAME: Bluetooth User Support Service_cf9103b
         CHECKPOINT         : 0x0
         WAIT_HINT          : 0x0
 
+<<<<<<< HEAD
 SERVICE_NAME: cbdhsvc_cf9103b
 DISPLAY_NAME: Clipboard User Service_cf9103b
+=======
+SERVICE_NAME: CDPUserSvc_af4da
+DISPLAY_NAME: Connected Devices Platform User Service_af4da
+>>>>>>> 0a72cfedf4b2f25e4b16041b9b505ae96f841e7f
         TYPE               : f0   ERROR  
         STATE              : 4  RUNNING 
                                 (STOPPABLE, NOT_PAUSABLE, IGNORES_SHUTDOWN)
@@ -1189,8 +1253,13 @@ DISPLAY_NAME: Clipboard User Service_cf9103b
         CHECKPOINT         : 0x0
         WAIT_HINT          : 0x0
 
+<<<<<<< HEAD
 SERVICE_NAME: CDPUserSvc_cf9103b
 DISPLAY_NAME: Connected Devices Platform User Service_cf9103b
+=======
+SERVICE_NAME: DevicesFlowUserSvc_af4da
+DISPLAY_NAME: DevicesFlow_af4da
+>>>>>>> 0a72cfedf4b2f25e4b16041b9b505ae96f841e7f
         TYPE               : f0   ERROR  
         STATE              : 4  RUNNING 
                                 (STOPPABLE, NOT_PAUSABLE, IGNORES_SHUTDOWN)
@@ -1199,8 +1268,13 @@ DISPLAY_NAME: Connected Devices Platform User Service_cf9103b
         CHECKPOINT         : 0x0
         WAIT_HINT          : 0x0
 
+<<<<<<< HEAD
 SERVICE_NAME: DevicesFlowUserSvc_cf9103b
 DISPLAY_NAME: DevicesFlow_cf9103b
+=======
+SERVICE_NAME: NPSMSvc_af4da
+DISPLAY_NAME: Now Playing Session Manager Service_af4da
+>>>>>>> 0a72cfedf4b2f25e4b16041b9b505ae96f841e7f
         TYPE               : f0   ERROR  
         STATE              : 4  RUNNING 
                                 (STOPPABLE, NOT_PAUSABLE, IGNORES_SHUTDOWN)
@@ -1209,6 +1283,7 @@ DISPLAY_NAME: DevicesFlow_cf9103b
         CHECKPOINT         : 0x0
         WAIT_HINT          : 0x0
 
+<<<<<<< HEAD
 SERVICE_NAME: NPSMSvc_cf9103b
 DISPLAY_NAME: NPSMSvc_cf9103b
         TYPE               : f0   ERROR  
@@ -1221,6 +1296,10 @@ DISPLAY_NAME: NPSMSvc_cf9103b
 
 SERVICE_NAME: OneSyncSvc_cf9103b
 DISPLAY_NAME: Sync Host_cf9103b
+=======
+SERVICE_NAME: OneSyncSvc_af4da
+DISPLAY_NAME: Sync Host_af4da
+>>>>>>> 0a72cfedf4b2f25e4b16041b9b505ae96f841e7f
         TYPE               : e0  USER_SHARE_PROCESS INSTANCE  
         STATE              : 4  RUNNING 
                                 (STOPPABLE, NOT_PAUSABLE, IGNORES_SHUTDOWN)
@@ -1229,6 +1308,7 @@ DISPLAY_NAME: Sync Host_cf9103b
         CHECKPOINT         : 0x0
         WAIT_HINT          : 0x0
 
+<<<<<<< HEAD
 SERVICE_NAME: PimIndexMaintenanceSvc_cf9103b
 DISPLAY_NAME: Contact Data_cf9103b
         TYPE               : e0  USER_SHARE_PROCESS INSTANCE  
@@ -1241,6 +1321,10 @@ DISPLAY_NAME: Contact Data_cf9103b
 
 SERVICE_NAME: UdkUserSvc_cf9103b
 DISPLAY_NAME: Udk User Service_cf9103b
+=======
+SERVICE_NAME: UdkUserSvc_af4da
+DISPLAY_NAME: Udk User Service_af4da
+>>>>>>> 0a72cfedf4b2f25e4b16041b9b505ae96f841e7f
         TYPE               : f0   ERROR  
         STATE              : 4  RUNNING 
                                 (STOPPABLE, NOT_PAUSABLE, IGNORES_SHUTDOWN)
@@ -1249,6 +1333,7 @@ DISPLAY_NAME: Udk User Service_cf9103b
         CHECKPOINT         : 0x0
         WAIT_HINT          : 0x0
 
+<<<<<<< HEAD
 SERVICE_NAME: UnistoreSvc_cf9103b
 DISPLAY_NAME: User Data Storage_cf9103b
         TYPE               : e0  USER_SHARE_PROCESS INSTANCE  
@@ -1271,6 +1356,10 @@ DISPLAY_NAME: User Data Access_cf9103b
 
 SERVICE_NAME: webthreatdefusersvc_cf9103b
 DISPLAY_NAME: Web Threat Defense User Service_cf9103b
+=======
+SERVICE_NAME: webthreatdefusersvc_af4da
+DISPLAY_NAME: Web Threat Defense User Service_af4da
+>>>>>>> 0a72cfedf4b2f25e4b16041b9b505ae96f841e7f
         TYPE               : f0   ERROR  
         STATE              : 4  RUNNING 
                                 (STOPPABLE, PAUSABLE, ACCEPTS_SHUTDOWN)
@@ -1279,8 +1368,13 @@ DISPLAY_NAME: Web Threat Defense User Service_cf9103b
         CHECKPOINT         : 0x0
         WAIT_HINT          : 0x0
 
+<<<<<<< HEAD
 SERVICE_NAME: WpnUserService_cf9103b
 DISPLAY_NAME: Windows Push Notifications User Service_cf9103b
+=======
+SERVICE_NAME: WpnUserService_af4da
+DISPLAY_NAME: Windows Push Notifications User Service_af4da
+>>>>>>> 0a72cfedf4b2f25e4b16041b9b505ae96f841e7f
         TYPE               : f0   ERROR  
         STATE              : 4  RUNNING 
                                 (STOPPABLE, NOT_PAUSABLE, ACCEPTS_PRESHUTDOWN)
