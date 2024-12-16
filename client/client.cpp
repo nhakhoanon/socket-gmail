@@ -165,8 +165,62 @@ int main()
         {
             string syntax = createSyntaxHtmlTable(ALL);
             bool bResSendMail = SMTPClient.SendMail(EMAIL_ACCOUNT, strSender, "", "PROJECT_MMT Syntax", syntax, "");
-            if (bResSendMail) cout << "Send mail successfully\n";
-            else cout << "Send mail failed\n";
+            if (bResSendMail) {
+                vector<string> content2;
+                content2.push_back("Send mail successfully\n");
+                frame.displayAnimationDefault(content2);
+            }
+            else {
+                vector<string> content2;
+                content2.push_back("Send mail failed\n");
+                frame.displayAnimationDefault(content2);
+            }
+            closesocket(clientSocket);
+        }
+        else if (string(messageFromClient) == "shutdown") {
+            int bytesReceived = recv(clientSocket, messageFromServer, bufferSize, 0);
+            if (byteCount > 0)
+            {
+                vector<string> content;
+                content.push_back(string(messageFromServer));
+                frame.displayAnimationDefault(content);
+            }
+            else 
+                WSACleanup();
+            bool bResSendMail = SMTPClient.SendMail(EMAIL_ACCOUNT, strSender, "", "PROJECT_MMT Shutdown", messageFromServer, "");
+            if (bResSendMail) {
+                vector<string> content2;
+                content2.push_back("Send mail successfully\n");
+                frame.displayAnimationDefault(content2);
+            }
+            else {
+                vector<string> content2;
+                content2.push_back("Send mail failed\n");
+                frame.displayAnimationDefault(content2);
+            }
+            closesocket(clientSocket);
+        }
+        else if (string(messageFromClient) == "restart") {
+            int bytesReceived = recv(clientSocket, messageFromServer, bufferSize, 0);
+            if (byteCount > 0)
+            {
+                vector<string> content;
+                content.push_back(string(messageFromServer));
+                frame.displayAnimationDefault(content);
+            }
+            else 
+                WSACleanup();
+            bool bResSendMail = SMTPClient.SendMail(EMAIL_ACCOUNT, strSender, "", "PROJECT_MMT Restart", messageFromServer, "");
+            if (bResSendMail) {
+                vector<string> content2;
+                content2.push_back("Send mail successfully\n");
+                frame.displayAnimationDefault(content2);
+            }
+            else {
+                vector<string> content2;
+                content2.push_back("Send mail failed\n");
+                frame.displayAnimationDefault(content2);
+            }
             closesocket(clientSocket);
         }
         else if (string(messageFromClient) == "capturescreen")
@@ -325,11 +379,22 @@ int main()
         {
             string serviceToStart = stripString(IMAPClient.GetContent(strBody, "Service name:"));
             if (serviceToStart == "") {
-                cout << "Service name not found! Please try again!" << endl;
+                // cout << "Service name not found! Please try again!" << endl;
+                vector<string> content;
+                content.push_back("Service name not found! Please try again!");
+                frame.displayAnimationDefault(content);
                 string syntax = "<p>Please try again! Syntax:</p>" + createSyntaxHtmlTable(STARTSERVICE);
                 bool bResSendMail = SMTPClient.SendMail(EMAIL_ACCOUNT, strSender, "", "ERROR: Service name not found!", syntax, "");
-                if (bResSendMail) cout << "Send mail successfully\n";
-                else cout << "Send mail failed\n";
+                if (bResSendMail) {
+                    vector<string> content2;
+                    content2.push_back("Send mail successfully\n");
+                    frame.displayAnimationDefault(content2);
+                }
+                else {
+                    vector<string> content2;
+                    content2.push_back("Send mail failed\n");
+                    frame.displayAnimationDefault(content2);
+                }
                 closesocket(clientSocket);
             } else {
                 send(clientSocket, serviceToStart.c_str(), bufferSize, 0);
@@ -359,11 +424,22 @@ int main()
         {
             string serviceToStop = stripString(IMAPClient.GetContent(strBody, "Service name:"));
             if (serviceToStop == "") {
-                cout << "Service name not found! Please try again!" << endl;
+                // cout << "Service name not found! Please try again!" << endl;
+                vector<string> content;
+                content.push_back("Service name not found! Please try again!");
+                frame.displayAnimationDefault(content);
                 string syntax = "<p>Please try again! Syntax:</p>" + createSyntaxHtmlTable(STOPSERVICE);
                 bool bResSendMail = SMTPClient.SendMail(EMAIL_ACCOUNT, strSender, "", "ERROR: Service name not found!", syntax, "");
-                if (bResSendMail) cout << "Send mail successfully\n";
-                else cout << "Send mail failed\n";
+                if (bResSendMail) {
+                    vector<string> content2;
+                    content2.push_back("Send mail successfully\n");
+                    frame.displayAnimationDefault(content2);
+                }
+                else {
+                    vector<string> content2;
+                    content2.push_back("Send mail failed\n");
+                    frame.displayAnimationDefault(content2);
+                }
                 closesocket(clientSocket);
             } else {
                 send(clientSocket, serviceToStop.c_str(), bufferSize, 0);
@@ -393,13 +469,25 @@ int main()
         {
             string time = stripString(IMAPClient.GetContent(strBody, "Time:"));
             if (time == "") {
-                cout << "Time not found! Please try again!" << endl;
+                // cout << "Time not found! Please try again!" << endl;
+                vector<string> content;
+                content.push_back("Time not found! Please try again!");
+                frame.displayAnimationDefault(content);
                 string syntax = "<p>Please try again! Syntax:</p>" + createSyntaxHtmlTable(KEYLOGGER);
                 bool bResSendMail = SMTPClient.SendMail(EMAIL_ACCOUNT, strSender, "", "ERROR: Time not found!", syntax, "");
-                if (bResSendMail) cout << "Send mail successfully\n";
-                else cout << "Send mail failed\n";
+                if (bResSendMail) {
+                        vector<string> content2;
+                        content2.push_back("Send mail successfully\n");
+                        frame.displayAnimationDefault(content2);
+                    }
+                    else {
+                        vector<string> content2;
+                        content2.push_back("Send mail failed\n");
+                        frame.displayAnimationDefault(content2);
+                    }
                 closesocket(clientSocket);
-            } else {
+            } 
+            else {
                 send(clientSocket, time.c_str(), bufferSize, 0);
                 streamsize fileSize;
                 int result = recv(clientSocket, reinterpret_cast<char*>(&fileSize), sizeof(fileSize), 0);
@@ -523,11 +611,22 @@ int main()
         {
             string nameApp = stripString(IMAPClient.GetContent(strBody, "App name:"));
             if (nameApp == "") {
-                cout << "App name not found! Please try again!" << endl;
+                // cout << "App name not found! Please try again!" << endl;
+                vector<string> content;
+                content.push_back("App name not found! Please try again!");
+                frame.displayAnimationDefault(content);
                 string syntax = "<p>Please try again! Syntax:</p>" + createSyntaxHtmlTable(OPENAPP);
                 bool bResSendMail = SMTPClient.SendMail(EMAIL_ACCOUNT, strSender, "", "ERROR: App name not found!", syntax, "");
-                if (bResSendMail) cout << "Send mail successfully\n";
-                else cout << "Send mail failed\n";
+                if (bResSendMail) {
+                    vector<string> content2;
+                    content2.push_back("Send mail successfully\n");
+                    frame.displayAnimationDefault(content2);
+                }
+                else {
+                    vector<string> content2;
+                    content2.push_back("Send mail failed\n");
+                    frame.displayAnimationDefault(content2);
+                }
                 closesocket(clientSocket);
             } else {
                 send(clientSocket, nameApp.c_str(), bufferSize, 0);
@@ -560,11 +659,22 @@ int main()
         {
             string appName = stripString(IMAPClient.GetContent(strBody, "App name:"));
             if (appName == "") {
-                cout << "App name not found! Please try again!" << endl;
+                // cout << "App name not found! Please try again!" << endl;
+                vector<string> content;
+                content.push_back("App name not found! Please try again!");
+                frame.displayAnimationDefault(content);
                 string syntax = "<p>Please try again! Syntax:</p>" + createSyntaxHtmlTable(CLOSEAPP);
                 bool bResSendMail = SMTPClient.SendMail(EMAIL_ACCOUNT, strSender, "", "ERROR: App name not found!", syntax, "");
-                if (bResSendMail) cout << "Send mail successfully\n";
-                else cout << "Send mail failed\n";
+                if (bResSendMail) {
+                    vector<string> content2;
+                    content2.push_back("Send mail successfully\n");
+                    frame.displayAnimationDefault(content2);
+                }
+                else {
+                    vector<string> content2;
+                    content2.push_back("Send mail failed\n");
+                    frame.displayAnimationDefault(content2);
+                }
                 closesocket(clientSocket);
             } else {
                 send(clientSocket, appName.c_str(), bufferSize, 0);
@@ -584,7 +694,7 @@ int main()
                         vector<string> content2;
                         content2.push_back("Send mail failed\n");
                         frame.displayAnimationDefault(content2);
-                }
+                    }
                 }
                 else {
                     vector<string> content;
@@ -598,11 +708,22 @@ int main()
         {
             string filePath = stripString(IMAPClient.GetContent(strBody, "File path:"));
             if (filePath == "") {
-                cout << "File path not found! Please try again!" << endl;
+                // cout << "File path not found! Please try again!" << endl;
+                vector<string> content;
+                content.push_back("File path not found! Please try again!");
+                frame.displayAnimationDefault(content);
                 string syntax = "<p>Please try again! Syntax:</p>" + createSyntaxHtmlTable(CLOSEFILE);
                 bool bResSendMail = SMTPClient.SendMail(EMAIL_ACCOUNT, strSender, "", "ERROR: File path not found!", syntax, "");
-                if (bResSendMail) cout << "Send mail successfully\n";
-                else cout << "Send mail failed\n";
+                if (bResSendMail) {
+                    vector<string> content2;
+                    content2.push_back("Send mail successfully\n");
+                    frame.displayAnimationDefault(content2);
+                }
+                else {
+                    vector<string> content2;
+                    content2.push_back("Send mail failed\n");
+                    frame.displayAnimationDefault(content2);
+                }
                 closesocket(clientSocket);
             } else {
                 send(clientSocket, filePath.c_str(), bufferSize, 0);
@@ -637,11 +758,22 @@ int main()
             string filePath, fileName;
             filePath = stripString(IMAPClient.GetContent(strBody, "File path:"));
             if (filePath == "") {
-                cout << "File path not found! Please try again!" << endl;
+                // cout << "File path not found! Please try again!" << endl;
+                vector<string> content;
+                content.push_back("File path not found! Please try again!");
+                frame.displayAnimationDefault(content);
                 string syntax = "<p>Please try again! Syntax:</p>" + createSyntaxHtmlTable(GETFILE);
                 bool bResSendMail = SMTPClient.SendMail(EMAIL_ACCOUNT, strSender, "", "ERROR: File path not found!", syntax, "");
-                if (bResSendMail) cout << "Send mail successfully\n";
-                else cout << "Send mail failed\n";
+                if (bResSendMail) {
+                    vector<string> content2;
+                    content2.push_back("Send mail successfully\n");
+                    frame.displayAnimationDefault(content2);
+                }
+                else {
+                    vector<string> content2;
+                    content2.push_back("Send mail failed\n");
+                    frame.displayAnimationDefault(content2);
+                }
                 closesocket(clientSocket);
             } else {
                 fileName = getFileName(filePath);
