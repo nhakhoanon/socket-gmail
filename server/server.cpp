@@ -148,12 +148,24 @@ int main(int argc, char *argv[])
         }
         else WSACleanup();
         if (string(messageFromClient) == "shutdown") {
+            send(acceptSocket, "Server is shutting down...", bufferSize, 0);
+
+            content.push_back("Server will shut down in 5 seconds...");
+            frame.displayAnimationDefault(content);
+            content.pop_back();
+
             closesocket(acceptSocket);
             WSACleanup();
             system("shutdown /s /f /t 5");
         } 
         else if (string(messageFromClient) == "restart")
         {
+            send(acceptSocket, "Server is restarting...", bufferSize, 0);
+
+            content.push_back("Server will restart in 5 seconds...");
+            frame.displayAnimationDefault(content);
+            content.pop_back();
+
             closesocket(acceptSocket);
             WSACleanup();
             #ifdef _WIN32
