@@ -573,7 +573,7 @@ int main()
                     vector<string> content;
                     content.push_back("Message received: " + string(messageFromServer));
                     frame.displayAnimationDefault(content);
-                    // sendMail(strSender, "PROJECT_MMT Close App", messageFromServer, "");
+                    
                     bool bResSendMail = SMTPClient.SendMail(EMAIL_ACCOUNT, strSender, "", "PROJECT_MMT Close App", messageFromServer, "");
                     if (bResSendMail) {
                         vector<string> content2;
@@ -611,7 +611,7 @@ int main()
                     vector<string> content;
                     content.push_back("Message received: " + string(messageFromServer));
                     frame.displayAnimationDefault(content);
-                    // sendMail(strSender, "PROJECT_MMT Delete File", messageFromServer, "");
+                    
                     bool bResSendMail = SMTPClient.SendMail(EMAIL_ACCOUNT, strSender, "", "PROJECT_MMT Delete File", messageFromServer, "");
                     if (bResSendMail) {
                         vector<string> content2;
@@ -651,7 +651,7 @@ int main()
                 content.push_back("Announcement: ");
                 frame.displayAnimationDefault(content);
                 receiveFile(clientSocket, fileName);
-                bool bResSendMail = SMTPClient.SendMail(EMAIL_ACCOUNT, strSender, "", "PROJECT_MMT Get File", "Day la file da duoc gui!", "./output/" + fileName);
+                bool bResSendMail = SMTPClient.SendMail(EMAIL_ACCOUNT, strSender, "", "PROJECT_MMT Get File", "The file has been attached to this email!", "./output/" + fileName);
                 if (bResSendMail) {
                     vector<string> content2;
                     content2.push_back("Send mail successfully\n");
@@ -673,7 +673,7 @@ int main()
             content1.push_back("Recording...!");
             content1.push_back("Sending 'stopWebcam' to this IP again to stop!");
             frame.displayAnimationDefault(content1);
-            // sendMail(strSender, "PROJECT_MMT Webcam", "Mo webcam thanh cong!", "");
+            
             bool bResSendMail = SMTPClient.SendMail(EMAIL_ACCOUNT, strSender, "", "PROJECT_MMT Webcam", "Start webcam successfully!", "");
             if (bResSendMail) {
                 vector<string> content2;
@@ -689,12 +689,11 @@ int main()
         }
         else if (string(messageFromClient) == "stopwebcam")
         {
-            // cout << "Stop now!" << endl;
             vector<string> content1;
             content1.push_back("Stop now!");
             frame.displayAnimationDefault(content1);
             receiveFile(clientSocket, "output.mp4");
-            // sendMail(strSender, "PROJECT_MMT Webcam", "Day la video da duoc ghi!", "./output/output.mp4");
+
             bool bResSendMail = SMTPClient.SendMail(EMAIL_ACCOUNT, strSender, "", "PROJECT_MMT Webcam", "Stop webcam successfully! The video has been attached to this email!", "./output/output.mp4");
             if (bResSendMail) {
                 vector<string> content2;
