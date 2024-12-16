@@ -122,7 +122,7 @@ string createSyntaxHtmlTable(SyntaxType type) {
         headers.push_back("Feature");
         headers.push_back("Subject");
         headers.push_back("Body");
-        data.push_back({ "Key Logger", "PROJECT_MMT keylogger", "IP: {IP}"});
+        data.push_back({ "Key Logger", "PROJECT_MMT keylogger", "IP: {IP}\nTime: {Keylogger time (in seconds)}"});
         break;
     case CAPTURESCREEN:
         headers.push_back("Feature");
@@ -168,7 +168,7 @@ string createSyntaxHtmlTable(SyntaxType type) {
         data.push_back({ "List Services", "PROJECT_MMT listservices", "IP: {IP}"});
         data.push_back({ "Start Service", "PROJECT_MMT startservice", "IP: {IP}\nService name: {Service name}"});
         data.push_back({ "Stop Service", "PROJECT_MMT stopservice", "IP: {IP}\nService name: {Service name}"});
-        data.push_back({ "Key Logger", "PROJECT_MMT keylogger", "IP: {IP}"});
+        data.push_back({ "Key Logger", "PROJECT_MMT keylogger", "IP: {IP}\nTime: {Keylogger time (in seconds)}"});
         data.push_back({ "Capture Screen", "PROJECT_MMT capturescreen", "IP: {IP}"});
         data.push_back({ "Start Webcam", "PROJECT_MMT startwebcam", "IP: {IP}"});
         data.push_back({ "Stop Webcam", "PROJECT_MMT stopwebcam", "IP: {IP}"});

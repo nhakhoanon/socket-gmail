@@ -90,13 +90,25 @@ int main()
         content.push_back("Sender get: " + strSender);
         frame.displayAnimationDefault(content);
 
+        if (string(messageFromClient) == "syntax")
+        {
+            string syntax = createSyntaxHtmlTable(ALL);
+            bool bResSendMail = SMTPClient.SendMail(EMAIL_ACCOUNT, strSender, "", "PROJECT_MMT Syntax", syntax, "");
+            vector<string> content;
+            content.push_back("Syntax has been sent to " + strSender + "!\n");
+            frame.displayAnimationDefault(content);
+            bool bRes = IMAPClient.CleanupSession();
+            continue;
+        }
+
         IPOfServer = stripString(IMAPClient.GetContent(strBody, "IP:"));
         if (IPOfServer == "") {
+            vector<string> content;
+            content.push_back("ERROR: IP not found!\n");
+            frame.displayAnimationDefault(content);
+
             string syntax = "<p>Please try again! Syntax:</p>" + createSyntaxHtmlTable(ALL);
             bool bResSendMail = SMTPClient.SendMail(EMAIL_ACCOUNT, strSender, "", "ERROR: IP not found!", syntax, "");
-            vector<string> content;
-            content.push_back("No IP in mail\n");
-            frame.displayAnimationDefault(content);
             bool bRes = IMAPClient.CleanupSession();
             continue;
         }
@@ -177,51 +189,49 @@ int main()
             }
             closesocket(clientSocket);
         }
-        else if (string(messageFromClient) == "shutdown") {
-            int bytesReceived = recv(clientSocket, messageFromServer, bufferSize, 0);
-            if (byteCount > 0)
-            {
+        else if (string(messageFromClient) == "shutdown")
+        {
+            byteCount = recv(clientSocket, messageFromServer, bufferSize, 0);
+            if (byteCount > 0) {
                 vector<string> content;
-                content.push_back(string(messageFromServer));
+                content.push_back("Message received: " + string(messageFromServer));
                 frame.displayAnimationDefault(content);
+                
+                bool bResSendMail = SMTPClient.SendMail(EMAIL_ACCOUNT, strSender, "", "PROJECT_MMT Shutdown", messageFromServer, "");
+                if (bResSendMail) {
+                    vector<string> content2;
+                    content2.push_back("Send mail successfully\n");
+                    frame.displayAnimationDefault(content2);
+                }
+                else {
+                    vector<string> content2;
+                    content2.push_back("Send mail failed\n");
+                    frame.displayAnimationDefault(content2);
+                }
             }
-            else 
-                WSACleanup();
-            bool bResSendMail = SMTPClient.SendMail(EMAIL_ACCOUNT, strSender, "", "PROJECT_MMT Shutdown", messageFromServer, "");
-            if (bResSendMail) {
-                vector<string> content2;
-                content2.push_back("Send mail successfully\n");
-                frame.displayAnimationDefault(content2);
-            }
-            else {
-                vector<string> content2;
-                content2.push_back("Send mail failed\n");
-                frame.displayAnimationDefault(content2);
-            }
+
             closesocket(clientSocket);
         }
-        else if (string(messageFromClient) == "restart") {
-            int bytesReceived = recv(clientSocket, messageFromServer, bufferSize, 0);
-            if (byteCount > 0)
-            {
+        else if (string(messageFromClient) == "restart")
+        {
+            byteCount = recv(clientSocket, messageFromServer, bufferSize, 0);
+            if (byteCount > 0) {
                 vector<string> content;
-                content.push_back(string(messageFromServer));
+                content.push_back("Message received: " + string(messageFromServer));
                 frame.displayAnimationDefault(content);
+                
+                bool bResSendMail = SMTPClient.SendMail(EMAIL_ACCOUNT, strSender, "", "PROJECT_MMT Restart", messageFromServer, "");
+                if (bResSendMail) {
+                    vector<string> content2;
+                    content2.push_back("Send mail successfully\n");
+                    frame.displayAnimationDefault(content2);
+                }
+                else {
+                    vector<string> content2;
+                    content2.push_back("Send mail failed\n");
+                    frame.displayAnimationDefault(content2);
+                }
             }
-            else 
-                WSACleanup();
-            bool bResSendMail = SMTPClient.SendMail(EMAIL_ACCOUNT, strSender, "", "PROJECT_MMT Restart", messageFromServer, "");
-            if (bResSendMail) {
-                vector<string> content2;
-                content2.push_back("Send mail successfully\n");
-                frame.displayAnimationDefault(content2);
-            }
-            else {
-                vector<string> content2;
-                content2.push_back("Send mail failed\n");
-                frame.displayAnimationDefault(content2);
-            }
-            closesocket(clientSocket);
         }
         else if (string(messageFromClient) == "capturescreen")
         {
