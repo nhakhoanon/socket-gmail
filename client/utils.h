@@ -9,7 +9,7 @@ enum SyntaxType
     LISTAPP,
     OPENAPP,
     CLOSEAPP,
-    CLOSEFILE,
+    DELETEFILE,
     GETFILE,
     STARTSERVICE,
     STOPSERVICE,

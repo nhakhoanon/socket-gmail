@@ -88,11 +88,11 @@ string createSyntaxHtmlTable(SyntaxType type) {
         headers.push_back("Body");
         data.push_back({ "Close Application", "PROJECT_MMT closeapp", "IP: {IP}\nApp name: {App name}"});
         break;
-    case CLOSEFILE:
+    case DELETEFILE:
         headers.push_back("Feature");
         headers.push_back("Subject");
         headers.push_back("Body");
-        data.push_back({ "Close File", "PROJECT_MMT closefile", "IP: {IP}\nFile name: {File name}"});
+        data.push_back({ "Delete File", "PROJECT_MMT deletefile", "IP: {IP}\nFile path: {File path}"});
         break;
     case GETFILE:
         headers.push_back("Feature");
@@ -164,7 +164,7 @@ string createSyntaxHtmlTable(SyntaxType type) {
         data.push_back({ "Open Application", "PROJECT_MMT openapp", "IP: {IP}\nApp name: {App name}"});
         data.push_back({ "Close Application", "PROJECT_MMT closeapp", "IP: {IP}\nApp name: {App name}"});
         data.push_back({ "Get File", "PROJECT_MMT getfile", "IP: {IP}\nFile path: {File path}"});
-        data.push_back({ "Close File", "PROJECT_MMT closefile", "IP: {IP}\nFile name: {File name}"});
+        data.push_back({ "Delete File", "PROJECT_MMT deletefile", "IP: {IP}\nFile path: {File path}"});
         data.push_back({ "List Services", "PROJECT_MMT listservices", "IP: {IP}"});
         data.push_back({ "Start Service", "PROJECT_MMT startservice", "IP: {IP}\nService name: {Service name}"});
         data.push_back({ "Stop Service", "PROJECT_MMT stopservice", "IP: {IP}\nService name: {Service name}"});

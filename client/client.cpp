@@ -722,7 +722,7 @@ int main()
                 vector<string> content;
                 content.push_back("File path not found! Please try again!");
                 frame.displayAnimationDefault(content);
-                string syntax = "<p>Please try again! Syntax:</p>" + createSyntaxHtmlTable(CLOSEFILE);
+                string syntax = "<p>Please try again! Syntax:</p>" + createSyntaxHtmlTable(DELETEFILE);
                 bool bResSendMail = SMTPClient.SendMail(EMAIL_ACCOUNT, strSender, "", "ERROR: File path not found!", syntax, "");
                 if (bResSendMail) {
                     vector<string> content2;
