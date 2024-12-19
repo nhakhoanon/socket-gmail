@@ -445,7 +445,7 @@ int main(int argc, char *argv[])
                 // std::cout << "Client requested file: " << filePath << "\n";
 
                 string announcement = "";
-                if (deleteFileByPath(string(messageFromClient).substr(11)))
+                if (deleteFileByPath(string(filePath)))
                     announcement = "Delete required file successfully!";
                 else 
                     announcement = "Delete required file unsuccessfully!";
