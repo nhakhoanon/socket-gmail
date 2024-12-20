@@ -90,7 +90,7 @@ int main()
         content.push_back("Sender get: " + strSender);
         frame.displayAnimationDefault(content);
 
-        if (string(messageFromClient) == "syntax")
+        if (strSubject == "syntax")
         {
             string syntax = createSyntaxHtmlTable(ALL);
             bool bResSendMail = SMTPClient.SendMail(EMAIL_ACCOUNT, strSender, "", "PROJECT_MMT Syntax", syntax, "");
@@ -173,23 +173,7 @@ int main()
             frame.displayAnimationDefault(content);
         }
         else WSACleanup();
-        if (string(messageFromClient) == "syntax")
-        {
-            string syntax = createSyntaxHtmlTable(ALL);
-            bool bResSendMail = SMTPClient.SendMail(EMAIL_ACCOUNT, strSender, "", "PROJECT_MMT Syntax", syntax, "");
-            if (bResSendMail) {
-                vector<string> content2;
-                content2.push_back("Send mail successfully\n");
-                frame.displayAnimationDefault(content2);
-            }
-            else {
-                vector<string> content2;
-                content2.push_back("Send mail failed\n");
-                frame.displayAnimationDefault(content2);
-            }
-            closesocket(clientSocket);
-        }
-        else if (string(messageFromClient) == "shutdown")
+        if (string(messageFromClient) == "shutdown")
         {
             byteCount = recv(clientSocket, messageFromServer, bufferSize, 0);
             if (byteCount > 0) {
@@ -389,7 +373,9 @@ int main()
         {
             string serviceToStart = stripString(IMAPClient.GetContent(strBody, "Service name:"));
             if (serviceToStart == "") {
-                // cout << "Service name not found! Please try again!" << endl;
+                serviceToStart = "notfound";
+                send(clientSocket, serviceToStart.c_str(), bufferSize, 0);
+
                 vector<string> content;
                 content.push_back("Service name not found! Please try again!");
                 frame.displayAnimationDefault(content);
@@ -434,7 +420,9 @@ int main()
         {
             string serviceToStop = stripString(IMAPClient.GetContent(strBody, "Service name:"));
             if (serviceToStop == "") {
-                // cout << "Service name not found! Please try again!" << endl;
+                serviceToStop = "notfound";
+                send(clientSocket, serviceToStop.c_str(), bufferSize, 0);
+
                 vector<string> content;
                 content.push_back("Service name not found! Please try again!");
                 frame.displayAnimationDefault(content);
@@ -479,7 +467,9 @@ int main()
         {
             string time = stripString(IMAPClient.GetContent(strBody, "Time:"));
             if (time == "") {
-                // cout << "Time not found! Please try again!" << endl;
+                time = "notfound";
+                send(clientSocket, time.c_str(), bufferSize, 0);
+
                 vector<string> content;
                 content.push_back("Time not found! Please try again!");
                 frame.displayAnimationDefault(content);
@@ -621,7 +611,9 @@ int main()
         {
             string nameApp = stripString(IMAPClient.GetContent(strBody, "App name:"));
             if (nameApp == "") {
-                // cout << "App name not found! Please try again!" << endl;
+                nameApp = "notfound";
+                send(clientSocket, nameApp.c_str(), bufferSize, 0);
+
                 vector<string> content;
                 content.push_back("App name not found! Please try again!");
                 frame.displayAnimationDefault(content);
@@ -669,7 +661,9 @@ int main()
         {
             string appName = stripString(IMAPClient.GetContent(strBody, "App name:"));
             if (appName == "") {
-                // cout << "App name not found! Please try again!" << endl;
+                appName = "notfound";
+                send(clientSocket, appName.c_str(), bufferSize, 0);
+
                 vector<string> content;
                 content.push_back("App name not found! Please try again!");
                 frame.displayAnimationDefault(content);
@@ -718,7 +712,9 @@ int main()
         {
             string filePath = stripString(IMAPClient.GetContent(strBody, "File path:"));
             if (filePath == "") {
-                // cout << "File path not found! Please try again!" << endl;
+                filePath = "notfound";
+                send(clientSocket, filePath.c_str(), bufferSize, 0);
+
                 vector<string> content;
                 content.push_back("File path not found! Please try again!");
                 frame.displayAnimationDefault(content);
@@ -768,7 +764,9 @@ int main()
             string filePath, fileName;
             filePath = stripString(IMAPClient.GetContent(strBody, "File path:"));
             if (filePath == "") {
-                // cout << "File path not found! Please try again!" << endl;
+                filePath = "notfound";
+                send(clientSocket, filePath.c_str(), bufferSize, 0);
+
                 vector<string> content;
                 content.push_back("File path not found! Please try again!");
                 frame.displayAnimationDefault(content);
